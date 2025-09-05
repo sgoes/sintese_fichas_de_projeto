@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Fichas de Projeto</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        .project-card {
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .project-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .nav-tabs .nav-link.active {
+            font-weight: bold;
+            border-bottom: 3px solid #0d6efd;
+        }
+        .stats-card {
+            border-left: 4px solid #0d6efd;
+        }
+        .technology-badge {
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+    <header class="bg-primary text-white py-3 mb-4">
+        <div class="container">
+            <h1 class="display-5 fw-bold"><i class="bi bi-folder2-open me-2"></i>Dashboard de Fichas de Projeto</h1>
+            <p class="lead">Consulta centralizada dos projetos desenvolvidos pela equipa</p>
+        </div>
+    </header>
+
+    <div class="container mb-5">
+        <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active" id="team-tab" data-bs-toggle="tab" data-bs-target="#team" type="button" role="tab" aria-controls="team" aria-selected="true">
+                    <i class="bi bi-people-fill me-1"></i> Por Elemento
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="project-tab" data-bs-toggle="tab" data-bs-target="#project" type="button" role="tab" aria-controls="project" aria-selected="false">
+                    <i class="bi bi-kanban-fill me-1"></i> Por Projeto
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="tech-tab" data-bs-toggle="tab" data-bs-target="#tech" type="button" role="tab" aria-controls="tech" aria-selected="false">
+                    <i class="bi bi-cpu-fill me-1"></i> Por Tecnologia
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats" type="button" role="tab" aria-controls="stats" aria-selected="false">
+                    <i class="bi bi-bar-chart-fill me-1"></i> Estatísticas
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="myTabContent">
+            <!-- ABA POR ELEMENTO DA EQUIPA -->
+            <div class="tab-pane fade show active" id="team" role="tabpanel" aria-labelledby="team-tab">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="team-search" class="form-control" placeholder="Pesquisar elemento da equipa...">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" id="team-filter">
+                            <option value="">Todos os elementos</option>
+                            <option value="Carolina Goes">Carolina Goes</option>
+                            <option value="Margarida Patriarca">Margarida Patriarca</option>
+                            <option value="Pedro Campos">Pedro Campos</option>
+                            <option value="Diogo Almeida">Diogo Almeida</option>
+                            <option value="Teresa Nogueiro">Teresa Nogueiro</option>
+                            <option value="Natacha Silva">Natacha Silva</option>
+                            <option value="Gonçalo Gomes">Gonçalo Gomes</option>
+                            <option value="Manuela Seita">Manuela Seita</option>
+                            <option value="Rita">Rita</option>
+                            <option value="Sílvia">Sílvia</option>
+                            <option value="Inês Narciso">Inês Narciso</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="team-results" class="row">
+                    <!-- Os resultados serão carregados aqui via JavaScript -->
+                </div>
+            </div>
+
+            <!-- ABA POR PROJETO -->
+            <div class="tab-pane fade" id="project" role="tabpanel" aria-labelledby="project-tab">
+                <div class="row mb-4">
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="project-search" class="form-control" placeholder="Pesquisar projeto...">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="status-filter">
+                            <option value="">Todos os estados</option>
+                            <option value="concluído">Concluído</option>
+                            <option value="execução">Em execução</option>
+                            <option value="piloto">Piloto</option>
+                            <option value="planeamento">Em planeamento</option>
+                            <option value="suspenso">Execução suspensa</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="project-results" class="row">
+                    <!-- Os resultados serão carregados aqui via JavaScript -->
+                </div>
+            </div>
+
+            <!-- ABA POR TECNOLOGIA -->
+            <div class="tab-pane fade" id="tech" role="tabpanel" aria-labelledby="tech-tab">
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <div class="d-flex flex-wrap gap-2" id="tech-badges">
+                            <!-- Badges de tecnologia serão geradas via JavaScript -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="tech-results" class="row">
+                    <!-- Os resultados serão carregados aqui via JavaScript -->
+                </div>
+            </div>
+
+            <!-- ABA ESTATÍSTICAS -->
+            <div class="tab-pane fade" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+                <div class="row mb-4">
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Total de Projetos</h5>
+                                <h2 class="card-text text-primary" id="total-projects">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Em Execução</h5>
+                                <h2 class="card-text text-success" id="active-projects">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Concluídos</h5>
+                                <h2 class="card-text text-info" id="completed-projects">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3 mb-3">
+                        <div class="card stats-card">
+                            <div class="card-body">
+                                <h5 class="card-title">Elementos na Equipa</h5>
+                                <h2 class="card-text text-warning" id="team-members">0</h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Projetos por Estado</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="statusChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Tecnologias Mais Utilizadas</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="techChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Elementos da Equipa com Mais Projetos</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="memberChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="bg-light py-4 mt-5">
+        <div class="container text-center">
+            <p class="mb-0">Dashboard de Fichas de Projeto &copy; 2023</p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        // Dados dos projetos (extraídos das fichas fornecidas)
+        const projects = [
+            {
+                id: 1,
+                name: "Dashboard Lista Nominativa - SGPCM (Provisória)",
+                responsible: "Carolina Goes",
+                team: ["Carolina Goes"],
+                status: "concluído",
+                description: "Dashboard desenvolvido a partir de listas em PDF referentes ao pessoal da SGPCM, transformando informação estática em informação dinâmica e acionável.",
+                technologies: ["Power BI", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiOTQ1OWU1NGEtM2NkMy00MTNhLThjNDctOTZhYWVkOTA1MTRlIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=6c49244b60cd19d78c92"
+            },
+            {
+                id: 2,
+                name: "Ficha de Metadados - Template",
+                responsible: "Carolina Goes",
+                team: ["Carolina Goes"],
+                status: "concluído",
+                description: "Aplicação web para registo normalizado de metadados de cada tabela/dataset produzido internamente, seguindo normas ISO.",
+                technologies: ["HTML5", "Bootstrap", "JavaScript", "GitHub Pages", "Cursor AI PRO", "Chat GPT PRO", "Power BI PRO"],
+                link: "https://sgoes.github.io/metadata_gov/"
+            },
+            {
+                id: 3,
+                name: "Dashboard Assembleia da República - Legislatura XVI",
+                responsible: "Carolina Goes",
+                team: ["Carolina Goes", "INOVEM"],
+                status: "execução",
+                description: "Solução interativa que permite acompanhar debates, intervenções parlamentares e diplomas aprovados ao longo da legislatura.",
+                technologies: ["Power BI", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
+                link: ""
+            },
+            {
+                id: 4,
+                name: "Google Trends",
+                responsible: "Carolina Goes",
+                team: ["Carolina Goes", "INOVEM"],
+                status: "execução",
+                description: "Dashboard para monitorizar, em tempo quase real, os principais tópicos pesquisados no Google através da API do SerpAPI.",
+                technologies: ["Microsoft Fabric", "Power BI", "SerpAPI", "Cursor AI PRO", "Chat GPT PRO"],
+                link: ""
+            },
+            {
+                id: 5,
+                name: "Painel de Pesquisa Rápida de Indicadores Estatísticos do INE",
+                responsible: "Carolina Goes",
+                team: ["Carolina Goes", "INOVEM"],
+                status: "execução",
+                description: "Dashboard interativo desenvolvido para facilitar o acesso a mais de 6.400 indicadores estatísticos do INE.",
+                technologies: ["Power BI", "Web Scraping", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNWUxZDQ4NjEtZGQ0Ni00N2U2LWExZWUtNDA2NTVmZGM2MWRjIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=2a67b50557973f9c5ee9"
+            },
+            {
+                id: 6,
+                name: "Dashboard Composição do Governo XXV",
+                responsible: "Carolina Goes",
+                team: ["Carolina Goes"],
+                status: "execução",
+                description: "Dashboard que apresenta de forma estruturada e interativa a informação oficial sobre os Ministros e Secretários de Estado.",
+                technologies: ["Power BI", "Web Scraping", "Cursor AI PRO", "Chat GPT PRO"],
+                link: ""
+            },
+            {
+                id: 7,
+                name: "Dashboard Principais Feeds (Portugal)",
+                responsible: "Pedro Campos, Carolina Goes",
+                team: ["Pedro Campos", "Carolina Goes"],
+                status: "suspenso",
+                description: "Dashboard para centralizar notícias provenientes de um bucket do Inoreader, permitindo acompanhar artigos publicados pelas principais fontes nacionais.",
+                technologies: ["Microsoft Fabric", "Power BI", "Inoreader API", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNWUxZDQ4NjEtZGQ0Ni00N2U2LWExZWUtNDA2NTVmZGM2MWRjIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=2a67b50557973f9c5ee9"
+            },
+            {
+                id: 8,
+                name: "Barómetro Mediático",
+                responsible: "Margarida Patriarca",
+                team: ["Margarida Patriarca", "Inês Narciso"],
+                status: "piloto",
+                description: "Produção de barómetro mediático que integra tendências de pesquisa, inteligência preditiva e curadoria estruturada.",
+                technologies: ["NewsWhip", "Inoreader", "Google Trends", "SharePoint", "Canva Pro"],
+                link: "https://www.canva.com/design/DAGgx3aJBoM/L7t27_IKUONMm0j8m1K-mw/view"
+            },
+            {
+                id: 9,
+                name: "Comunicação",
+                responsible: "Rita e Sílvia",
+                team: ["Rita", "Sílvia", "Todos os elementos da equipa"],
+                status: "suspenso",
+                description: "Assegurar a comunicação interna e externa, promovendo trabalho colaborativo entre os membros da equipa.",
+                technologies: ["SharePoint", "Canva", "CapCut", "Viva Engage", "Loop", "Teams", "Slido", "Mentimeter"],
+                link: ""
+            },
+            {
+                id: 10,
+                name: "Media Clipping - Inoreader",
+                responsible: "Margarida Patriarca",
+                team: ["Margarida Patriarca", "Carolina Goes"],
+                status: "execução",
+                description: "Implementação de uma plataforma de curadoria avançada de conteúdos que agrega fluxos RSS, newsletters e alertas temáticos.",
+                technologies: ["Inoreader"],
+                link: ""
+            },
+            {
+                id: 11,
+                name: "Mapeamento dos ODS",
+                responsible: "Teresa Nogueiro, Natacha Silva",
+                team: ["Teresa Nogueiro", "Natacha Silva"],
+                status: "execução",
+                description: "Projeto para mapear e alinhar os Objetivos de Desenvolvimento Sustentável com instrumentos de gestão da SGPCM.",
+                technologies: [],
+                link: ""
+            },
+            {
+                id: 12,
+                name: "Pulsar",
+                responsible: "Diogo Almeida",
+                team: ["Diogo Almeida", "Carolina Goes", "Margarida Patriarca"],
+                status: "piloto",
+                description: "Ferramenta de agregação de informação para suporte à tomada de decisão política, observação de tendências e resultados de políticas.",
+                technologies: ["Microsoft Fabric", "Power Automate", "Python", "Power BI", "SharePoint", "Teams"],
+                link: ""
+            },
+            {
+                id: 13,
+                name: "Sistema de Gestão e Monitorização de Projetos",
+                responsible: "Equipa InovEM / Coordenação DSAAG",
+                team: ["Equipa InovEM"],
+                status: "suspenso",
+                description: "Sistema centralizado a partir do OneNote para gerir e monitorizar todos os projetos em curso.",
+                technologies: ["OneNote", "Teams", "Planner", "Kanban", "SharePoint"],
+                link: ""
+            },
+            {
+                id: 14,
+                name: "Governação Interministerial Sustentável",
+                responsible: "Gonçalo Gomes, Manuela Seita, Teresa Nogueiro",
+                team: ["Gonçalo Gomes", "Manuela Seita", "Teresa Nogueiro"],
+                status: "planeamento",
+                description: "Projeto para criar um modelo de governação interministerial sustentável garantindo continuidade, colaboração e eficiência entre ministérios.",
+                technologies: [],
+                link: ""
+            },
+            {
+                id: 15,
+                name: "in.formal",
+                responsible: "Gonçalo Duarte Gomes",
+                team: ["Gonçalo Duarte Gomes", "Sílvia Rovisco"],
+                status: "planeamento",
+                description: "Realização de encontros informais para apresentação e discussão partilhada de ideias, temas e experiências.",
+                technologies: [],
+                link: ""
+            }
+        ];
+
+        // Inicialização quando o documento estiver pronto
+        document.addEventListener('DOMContentLoaded', function() {
+            renderAllProjects();
+            setupFilters();
+            renderTechBadges();
+            updateStats();
+        });
+
+        // Função para renderizar todos os projetos
+        function renderAllProjects() {
+            renderTeamProjects();
+            renderProjectList();
+        }
+
+        // Função para configurar os filtros
+        function setupFilters() {
+            // Filtro por elemento da equipa
+            document.getElementById('team-filter').addEventListener('change', function() {
+                renderTeamProjects();
+            });
+            
+            // Pesquisa por elemento da equipa
+            document.getElementById('team-search').addEventListener('input', function() {
+                renderTeamProjects();
+            });
+            
+            // Filtro por estado do projeto
+            document.getElementById('status-filter').addEventListener('change', function() {
+                renderProjectList();
+            });
+            
+            // Pesquisa por projeto
+            document.getElementById('project-search').addEventListener('input', function() {
+                renderProjectList();
+            });
+        }
+
+        // Função para renderizar os projetos na aba de equipa
+        function renderTeamProjects() {
+            const teamFilter = document.getElementById('team-filter').value;
+            const searchTerm = document.getElementById('team-search').value.toLowerCase();
+            const resultsContainer = document.getElementById('team-results');
+            
+            resultsContainer.innerHTML = '';
+            
+            // Agrupar projetos por elemento da equipa
+            const teamMembers = {};
+            
+            projects.forEach(project => {
+                project.team.forEach(member => {
+                    if (!teamMembers[member]) {
+                        teamMembers[member] = [];
+                    }
+                    teamMembers[member].push(project);
+                });
+            });
+            
+            // Filtrar membros conforme seleção e pesquisa
+            let filteredMembers = Object.keys(teamMembers);
+            
+            if (teamFilter) {
+                filteredMembers = filteredMembers.filter(member => member === teamFilter);
+            }
+            
+            if (searchTerm) {
+                filteredMembers = filteredMembers.filter(member => 
+                    member.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            // Renderizar os membros e seus projetos
+            filteredMembers.forEach(member => {
+                const memberSection = document.createElement('div');
+                memberSection.className = 'col-12 mb-4';
+                
+                memberSection.innerHTML = `
+                    <h3 class="border-bottom pb-2">${member}</h3>
+                    <div class="row" id="projects-${member.replace(/\s+/g, '-')}">
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(memberSection);
+                
+                const projectsContainer = document.getElementById(`projects-${member.replace(/\s+/g, '-')}`);
+                
+                teamMembers[member].forEach(project => {
+                    projectsContainer.appendChild(createProjectCard(project));
+                });
+            });
+            
+            if (filteredMembers.length === 0) {
+                resultsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-search display-1 text-muted"></i>
+                        <h4 class="text-muted mt-3">Nenhum elemento encontrado</h4>
+                        <p class="text-muted">Tente ajustar os critérios de pesquisa</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Função para renderizar a lista de projetos
+        function renderProjectList() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const searchTerm = document.getElementById('project-search').value.toLowerCase();
+            const resultsContainer = document.getElementById('project-results');
+            
+            resultsContainer.innerHTML = '';
+            
+            let filteredProjects = projects;
+            
+            if (statusFilter) {
+                filteredProjects = filteredProjects.filter(project => 
+                    project.status === statusFilter
+                );
+            }
+            
+            if (searchTerm) {
+                filteredProjects = filteredProjects.filter(project => 
+                    project.name.toLowerCase().includes(searchTerm) || 
+                    project.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (filteredProjects.length > 0) {
+                filteredProjects.forEach(project => {
+                    resultsContainer.appendChild(createProjectCard(project));
+                });
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-folder-x display-1 text-muted"></i>
+                        <h4 class="text-muted mt-3">Nenhum projeto encontrado</h4>
+                        <p class="text-muted">Tente ajustar os critérios de pesquisa</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Função para criar um card de projeto
+        function createProjectCard(project) {
+            const statusColors = {
+                'concluído': 'success',
+                'execução': 'primary',
+                'piloto': 'info',
+                'planeamento': 'warning',
+                'suspenso': 'secondary'
+            };
+            
+            const statusTexts = {
+                'concluído': 'Concluído',
+                'execução': 'Em Execução',
+                'piloto': 'Piloto',
+                'planeamento': 'Em Planeamento',
+                'suspenso': 'Execução Suspensa'
+            };
+            
+            const col = document.createElement('div');
+            col.className = 'col-md-6 col-lg-4 mb-4';
+            
+            col.innerHTML = `
+                <div class="card project-card h-100">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-2">
+                            <span class="badge bg-${statusColors[project.status]}">${statusTexts[project.status]}</span>
+                            ${project.link ? `<a href="${project.link}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-up-right"></i></a>` : ''}
+                        </div>
+                        <h5 class="card-title">${project.name}</h5>
+                        <p class="card-text">${project.description}</p>
+                        <div class="mb-2">
+                            <small class="text-muted"><i class="bi bi-person-circle me-1"></i> Responsável: ${project.responsible}</small>
+                        </div>
+                        <div class="mb-3">
+                            <small class="text-muted"><i class="bi bi-people-fill me-1"></i> Equipa: ${project.team.join(', ')}</small>
+                        </div>
+                        <div class="technology-list">
+                            ${project.technologies.map(tech => 
+                                `<span class="badge bg-light text-dark technology-badge">${tech}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return col;
+        }
+
+        // Função para renderizar os badges de tecnologia
+        function renderTechBadges() {
+            const techContainer = document.getElementById('tech-badges');
+            
+            // Coletar todas as tecnologias únicas
+            const allTech = new Set();
+            projects.forEach(project => {
+                project.technologies.forEach(tech => allTech.add(tech));
+            });
+            
+            // Criar badges para cada tecnologia
+            allTech.forEach(tech => {
+                const badge = document.createElement('span');
+                badge.className = 'badge bg-primary technology-filter';
+                badge.style.cursor = 'pointer';
+                badge.textContent = tech;
+                badge.addEventListener('click', () => filterByTechnology(tech));
+                
+                techContainer.appendChild(badge);
+            });
+        }
+
+        // Função para filtrar por tecnologia
+        function filterByTechnology(tech) {
+            const resultsContainer = document.getElementById('tech-results');
+            resultsContainer.innerHTML = '';
+            
+            const filteredProjects = projects.filter(project => 
+                project.technologies.includes(tech)
+            );
+            
+            if (filteredProjects.length > 0) {
+                resultsContainer.innerHTML = `<h4 class="mb-4">Projetos que utilizam <span class="badge bg-primary">${tech}</span></h4>`;
+                
+                const row = document.createElement('div');
+                row.className = 'row';
+                
+                filteredProjects.forEach(project => {
+                    row.appendChild(createProjectCard(project));
+                });
+                
+                resultsContainer.appendChild(row);
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-cpu display-1 text-muted"></i>
+                        <h4 class="text-muted mt-3">Nenhum projeto utiliza esta tecnologia</h4>
+                    </div>
+                `;
+            }
+        }
+
+        // Função para atualizar as estatísticas
+        function updateStats() {
+            // Contar projetos totais
+            document.getElementById('total-projects').textContent = projects.length;
+            
+            // Contar projetos ativos (em execução)
+            const activeProjects = projects.filter(p => p.status === 'execução').length;
+            document.getElementById('active-projects').textContent = activeProjects;
+            
+            // Contar projetos concluídos
+            const completedProjects = projects.filter(p => p.status === 'concluído').length;
+            document.getElementById('completed-projects').textContent = completedProjects;
+            
+            // Contar membros únicos da equipa
+            const allMembers = new Set();
+            projects.forEach(project => {
+                project.team.forEach(member => allMembers.add(member));
+            });
+            document.getElementById('team-members').textContent = allMembers.size;
+            
+            // Gráfico de estados dos projetos
+            const statusCount = {
+                'concluído': projects.filter(p => p.status === 'concluído').length,
+                'execução': projects.filter(p => p.status === 'execução').length,
+                'piloto': projects.filter(p => p.status === 'piloto').length,
+                'planeamento': projects.filter(p => p.status === 'planeamento').length,
+                'suspenso': projects.filter(p => p.status === 'suspenso').length
+            };
+            
+            const statusCtx = document.getElementById('statusChart').getContext('2d');
+            new Chart(statusCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['Concluído', 'Em Execução', 'Piloto', 'Em Planeamento', 'Suspenso'],
+                    datasets: [{
+                        data: Object.values(statusCount),
+                        backgroundColor: ['#28a745', '#007bff', '#17a2b8', '#ffc107', '#6c757d']
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false
+                }
+            });
+            
+            // Gráfico de tecnologias mais utilizadas
+            const techCount = {};
+            projects.forEach(project => {
+                project.technologies.forEach(tech => {
+                    techCount[tech] = (techCount[tech] || 0) + 1;
+                });
+            });
+            
+            // Ordenar tecnologias por frequência e pegar as top 8
+            const topTech = Object.entries(techCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 8);
+            
+            const techCtx = document.getElementById('techChart').getContext('2d');
+            new Chart(techCtx, {
+                type: 'bar',
+                data: {
+                    labels: topTech.map(t => t[0]),
+                    datasets: [{
+                        label: 'Nº de Projetos',
+                        data: topTech.map(t => t[1]),
+                        backgroundColor: '#007bff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    indexAxis: 'y',
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de elementos com mais projetos
+            const memberProjectCount = {};
+            projects.forEach(project => {
+                project.team.forEach(member => {
+                    memberProjectCount[member] = (memberProjectCount[member] || 0) + 1;
+                });
+            });
+            
+            // Ordenar membros por número de projetos
+            const topMembers = Object.entries(memberProjectCount)
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 10);
+            
+            const memberCtx = document.getElementById('memberChart').getContext('2d');
+            new Chart(memberCtx, {
+                type: 'bar',
+                data: {
+                    labels: topMembers.map(m => m[0]),
+                    datasets: [{
+                        label: 'Nº de Projetos',
+                        data: topMembers.map(m => m[1]),
+                        backgroundColor: '#fd7e14'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1
+                            }
+                        }
+                    }
+                }
+            });
+        }
+    </script>
+</body>
+</html>
