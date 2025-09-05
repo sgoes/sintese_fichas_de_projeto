@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Fichas de Projeto</title>
+    <title>Dashboard de Fichas de Projeto - InovEM</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,29 +11,78 @@
         .project-card {
             transition: transform 0.3s;
             height: 100%;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         .project-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
+        }
+        .nav-tabs .nav-link {
+            border: none;
+            border-bottom: 3px solid transparent;
+            color: #495057;
+            font-weight: 500;
         }
         .nav-tabs .nav-link.active {
-            font-weight: bold;
+            font-weight: 600;
+            color: #0d6efd;
             border-bottom: 3px solid #0d6efd;
+            background: transparent;
         }
         .stats-card {
-            border-left: 4px solid #0d6efd;
+            border-radius: 12px;
+            border: none;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s;
+        }
+        .stats-card:hover {
+            transform: translateY(-3px);
         }
         .technology-badge {
-            margin-right: 5px;
-            margin-bottom: 5px;
+            margin-right: 6px;
+            margin-bottom: 8px;
+            padding: 6px 10px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            background-color: #f0f4f8;
+            color: #3a506b;
+        }
+        .header-gradient {
+            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+        }
+        .member-card {
+            border-left: 4px solid #0d6efd;
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+        }
+        .team-list {
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .progress {
+            height: 8px;
+        }
+        .custom-badge {
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-weight: 500;
         }
     </style>
 </head>
 <body>
-    <header class="bg-primary text-white py-3 mb-4">
+    <header class="header-gradient text-white py-4 mb-4">
         <div class="container">
-            <h1 class="display-5 fw-bold"><i class="bi bi-folder2-open me-2"></i>Dashboard de Fichas de Projeto</h1>
-            <p class="lead">Consulta centralizada dos projetos desenvolvidos pela equipa</p>
+            <div class="d-flex justify-content-between align-items-center">
+                <div>
+                    <h1 class="display-5 fw-bold"><i class="bi bi-kanban-fill me-2"></i>Dashboard de Projetos InovEM</h1>
+                    <p class="lead mb-0">Consulta centralizada dos projetos desenvolvidos pela equipa</p>
+                </div>
+                <img src="https://img.icons8.com/dusk/64/000000/innovation.png" alt="Inovação" width="64" height="64">
+            </div>
         </div>
     </header>
 
@@ -67,8 +116,8 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" id="team-search" class="form-control" placeholder="Pesquisar elemento da equipa...">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                            <input type="text" id="team-search" class="form-control border-start-0" placeholder="Pesquisar elemento da equipa...">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -99,8 +148,8 @@
                 <div class="row mb-4">
                     <div class="col-md-8">
                         <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" id="project-search" class="form-control" placeholder="Pesquisar projeto...">
+                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
+                            <input type="text" id="project-search" class="form-control border-start-0" placeholder="Pesquisar projeto...">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -124,8 +173,15 @@
             <div class="tab-pane fade" id="tech" role="tabpanel" aria-labelledby="tech-tab">
                 <div class="row mb-4">
                     <div class="col-md-12">
-                        <div class="d-flex flex-wrap gap-2" id="tech-badges">
-                            <!-- Badges de tecnologia serão geradas via JavaScript -->
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Tecnologias Utilizadas</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="d-flex flex-wrap gap-2" id="tech-badges">
+                                    <!-- Badges de tecnologia serão geradas via JavaScript -->
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -139,70 +195,93 @@
             <div class="tab-pane fade" id="stats" role="tabpanel" aria-labelledby="stats-tab">
                 <div class="row mb-4">
                     <div class="col-md-3 mb-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
+                        <div class="card stats-card bg-primary text-white">
+                            <div class="card-body text-center">
+                                <i class="bi bi-folder2-open display-6 mb-2"></i>
                                 <h5 class="card-title">Total de Projetos</h5>
-                                <h2 class="card-text text-primary" id="total-projects">0</h2>
+                                <h2 class="card-text" id="total-projects">0</h2>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
+                        <div class="card stats-card bg-success text-white">
+                            <div class="card-body text-center">
+                                <i class="bi bi-play-circle display-6 mb-2"></i>
                                 <h5 class="card-title">Em Execução</h5>
-                                <h2 class="card-text text-success" id="active-projects">0</h2>
+                                <h2 class="card-text" id="active-projects">0</h2>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
+                        <div class="card stats-card bg-info text-white">
+                            <div class="card-body text-center">
+                                <i class="bi bi-check-circle display-6 mb-2"></i>
                                 <h5 class="card-title">Concluídos</h5>
-                                <h2 class="card-text text-info" id="completed-projects">0</h2>
+                                <h2 class="card-text" id="completed-projects">0</h2>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
+                        <div class="card stats-card bg-warning text-dark">
+                            <div class="card-body text-center">
+                                <i class="bi bi-people-fill display-6 mb-2"></i>
                                 <h5 class="card-title">Elementos na Equipa</h5>
-                                <h2 class="card-text text-warning" id="team-members">0</h2>
+                                <h2 class="card-text" id="team-members">0</h2>
                             </div>
                         </div>
                     </div>
                 </div>
                 
-                <div class="row">
+                <div class="row mb-4">
                     <div class="col-md-6 mb-4">
-                        <div class="card">
+                        <div class="card h-100">
                             <div class="card-header bg-white">
                                 <h5 class="card-title mb-0">Projetos por Estado</h5>
                             </div>
                             <div class="card-body">
-                                <canvas id="statusChart" height="250"></canvas>
+                                <div class="chart-container">
+                                    <canvas id="statusChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-6 mb-4">
-                        <div class="card">
+                        <div class="card h-100">
                             <div class="card-header bg-white">
                                 <h5 class="card-title mb-0">Tecnologias Mais Utilizadas</h5>
                             </div>
                             <div class="card-body">
-                                <canvas id="techChart" height="250"></canvas>
+                                <div class="chart-container">
+                                    <canvas id="techChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
+                    <div class="col-md-7 mb-4">
+                        <div class="card h-100">
                             <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Elementos da Equipa com Mais Projetos</h5>
+                                <h5 class="card-title mb-0">Projetos por Elemento da Equipa</h5>
                             </div>
                             <div class="card-body">
-                                <canvas id="memberChart" height="300"></canvas>
+                                <div class="chart-container">
+                                    <canvas id="memberChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-5 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                                <h5 class="card-title mb-0">Todos os Elementos</h5>
+                                <span class="badge bg-primary rounded-pill" id="team-count">0</span>
+                            </div>
+                            <div class="card-body team-list">
+                                <div id="all-members-list">
+                                    <!-- Lista de membros será gerada via JavaScript -->
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -213,7 +292,7 @@
 
     <footer class="bg-light py-4 mt-5">
         <div class="container text-center">
-            <p class="mb-0">Dashboard de Fichas de Projeto &copy; 2023</p>
+            <p class="mb-0">Dashboard de Fichas de Projeto &copy; 2023 - Desenvolvido para a equipa InovEM</p>
         </div>
     </footer>
 
@@ -423,11 +502,37 @@
             const teamMembers = {};
             
             projects.forEach(project => {
+                // Processar todos os membros da equipa
+                const processedTeam = [];
                 project.team.forEach(member => {
+                    if (member === "Todos os elementos da equipa") {
+                        // Adicionar todos os membros conhecidos
+                        const allMembers = ["Carolina Goes", "Margarida Patriarca", "Pedro Campos", "Diogo Almeida", 
+                                           "Teresa Nogueiro", "Natacha Silva", "Gonçalo Gomes", "Manuela Seita", 
+                                           "Rita", "Sílvia", "Inês Narciso"];
+                        allMembers.forEach(m => processedTeam.push(m));
+                    } else if (member.includes(",")) {
+                        // Separar membros listados com vírgulas
+                        member.split(",").forEach(m => processedTeam.push(m.trim()));
+                    } else {
+                        processedTeam.push(member.trim());
+                    }
+                });
+                
+                // Adicionar o responsável se não estiver na equipa
+                if (project.responsible && !processedTeam.includes(project.responsible)) {
+                    processedTeam.push(project.responsible);
+                }
+                
+                // Adicionar projetos aos membros
+                processedTeam.forEach(member => {
                     if (!teamMembers[member]) {
                         teamMembers[member] = [];
                     }
-                    teamMembers[member].push(project);
+                    // Evitar duplicação de projetos
+                    if (!teamMembers[member].some(p => p.id === project.id)) {
+                        teamMembers[member].push(project);
+                    }
                 });
             });
             
@@ -445,26 +550,33 @@
             }
             
             // Renderizar os membros e seus projetos
-            filteredMembers.forEach(member => {
-                const memberSection = document.createElement('div');
-                memberSection.className = 'col-12 mb-4';
-                
-                memberSection.innerHTML = `
-                    <h3 class="border-bottom pb-2">${member}</h3>
-                    <div class="row" id="projects-${member.replace(/\s+/g, '-')}">
-                    </div>
-                `;
-                
-                resultsContainer.appendChild(memberSection);
-                
-                const projectsContainer = document.getElementById(`projects-${member.replace(/\s+/g, '-')}`);
-                
-                teamMembers[member].forEach(project => {
-                    projectsContainer.appendChild(createProjectCard(project));
+            if (filteredMembers.length > 0) {
+                filteredMembers.forEach(member => {
+                    const memberSection = document.createElement('div');
+                    memberSection.className = 'col-12 mb-4';
+                    
+                    memberSection.innerHTML = `
+                        <div class="card member-card">
+                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                                <h3 class="h5 mb-0">${member}</h3>
+                                <span class="badge bg-primary rounded-pill">${teamMembers[member].length} projetos</span>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="projects-${member.replace(/\s+/g, '-')}">
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                    
+                    resultsContainer.appendChild(memberSection);
+                    
+                    const projectsContainer = document.getElementById(`projects-${member.replace(/\s+/g, '-')}`);
+                    
+                    teamMembers[member].forEach(project => {
+                        projectsContainer.appendChild(createProjectCard(project));
+                    });
                 });
-            });
-            
-            if (filteredMembers.length === 0) {
+            } else {
                 resultsContainer.innerHTML = `
                     <div class="col-12 text-center py-5">
                         <i class="bi bi-search display-1 text-muted"></i>
@@ -538,7 +650,7 @@
                 <div class="card project-card h-100">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge bg-${statusColors[project.status]}">${statusTexts[project.status]}</span>
+                            <span class="badge bg-${statusColors[project.status]} custom-badge">${statusTexts[project.status]}</span>
                             ${project.link ? `<a href="${project.link}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-up-right"></i></a>` : ''}
                         </div>
                         <h5 class="card-title">${project.name}</h5>
@@ -547,11 +659,11 @@
                             <small class="text-muted"><i class="bi bi-person-circle me-1"></i> Responsável: ${project.responsible}</small>
                         </div>
                         <div class="mb-3">
-                            <small class="text-muted"><i class="bi bi-people-fill me-1"></i> Equipa: ${project.team.join(', ')}</small>
+                            <small class="text-muted"><i class="bi bi-people-fill me-1"></i> Equipa: ${Array.isArray(project.team) ? project.team.join(', ') : project.team}</small>
                         </div>
                         <div class="technology-list">
                             ${project.technologies.map(tech => 
-                                `<span class="badge bg-light text-dark technology-badge">${tech}</span>`
+                                `<span class="badge technology-badge">${tech}</span>`
                             ).join('')}
                         </div>
                     </div>
@@ -581,6 +693,34 @@
                 
                 techContainer.appendChild(badge);
             });
+            
+            // Adicionar botão para mostrar todos
+            const showAllBtn = document.createElement('button');
+            showAllBtn.className = 'btn btn-outline-primary btn-sm';
+            showAllBtn.textContent = 'Mostrar Todos os Projetos';
+            showAllBtn.addEventListener('click', () => {
+                const resultsContainer = document.getElementById('tech-results');
+                resultsContainer.innerHTML = '';
+                renderAllTechProjects();
+            });
+            techContainer.appendChild(showAllBtn);
+        }
+
+        // Função para renderizar todos os projetos na aba de tecnologia
+        function renderAllTechProjects() {
+            const resultsContainer = document.getElementById('tech-results');
+            resultsContainer.innerHTML = '';
+            
+            if (projects.length > 0) {
+                const row = document.createElement('div');
+                row.className = 'row';
+                
+                projects.forEach(project => {
+                    row.appendChild(createProjectCard(project));
+                });
+                
+                resultsContainer.appendChild(row);
+            }
         }
 
         // Função para filtrar por tecnologia
@@ -629,9 +769,33 @@
             // Contar membros únicos da equipa
             const allMembers = new Set();
             projects.forEach(project => {
-                project.team.forEach(member => allMembers.add(member));
+                // Processar todos os membros da equipa
+                project.team.forEach(member => {
+                    if (member === "Todos os elementos da equipa") {
+                        // Adicionar todos os membros conhecidos
+                        const knownMembers = ["Carolina Goes", "Margarida Patriarca", "Pedro Campos", "Diogo Almeida", 
+                                            "Teresa Nogueiro", "Natacha Silva", "Gonçalo Gomes", "Manuela Seita", 
+                                            "Rita", "Sílvia", "Inês Narciso"];
+                        knownMembers.forEach(m => allMembers.add(m));
+                    } else if (member.includes(",")) {
+                        // Separar membros listados com vírgulas
+                        member.split(",").forEach(m => allMembers.add(m.trim()));
+                    } else {
+                        allMembers.add(member.trim());
+                    }
+                });
+                
+                // Adicionar o responsável se não estiver na equipa
+                if (project.responsible) {
+                    allMembers.add(project.responsible);
+                }
             });
+            
             document.getElementById('team-members').textContent = allMembers.size;
+            document.getElementById('team-count').textContent = allMembers.size;
+            
+            // Renderizar lista completa de membros
+            renderAllMembersList(Array.from(allMembers));
             
             // Gráfico de estados dos projetos
             const statusCount = {
@@ -649,12 +813,18 @@
                     labels: ['Concluído', 'Em Execução', 'Piloto', 'Em Planeamento', 'Suspenso'],
                     datasets: [{
                         data: Object.values(statusCount),
-                        backgroundColor: ['#28a745', '#007bff', '#17a2b8', '#ffc107', '#6c757d']
+                        backgroundColor: ['#28a745', '#007bff', '#17a2b8', '#ffc107', '#6c757d'],
+                        borderWidth: 0
                     }]
                 },
                 options: {
                     responsive: true,
-                    maintainAspectRatio: false
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
                 }
             });
             
@@ -666,10 +836,10 @@
                 });
             });
             
-            // Ordenar tecnologias por frequência e pegar as top 8
+            // Ordenar tecnologias por frequência e pegar as top 10
             const topTech = Object.entries(techCount)
                 .sort((a, b) => b[1] - a[1])
-                .slice(0, 8);
+                .slice(0, 10);
             
             const techCtx = document.getElementById('techChart').getContext('2d');
             new Chart(techCtx, {
@@ -679,7 +849,8 @@
                     datasets: [{
                         label: 'Nº de Projetos',
                         data: topTech.map(t => t[1]),
-                        backgroundColor: '#007bff'
+                        backgroundColor: '#6f42c1',
+                        borderRadius: 5
                     }]
                 },
                 options: {
@@ -693,32 +864,62 @@
                                 stepSize: 1
                             }
                         }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
                     }
                 }
             });
             
-            // Gráfico de elementos com mais projetos
+            // Gráfico de elementos com mais projetos (todos os elementos)
             const memberProjectCount = {};
+            
+            // Calcular número de projetos por membro
             projects.forEach(project => {
+                // Processar todos os membros da equipa
+                const processedTeam = [];
                 project.team.forEach(member => {
+                    if (member === "Todos os elementos da equipa") {
+                        // Adicionar todos os membros conhecidos
+                        const knownMembers = ["Carolina Goes", "Margarida Patriarca", "Pedro Campos", "Diogo Almeida", 
+                                            "Teresa Nogueiro", "Natacha Silva", "Gonçalo Gomes", "Manuela Seita", 
+                                            "Rita", "Sílvia", "Inês Narciso"];
+                        knownMembers.forEach(m => processedTeam.push(m));
+                    } else if (member.includes(",")) {
+                        // Separar membros listados com vírgulas
+                        member.split(",").forEach(m => processedTeam.push(m.trim()));
+                    } else {
+                        processedTeam.push(member.trim());
+                    }
+                });
+                
+                // Adicionar o responsável se não estiver na equipa
+                if (project.responsible && !processedTeam.includes(project.responsible)) {
+                    processedTeam.push(project.responsible);
+                }
+                
+                // Contar projetos por membro
+                processedTeam.forEach(member => {
                     memberProjectCount[member] = (memberProjectCount[member] || 0) + 1;
                 });
             });
             
             // Ordenar membros por número de projetos
-            const topMembers = Object.entries(memberProjectCount)
-                .sort((a, b) => b[1] - a[1])
-                .slice(0, 10);
+            const allMembersSorted = Object.entries(memberProjectCount)
+                .sort((a, b) => b[1] - a[1]);
             
             const memberCtx = document.getElementById('memberChart').getContext('2d');
             new Chart(memberCtx, {
                 type: 'bar',
                 data: {
-                    labels: topMembers.map(m => m[0]),
+                    labels: allMembersSorted.map(m => m[0]),
                     datasets: [{
                         label: 'Nº de Projetos',
-                        data: topMembers.map(m => m[1]),
-                        backgroundColor: '#fd7e14'
+                        data: allMembersSorted.map(m => m[1]),
+                        backgroundColor: '#fd7e14',
+                        borderRadius: 5
                     }]
                 },
                 options: {
@@ -731,8 +932,86 @@
                                 stepSize: 1
                             }
                         }
-                    }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    indexAxis: 'y'
                 }
+            });
+        }
+
+        // Função para renderizar a lista completa de membros
+        function renderAllMembersList(members) {
+            const membersListContainer = document.getElementById('all-members-list');
+            membersListContainer.innerHTML = '';
+            
+            // Calcular número de projetos por membro
+            const memberProjectCount = {};
+            projects.forEach(project => {
+                // Processar todos os membros da equipa
+                const processedTeam = [];
+                project.team.forEach(member => {
+                    if (member === "Todos os elementos da equipa") {
+                        // Adicionar todos os membros conhecidos
+                        const knownMembers = ["Carolina Goes", "Margarida Patriarca", "Pedro Campos", "Diogo Almeida", 
+                                            "Teresa Nogueiro", "Natacha Silva", "Gonçalo Gomes", "Manuela Seita", 
+                                            "Rita", "Sílvia", "Inês Narciso"];
+                        knownMembers.forEach(m => processedTeam.push(m));
+                    } else if (member.includes(",")) {
+                        // Separar membros listados com vírgulas
+                        member.split(",").forEach(m => processedTeam.push(m.trim()));
+                    } else {
+                        processedTeam.push(member.trim());
+                    }
+                });
+                
+                // Adicionar o responsável se não estiver na equipa
+                if (project.responsible && !processedTeam.includes(project.responsible)) {
+                    processedTeam.push(project.responsible);
+                }
+                
+                // Contar projetos por membro
+                processedTeam.forEach(member => {
+                    memberProjectCount[member] = (memberProjectCount[member] || 0) + 1;
+                });
+            });
+            
+            // Encontrar o número máximo de projetos para calcular a percentagem
+            const maxProjects = Math.max(...Object.values(memberProjectCount));
+            
+            // Ordenar membros por número de projetos
+            const sortedMembers = members.sort((a, b) => {
+                const countA = memberProjectCount[a] || 0;
+                const countB = memberProjectCount[b] || 0;
+                return countB - countA;
+            });
+            
+            // Renderizar cada membro
+            sortedMembers.forEach(member => {
+                const projectCount = memberProjectCount[member] || 0;
+                const percentage = maxProjects > 0 ? Math.round((projectCount / maxProjects) * 100) : 0;
+                
+                const memberElement = document.createElement('div');
+                memberElement.className = 'd-flex justify-content-between align-items-center mb-3 p-2 bg-light rounded';
+                
+                memberElement.innerHTML = `
+                    <div class="flex-grow-1">
+                        <div class="fw-medium">${member}</div>
+                        <div class="d-flex align-items-center mt-1">
+                            <div class="progress flex-grow-1 me-2" style="height: 8px;">
+                                <div class="progress-bar" role="progressbar" style="width: ${percentage}%;" 
+                                    aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
+                            </div>
+                            <small class="text-muted">${projectCount} projeto(s)</small>
+                        </div>
+                    </div>
+                    <span class="badge bg-primary rounded-pill">${projectCount}</span>
+                `;
+                
+                membersListContainer.appendChild(memberElement);
             });
         }
     </script>
