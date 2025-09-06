@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Fichas de Projeto - InovEM</title>
+    <title>Dashboard de Fichas de Projeto</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -11,78 +11,29 @@
         .project-card {
             transition: transform 0.3s;
             height: 100%;
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
         .project-card:hover {
             transform: translateY(-5px);
-            box-shadow: 0 12px 20px rgba(0,0,0,0.1);
-        }
-        .nav-tabs .nav-link {
-            border: none;
-            border-bottom: 3px solid transparent;
-            color: #495057;
-            font-weight: 500;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
         .nav-tabs .nav-link.active {
-            font-weight: 600;
-            color: #0d6efd;
+            font-weight: bold;
             border-bottom: 3px solid #0d6efd;
-            background: transparent;
         }
         .stats-card {
-            border-radius: 12px;
-            border: none;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.3s;
-        }
-        .stats-card:hover {
-            transform: translateY(-3px);
-        }
-        .technology-badge {
-            margin-right: 6px;
-            margin-bottom: 8px;
-            padding: 6px 10px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            background-color: #f0f4f8;
-            color: #3a506b;
-        }
-        .header-gradient {
-            background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
-        }
-        .member-card {
             border-left: 4px solid #0d6efd;
         }
-        .chart-container {
-            position: relative;
-            height: 400px;
-        }
-        .team-list {
-            max-height: 500px;
-            overflow-y: auto;
-        }
-        .progress {
-            height: 8px;
-        }
-        .custom-badge {
-            padding: 6px 12px;
-            border-radius: 20px;
-            font-weight: 500;
+        .technology-badge {
+            margin-right: 5px;
+            margin-bottom: 5px;
         }
     </style>
 </head>
 <body>
-    <header class="header-gradient text-white py-4 mb-4">
+    <header class="bg-primary text-white py-3 mb-4">
         <div class="container">
-            <div class="d-flex justify-content-between align-items-center">
-                <div>
-                    <h1 class="display-5 fw-bold"><i class="bi bi-kanban-fill me-2"></i>Dashboard de Projetos InovEM</h1>
-                    <p class="lead mb-0">Consulta centralizada dos projetos desenvolvidos pela equipa</p>
-                </div>
-                <img src="https://img.icons8.com/dusk/64/000000/innovation.png" alt="Inovação" width="64" height="64">
-            </div>
+            <h1 class="display-5 fw-bold"><i class="bi bi-folder2-open me-2"></i>Dashboard de Fichas de Projeto</h1>
+            <p class="lead">Consulta centralizada dos projetos desenvolvidos pela equipa</p>
         </div>
     </header>
 
@@ -116,8 +67,8 @@
                 <div class="row mb-4">
                     <div class="col-md-6">
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-                            <input type="text" id="team-search" class="form-control border-start-0" placeholder="Pesquisar elemento da equipa...">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="team-search" class="form-control" placeholder="Pesquisar elemento da equipa...">
                         </div>
                     </div>
                     <div class="col-md-6">
@@ -131,8 +82,8 @@
                             <option value="Natacha Silva">Natacha Silva</option>
                             <option value="Gonçalo Gomes">Gonçalo Gomes</option>
                             <option value="Manuela Seita">Manuela Seita</option>
-                            <option value="Rita">Rita</option>
-                            <option value="Sílvia">Sílvia</option>
+                            <option value="Rita Nascimento">Rita Nascimento</option>
+                            <option value="Sílvia Rovisco">Sílvia Rovisco</option>
                             <option value="Inês Narciso">Inês Narciso</option>
                         </select>
                     </div>
@@ -148,8 +99,8 @@
                 <div class="row mb-4">
                     <div class="col-md-8">
                         <div class="input-group">
-                            <span class="input-group-text bg-light border-end-0"><i class="bi bi-search"></i></span>
-                            <input type="text" id="project-search" class="form-control border-start-0" placeholder="Pesquisar projeto...">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="project-search" class="form-control" placeholder="Pesquisar projeto...">
                         </div>
                     </div>
                     <div class="col-md-4">
@@ -173,15 +124,8 @@
             <div class="tab-pane fade" id="tech" role="tabpanel" aria-labelledby="tech-tab">
                 <div class="row mb-4">
                     <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Tecnologias Utilizadas</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="d-flex flex-wrap gap-2" id="tech-badges">
-                                    <!-- Badges de tecnologia serão geradas via JavaScript -->
-                                </div>
-                            </div>
+                        <div class="d-flex flex-wrap gap-2" id="tech-badges">
+                            <!-- Badges de tecnologia serão geradas via JavaScript -->
                         </div>
                     </div>
                 </div>
@@ -195,93 +139,70 @@
             <div class="tab-pane fade" id="stats" role="tabpanel" aria-labelledby="stats-tab">
                 <div class="row mb-4">
                     <div class="col-md-3 mb-3">
-                        <div class="card stats-card bg-primary text-white">
-                            <div class="card-body text-center">
-                                <i class="bi bi-folder2-open display-6 mb-2"></i>
+                        <div class="card stats-card">
+                            <div class="card-body">
                                 <h5 class="card-title">Total de Projetos</h5>
-                                <h2 class="card-text" id="total-projects">0</h2>
+                                <h2 class="card-text text-primary" id="total-projects">0</h2>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stats-card bg-success text-white">
-                            <div class="card-body text-center">
-                                <i class="bi bi-play-circle display-6 mb-2"></i>
+                        <div class="card stats-card">
+                            <div class="card-body">
                                 <h5 class="card-title">Em Execução</h5>
-                                <h2 class="card-text" id="active-projects">0</h2>
+                                <h2 class="card-text text-success" id="active-projects">0</h2>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stats-card bg-info text-white">
-                            <div class="card-body text-center">
-                                <i class="bi bi-check-circle display-6 mb-2"></i>
+                        <div class="card stats-card">
+                            <div class="card-body">
                                 <h5 class="card-title">Concluídos</h5>
-                                <h2 class="card-text" id="completed-projects">0</h2>
+                                <h2 class="card-text text-info" id="completed-projects">0</h2>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-3 mb-3">
-                        <div class="card stats-card bg-warning text-dark">
-                            <div class="card-body text-center">
-                                <i class="bi bi-people-fill display-6 mb-2"></i>
+                        <div class="card stats-card">
+                            <div class="card-body">
                                 <h5 class="card-title">Elementos na Equipa</h5>
-                                <h2 class="card-text" id="team-members">0</h2>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row mb-4">
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Projetos por Estado</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-container">
-                                    <canvas id="statusChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Tecnologias Mais Utilizadas</h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart-container">
-                                    <canvas id="techChart"></canvas>
-                                </div>
+                                <h2 class="card-text text-warning" id="team-members">0</h2>
                             </div>
                         </div>
                     </div>
                 </div>
                 
                 <div class="row">
-                    <div class="col-md-7 mb-4">
-                        <div class="card h-100">
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
                             <div class="card-header bg-white">
-                                <h5 class="card-title mb-0">Projetos por Elemento da Equipa</h5>
+                                <h5 class="card-title mb-0">Projetos por Estado</h5>
                             </div>
                             <div class="card-body">
-                                <div class="chart-container">
-                                    <canvas id="memberChart"></canvas>
-                                </div>
+                                <canvas id="statusChart" height="250"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div class="col-md-5 mb-4">
-                        <div class="card h-100">
-                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Todos os Elementos</h5>
-                                <span class="badge bg-primary rounded-pill" id="team-count">0</span>
+                    <div class="col-md-6 mb-4">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Tecnologias Mais Utilizadas</h5>
                             </div>
-                            <div class="card-body team-list">
-                                <div id="all-members-list">
-                                    <!-- Lista de membros será gerada via JavaScript -->
-                                </div>
+                            <div class="card-body">
+                                <canvas id="techChart" height="250"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-header bg-white">
+                                <h5 class="card-title mb-0">Elementos da Equipa com Mais Projetos</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="memberChart" height="300"></canvas>
                             </div>
                         </div>
                     </div>
@@ -292,7 +213,8 @@
 
     <footer class="bg-light py-4 mt-5">
         <div class="container text-center">
-            <p class="mb-0">Dashboard de Fichas de Projeto &copy; 2023 - Desenvolvido para a equipa InovEM</p>
+            <p class="mb-0">Dashboard de Fichas de Projeto &copy; 2023</p>
+            <p class="mb-0 text-muted small">Última atualização: <span id="last-update"></span></p>
         </div>
     </footer>
 
@@ -384,8 +306,8 @@
             {
                 id: 9,
                 name: "Comunicação",
-                responsible: "Rita e Sílvia",
-                team: ["Rita", "Sílvia", "Todos os elementos da equipa"],
+                responsible: "Rita Nascimento e Sílvia Rovisco",
+                team: ["Rita Nascimento", "Sílvia Rovisco", "Todos os elementos da equipa"],
                 status: "suspenso",
                 description: "Assegurar a comunicação interna e externa, promovendo trabalho colaborativo entre os membros da equipa.",
                 technologies: ["SharePoint", "Canva", "CapCut", "Viva Engage", "Loop", "Teams", "Slido", "Mentimeter"],
@@ -459,6 +381,7 @@
             setupFilters();
             renderTechBadges();
             updateStats();
+            updateLastUpdateTime();
         });
 
         // Função para renderizar todos os projetos
@@ -502,37 +425,11 @@
             const teamMembers = {};
             
             projects.forEach(project => {
-                // Processar todos os membros da equipa
-                const processedTeam = [];
                 project.team.forEach(member => {
-                    if (member === "Todos os elementos da equipa") {
-                        // Adicionar todos os membros conhecidos
-                        const allMembers = ["Carolina Goes", "Margarida Patriarca", "Pedro Campos", "Diogo Almeida", 
-                                           "Teresa Nogueiro", "Natacha Silva", "Gonçalo Gomes", "Manuela Seita", 
-                                           "Rita", "Sílvia", "Inês Narciso"];
-                        allMembers.forEach(m => processedTeam.push(m));
-                    } else if (member.includes(",")) {
-                        // Separar membros listados com vírgulas
-                        member.split(",").forEach(m => processedTeam.push(m.trim()));
-                    } else {
-                        processedTeam.push(member.trim());
-                    }
-                });
-                
-                // Adicionar o responsável se não estiver na equipa
-                if (project.responsible && !processedTeam.includes(project.responsible)) {
-                    processedTeam.push(project.responsible);
-                }
-                
-                // Adicionar projetos aos membros
-                processedTeam.forEach(member => {
                     if (!teamMembers[member]) {
                         teamMembers[member] = [];
                     }
-                    // Evitar duplicação de projetos
-                    if (!teamMembers[member].some(p => p.id === project.id)) {
-                        teamMembers[member].push(project);
-                    }
+                    teamMembers[member].push(project);
                 });
             });
             
@@ -550,33 +447,26 @@
             }
             
             // Renderizar os membros e seus projetos
-            if (filteredMembers.length > 0) {
-                filteredMembers.forEach(member => {
-                    const memberSection = document.createElement('div');
-                    memberSection.className = 'col-12 mb-4';
-                    
-                    memberSection.innerHTML = `
-                        <div class="card member-card">
-                            <div class="card-header bg-light d-flex justify-content-between align-items-center">
-                                <h3 class="h5 mb-0">${member}</h3>
-                                <span class="badge bg-primary rounded-pill">${teamMembers[member].length} projetos</span>
-                            </div>
-                            <div class="card-body">
-                                <div class="row" id="projects-${member.replace(/\s+/g, '-')}">
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                    
-                    resultsContainer.appendChild(memberSection);
-                    
-                    const projectsContainer = document.getElementById(`projects-${member.replace(/\s+/g, '-')}`);
-                    
-                    teamMembers[member].forEach(project => {
-                        projectsContainer.appendChild(createProjectCard(project));
-                    });
+            filteredMembers.forEach(member => {
+                const memberSection = document.createElement('div');
+                memberSection.className = 'col-12 mb-4';
+                
+                memberSection.innerHTML = `
+                    <h3 class="border-bottom pb-2">${member}</h3>
+                    <div class="row" id="projects-${member.replace(/\s+/g, '-')}">
+                    </div>
+                `;
+                
+                resultsContainer.appendChild(memberSection);
+                
+                const projectsContainer = document.getElementById(`projects-${member.replace(/\s+/g, '-')}`);
+                
+                teamMembers[member].forEach(project => {
+                    projectsContainer.appendChild(createProjectCard(project));
                 });
-            } else {
+            });
+            
+            if (filteredMembers.length === 0) {
                 resultsContainer.innerHTML = `
                     <div class="col-12 text-center py-5">
                         <i class="bi bi-search display-1 text-muted"></i>
@@ -650,7 +540,7 @@
                 <div class="card project-card h-100">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge bg-${statusColors[project.status]} custom-badge">${statusTexts[project.status]}</span>
+                            <span class="badge bg-${statusColors[project.status]}">${statusTexts[project.status]}</span>
                             ${project.link ? `<a href="${project.link}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-up-right"></i></a>` : ''}
                         </div>
                         <h5 class="card-title">${project.name}</h5>
@@ -659,11 +549,11 @@
                             <small class="text-muted"><i class="bi bi-person-circle me-1"></i> Responsável: ${project.responsible}</small>
                         </div>
                         <div class="mb-3">
-                            <small class="text-muted"><i class="bi bi-people-fill me-1"></i> Equipa: ${Array.isArray(project.team) ? project.team.join(', ') : project.team}</small>
+                            <small class="text-muted"><i class="bi bi-people-fill me-1"></i> Equipa: ${project.team.join(', ')}</small>
                         </div>
                         <div class="technology-list">
                             ${project.technologies.map(tech => 
-                                `<span class="badge technology-badge">${tech}</span>`
+                                `<span class="badge bg-light text-dark technology-badge">${tech}</span>`
                             ).join('')}
                         </div>
                     </div>
@@ -693,34 +583,6 @@
                 
                 techContainer.appendChild(badge);
             });
-            
-            // Adicionar botão para mostrar todos
-            const showAllBtn = document.createElement('button');
-            showAllBtn.className = 'btn btn-outline-primary btn-sm';
-            showAllBtn.textContent = 'Mostrar Todos os Projetos';
-            showAllBtn.addEventListener('click', () => {
-                const resultsContainer = document.getElementById('tech-results');
-                resultsContainer.innerHTML = '';
-                renderAllTechProjects();
-            });
-            techContainer.appendChild(showAllBtn);
-        }
-
-        // Função para renderizar todos os projetos na aba de tecnologia
-        function renderAllTechProjects() {
-            const resultsContainer = document.getElementById('tech-results');
-            resultsContainer.innerHTML = '';
-            
-            if (projects.length > 0) {
-                const row = document.createElement('div');
-                row.className = 'row';
-                
-                projects.forEach(project => {
-                    row.appendChild(createProjectCard(project));
-                });
-                
-                resultsContainer.appendChild(row);
-            }
         }
 
         // Função para filtrar por tecnologia
@@ -769,33 +631,9 @@
             // Contar membros únicos da equipa
             const allMembers = new Set();
             projects.forEach(project => {
-                // Processar todos os membros da equipa
-                project.team.forEach(member => {
-                    if (member === "Todos os elementos da equipa") {
-                        // Adicionar todos os membros conhecidos
-                        const knownMembers = ["Carolina Goes", "Margarida Patriarca", "Pedro Campos", "Diogo Almeida", 
-                                            "Teresa Nogueiro", "Natacha Silva", "Gonçalo Gomes", "Manuela Seita", 
-                                            "Rita", "Sílvia", "Inês Narciso"];
-                        knownMembers.forEach(m => allMembers.add(m));
-                    } else if (member.includes(",")) {
-                        // Separar membros listados com vírgulas
-                        member.split(",").forEach(m => allMembers.add(m.trim()));
-                    } else {
-                        allMembers.add(member.trim());
-                    }
-                });
-                
-                // Adicionar o responsável se não estiver na equipa
-                if (project.responsible) {
-                    allMembers.add(project.responsible);
-                }
+                project.team.forEach(member => allMembers.add(member));
             });
-            
             document.getElementById('team-members').textContent = allMembers.size;
-            document.getElementById('team-count').textContent = allMembers.size;
-            
-            // Renderizar lista completa de membros
-            renderAllMembersList(Array.from(allMembers));
             
             // Gráfico de estados dos projetos
             const statusCount = {
@@ -807,14 +645,18 @@
             };
             
             const statusCtx = document.getElementById('statusChart').getContext('2d');
+            const totalProjects = projects.length;
+            const statusPercentages = Object.values(statusCount).map(count => 
+                ((count / totalProjects) * 100).toFixed(1)
+            );
+            
             new Chart(statusCtx, {
                 type: 'doughnut',
                 data: {
                     labels: ['Concluído', 'Em Execução', 'Piloto', 'Em Planeamento', 'Suspenso'],
                     datasets: [{
                         data: Object.values(statusCount),
-                        backgroundColor: ['#28a745', '#007bff', '#17a2b8', '#ffc107', '#6c757d'],
-                        borderWidth: 0
+                        backgroundColor: ['#28a745', '#007bff', '#17a2b8', '#ffc107', '#6c757d']
                     }]
                 },
                 options: {
@@ -822,7 +664,37 @@
                     maintainAspectRatio: false,
                     plugins: {
                         legend: {
-                            position: 'bottom'
+                            position: 'bottom',
+                            labels: {
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map((label, i) => {
+                                            const value = data.datasets[0].data[i];
+                                            const percentage = statusPercentages[i];
+                                            return {
+                                                text: `${label}: ${value} (${percentage}%)`,
+                                                fillStyle: data.datasets[0].backgroundColor[i],
+                                                strokeStyle: data.datasets[0].backgroundColor[i],
+                                                lineWidth: 0,
+                                                hidden: false,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const label = context.label || '';
+                                    const value = context.parsed;
+                                    const percentage = statusPercentages[context.dataIndex];
+                                    return `${label}: ${value} projetos (${percentage}%)`;
+                                }
+                            }
                         }
                     }
                 }
@@ -831,15 +703,19 @@
             // Gráfico de tecnologias mais utilizadas
             const techCount = {};
             projects.forEach(project => {
-                project.technologies.forEach(tech => {
-                    techCount[tech] = (techCount[tech] || 0) + 1;
-                });
+                if (project.technologies && project.technologies.length > 0) {
+                    project.technologies.forEach(tech => {
+                        if (tech && tech.trim() !== '') { // Verificar se a tecnologia não está vazia
+                            techCount[tech] = (techCount[tech] || 0) + 1;
+                        }
+                    });
+                }
             });
             
-            // Ordenar tecnologias por frequência e pegar as top 10
+            // Ordenar tecnologias por frequência e mostrar todas
             const topTech = Object.entries(techCount)
                 .sort((a, b) => b[1] - a[1])
-                .slice(0, 10);
+                .filter(tech => tech[1] > 0); // Filtrar apenas tecnologias com pelo menos 1 uso
             
             const techCtx = document.getElementById('techChart').getContext('2d');
             new Chart(techCtx, {
@@ -849,8 +725,7 @@
                     datasets: [{
                         label: 'Nº de Projetos',
                         data: topTech.map(t => t[1]),
-                        backgroundColor: '#6f42c1',
-                        borderRadius: 5
+                        backgroundColor: '#007bff'
                     }]
                 },
                 options: {
@@ -863,63 +738,85 @@
                             ticks: {
                                 stepSize: 1
                             }
+                        },
+                        y: {
+                            ticks: {
+                                maxRotation: 0,
+                                minRotation: 0
+                            }
                         }
                     },
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    const technology = context.label;
+                                    const projectCount = context.parsed.x;
+                                    const projects = getProjectsByTechnology(technology);
+                                    
+                                    let tooltipText = [`Nº de Projetos: ${projectCount}`];
+                                    
+                                    if (projects.length > 0) {
+                                        tooltipText.push('');
+                                        tooltipText.push('Projetos:');
+                                        projects.forEach(project => {
+                                            tooltipText.push(`• ${project}`);
+                                        });
+                                    }
+                                    
+                                    return tooltipText;
+                                }
+                            },
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 12
+                            },
+                            maxWidth: 300,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#007bff',
+                            borderWidth: 1
                         }
                     }
                 }
             });
             
-            // Gráfico de elementos com mais projetos (todos os elementos)
+            // Gráfico de elementos com mais projetos
             const memberProjectCount = {};
-            
-            // Calcular número de projetos por membro
             projects.forEach(project => {
-                // Processar todos os membros da equipa
-                const processedTeam = [];
-                project.team.forEach(member => {
-                    if (member === "Todos os elementos da equipa") {
-                        // Adicionar todos os membros conhecidos
-                        const knownMembers = ["Carolina Goes", "Margarida Patriarca", "Pedro Campos", "Diogo Almeida", 
-                                            "Teresa Nogueiro", "Natacha Silva", "Gonçalo Gomes", "Manuela Seita", 
-                                            "Rita", "Sílvia", "Inês Narciso"];
-                        knownMembers.forEach(m => processedTeam.push(m));
-                    } else if (member.includes(",")) {
-                        // Separar membros listados com vírgulas
-                        member.split(",").forEach(m => processedTeam.push(m.trim()));
-                    } else {
-                        processedTeam.push(member.trim());
-                    }
-                });
-                
-                // Adicionar o responsável se não estiver na equipa
-                if (project.responsible && !processedTeam.includes(project.responsible)) {
-                    processedTeam.push(project.responsible);
+                if (project.team && project.team.length > 0) {
+                    project.team.forEach(member => {
+                        if (member && member.trim() !== '') { // Verificar se o membro não está vazio
+                            memberProjectCount[member] = (memberProjectCount[member] || 0) + 1;
+                        }
+                    });
                 }
-                
-                // Contar projetos por membro
-                processedTeam.forEach(member => {
-                    memberProjectCount[member] = (memberProjectCount[member] || 0) + 1;
-                });
             });
             
-            // Ordenar membros por número de projetos
-            const allMembersSorted = Object.entries(memberProjectCount)
-                .sort((a, b) => b[1] - a[1]);
+            // Ordenar membros por número de projetos e mostrar todos
+            const topMembers = Object.entries(memberProjectCount)
+                .sort((a, b) => b[1] - a[1])
+                .filter(member => member[1] > 0); // Filtrar apenas membros com pelo menos 1 projeto
             
             const memberCtx = document.getElementById('memberChart').getContext('2d');
             new Chart(memberCtx, {
                 type: 'bar',
                 data: {
-                    labels: allMembersSorted.map(m => m[0]),
+                    labels: topMembers.map(m => m[0]),
                     datasets: [{
                         label: 'Nº de Projetos',
-                        data: allMembersSorted.map(m => m[1]),
-                        backgroundColor: '#fd7e14',
-                        borderRadius: 5
+                        data: topMembers.map(m => m[1]),
+                        backgroundColor: '#fd7e14'
                     }]
                 },
                 options: {
@@ -931,88 +828,89 @@
                             ticks: {
                                 stepSize: 1
                             }
+                        },
+                        x: {
+                            ticks: {
+                                maxRotation: 45,
+                                minRotation: 0
+                            }
                         }
                     },
                     plugins: {
                         legend: {
                             display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                title: function(context) {
+                                    return context[0].label;
+                                },
+                                label: function(context) {
+                                    const memberName = context.label;
+                                    const projectCount = context.parsed.y;
+                                    const projects = getProjectsByMember(memberName);
+                                    
+                                    let tooltipText = [`Nº de Projetos: ${projectCount}`];
+                                    
+                                    if (projects.length > 0) {
+                                        tooltipText.push('');
+                                        tooltipText.push('Projetos:');
+                                        projects.forEach(project => {
+                                            tooltipText.push(`• ${project}`);
+                                        });
+                                    }
+                                    
+                                    return tooltipText;
+                                }
+                            },
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 12
+                            },
+                            maxWidth: 300,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#fd7e14',
+                            borderWidth: 1
                         }
-                    },
-                    indexAxis: 'y'
+                    }
                 }
             });
         }
 
-        // Função para renderizar a lista completa de membros
-        function renderAllMembersList(members) {
-            const membersListContainer = document.getElementById('all-members-list');
-            membersListContainer.innerHTML = '';
+        // Função para obter projetos de um membro específico
+        function getProjectsByMember(memberName) {
+            return projects.filter(project => 
+                project.team && project.team.includes(memberName)
+            ).map(project => project.name);
+        }
+
+        // Função para obter projetos que usam uma tecnologia específica
+        function getProjectsByTechnology(technology) {
+            return projects.filter(project => 
+                project.technologies && project.technologies.includes(technology)
+            ).map(project => project.name);
+        }
+
+        // Função para atualizar a data e hora de última atualização
+        function updateLastUpdateTime() {
+            const now = new Date();
+            const options = {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZone: 'Europe/Lisbon'
+            };
             
-            // Calcular número de projetos por membro
-            const memberProjectCount = {};
-            projects.forEach(project => {
-                // Processar todos os membros da equipa
-                const processedTeam = [];
-                project.team.forEach(member => {
-                    if (member === "Todos os elementos da equipa") {
-                        // Adicionar todos os membros conhecidos
-                        const knownMembers = ["Carolina Goes", "Margarida Patriarca", "Pedro Campos", "Diogo Almeida", 
-                                            "Teresa Nogueiro", "Natacha Silva", "Gonçalo Gomes", "Manuela Seita", 
-                                            "Rita", "Sílvia", "Inês Narciso"];
-                        knownMembers.forEach(m => processedTeam.push(m));
-                    } else if (member.includes(",")) {
-                        // Separar membros listados com vírgulas
-                        member.split(",").forEach(m => processedTeam.push(m.trim()));
-                    } else {
-                        processedTeam.push(member.trim());
-                    }
-                });
-                
-                // Adicionar o responsável se não estiver na equipa
-                if (project.responsible && !processedTeam.includes(project.responsible)) {
-                    processedTeam.push(project.responsible);
-                }
-                
-                // Contar projetos por membro
-                processedTeam.forEach(member => {
-                    memberProjectCount[member] = (memberProjectCount[member] || 0) + 1;
-                });
-            });
-            
-            // Encontrar o número máximo de projetos para calcular a percentagem
-            const maxProjects = Math.max(...Object.values(memberProjectCount));
-            
-            // Ordenar membros por número de projetos
-            const sortedMembers = members.sort((a, b) => {
-                const countA = memberProjectCount[a] || 0;
-                const countB = memberProjectCount[b] || 0;
-                return countB - countA;
-            });
-            
-            // Renderizar cada membro
-            sortedMembers.forEach(member => {
-                const projectCount = memberProjectCount[member] || 0;
-                const percentage = maxProjects > 0 ? Math.round((projectCount / maxProjects) * 100) : 0;
-                
-                const memberElement = document.createElement('div');
-                memberElement.className = 'd-flex justify-content-between align-items-center mb-3 p-2 bg-light rounded';
-                
-                memberElement.innerHTML = `
-                    <div class="flex-grow-1">
-                        <div class="fw-medium">${member}</div>
-                        <div class="d-flex align-items-center mt-1">
-                            <div class="progress flex-grow-1 me-2" style="height: 8px;">
-                                <div class="progress-bar" role="progressbar" style="width: ${percentage}%;" 
-                                    aria-valuenow="${percentage}" aria-valuemin="0" aria-valuemax="100"></div>
-                            </div>
-                            <small class="text-muted">${projectCount} projeto(s)</small>
-                        </div>
-                    </div>
-                    <span class="badge bg-primary rounded-pill">${projectCount}</span>
-                `;
-                
-                membersListContainer.appendChild(memberElement);
-            });
+            const formattedDate = now.toLocaleString('pt-PT', options);
+            document.getElementById('last-update').textContent = formattedDate;
         }
     </script>
 </body>
