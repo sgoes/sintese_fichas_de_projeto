@@ -12,6 +12,47 @@
             transition: transform 0.3s;
             height: 100%;
         }
+
+        /* Estilos para impressão */
+        @media print {
+            .btn, .navbar, .footer {
+                display: none !important;
+            }
+            
+            .container {
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            .row {
+                margin: 0 !important;
+            }
+            
+            .col-md-4, .col-md-8 {
+                flex: none !important;
+                width: 100% !important;
+            }
+            
+            .project-card {
+                break-inside: avoid;
+                margin-bottom: 20px;
+            }
+            
+            .chart-container {
+                break-inside: avoid;
+                margin-bottom: 30px;
+            }
+            
+            body {
+                font-size: 12px !important;
+                line-height: 1.4 !important;
+            }
+            
+            h1, h2, h3, h4, h5, h6 {
+                color: #000 !important;
+            }
+        }
         .project-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
@@ -32,8 +73,17 @@
 <body>
     <header class="bg-primary text-white py-3 mb-4">
         <div class="container">
-            <h1 class="display-5 fw-bold"><i class="bi bi-folder2-open me-2"></i>Dashboard de Fichas de Projeto</h1>
-            <p class="lead">Consulta centralizada dos projetos desenvolvidos pela equipa</p>
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-5 fw-bold"><i class="bi bi-folder2-open me-2"></i>Dashboard de Fichas de Projeto</h1>
+                    <p class="lead">Consulta centralizada dos projetos desenvolvidos pela equipa</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <button class="btn btn-light" onclick="window.print()">
+                        <i class="bi bi-printer me-1"></i>Imprimir
+                    </button>
+                </div>
+            </div>
         </div>
     </header>
 
@@ -75,16 +125,16 @@
                         <select class="form-select" id="team-filter">
                             <option value="">Todos os elementos</option>
                             <option value="Carolina Goes">Carolina Goes</option>
-                            <option value="Margarida Patriarca">Margarida Patriarca</option>
-                            <option value="Pedro Campos">Pedro Campos</option>
                             <option value="Diogo Almeida">Diogo Almeida</option>
-                            <option value="Teresa Nogueiro">Teresa Nogueiro</option>
-                            <option value="Natacha Silva">Natacha Silva</option>
                             <option value="Gonçalo Gomes">Gonçalo Gomes</option>
+                            <option value="Inês Narciso">Inês Narciso</option>
                             <option value="Manuela Seita">Manuela Seita</option>
+                            <option value="Margarida Patriarca">Margarida Patriarca</option>
+                            <option value="Natacha Silva">Natacha Silva</option>
+                            <option value="Pedro Campos">Pedro Campos</option>
                             <option value="Rita Nascimento">Rita Nascimento</option>
                             <option value="Sílvia Rovisco">Sílvia Rovisco</option>
-                            <option value="Inês Narciso">Inês Narciso</option>
+                            <option value="Teresa Nogueiro">Teresa Nogueiro</option>
                         </select>
                     </div>
                 </div>
@@ -175,8 +225,11 @@
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <div class="card">
-                            <div class="card-header bg-white">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Projetos por Estado</h5>
+                                <button class="btn btn-sm btn-outline-primary" onclick="exportChartToCSV('statusChart', 'projetos_por_estado')">
+                                    <i class="bi bi-download me-1"></i>CSV
+                                </button>
                             </div>
                             <div class="card-body">
                                 <canvas id="statusChart" height="250"></canvas>
@@ -185,8 +238,11 @@
                     </div>
                     <div class="col-md-6 mb-4">
                         <div class="card">
-                            <div class="card-header bg-white">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Tecnologias Mais Utilizadas</h5>
+                                <button class="btn btn-sm btn-outline-primary" onclick="exportChartToCSV('techChart', 'tecnologias_utilizadas')">
+                                    <i class="bi bi-download me-1"></i>CSV
+                                </button>
                             </div>
                             <div class="card-body">
                                 <canvas id="techChart" height="250"></canvas>
@@ -198,8 +254,11 @@
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card">
-                            <div class="card-header bg-white">
+                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
                                 <h5 class="card-title mb-0">Elementos da Equipa com Mais Projetos</h5>
+                                <button class="btn btn-sm btn-outline-primary" onclick="exportChartToCSV('memberChart', 'elementos_equipa')">
+                                    <i class="bi bi-download me-1"></i>CSV
+                                </button>
                             </div>
                             <div class="card-body">
                                 <canvas id="memberChart" height="300"></canvas>
@@ -247,7 +306,7 @@
                 id: 3,
                 name: "Dashboard Assembleia da República - Legislatura XVI",
                 responsible: "Carolina Goes",
-                team: ["Carolina Goes", "INOVEM"],
+                team: ["Carolina Goes"],
                 status: "execução",
                 description: "Solução interativa que permite acompanhar debates, intervenções parlamentares e diplomas aprovados ao longo da legislatura.",
                 technologies: ["Power BI", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
@@ -257,7 +316,7 @@
                 id: 4,
                 name: "Google Trends",
                 responsible: "Carolina Goes",
-                team: ["Carolina Goes", "INOVEM"],
+                team: ["Carolina Goes"],
                 status: "execução",
                 description: "Dashboard para monitorizar, em tempo quase real, os principais tópicos pesquisados no Google através da API do SerpAPI.",
                 technologies: ["Microsoft Fabric", "Power BI", "SerpAPI", "Cursor AI PRO", "Chat GPT PRO"],
@@ -267,7 +326,7 @@
                 id: 5,
                 name: "Painel de Pesquisa Rápida de Indicadores Estatísticos do INE",
                 responsible: "Carolina Goes",
-                team: ["Carolina Goes", "INOVEM"],
+                team: ["Carolina Goes"],
                 status: "execução",
                 description: "Dashboard interativo desenvolvido para facilitar o acesso a mais de 6.400 indicadores estatísticos do INE.",
                 technologies: ["Power BI", "Web Scraping", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
@@ -346,8 +405,8 @@
             {
                 id: 13,
                 name: "Sistema de Gestão e Monitorização de Projetos",
-                responsible: "Equipa InovEM / Coordenação DSAAG",
-                team: ["Equipa InovEM"],
+                responsible: "Coordenação DSAAG",
+                team: [],
                 status: "suspenso",
                 description: "Sistema centralizado a partir do OneNote para gerir e monitorizar todos os projetos em curso.",
                 technologies: ["OneNote", "Teams", "Planner", "Kanban", "SharePoint"],
@@ -366,11 +425,21 @@
             {
                 id: 15,
                 name: "in.formal",
-                responsible: "Gonçalo Duarte Gomes",
-                team: ["Gonçalo Duarte Gomes", "Sílvia Rovisco"],
+                responsible: "Gonçalo Gomes",
+                team: ["Gonçalo Gomes", "Sílvia Rovisco"],
                 status: "planeamento",
                 description: "Realização de encontros informais para apresentação e discussão partilhada de ideias, temas e experiências.",
                 technologies: [],
+                link: ""
+            },
+            {
+                id: 16,
+                name: "Media Clipping – NewsWhip",
+                responsible: "Margarida Patriarca",
+                team: ["Margarida Patriarca"],
+                status: "execução",
+                description: "Ferramenta de análise preditiva e em tempo real de redes sociais e media digitais, que permite identificar temas com maior tração pública, avaliar alcance, velocidade de disseminação e antecipar potenciais crises de reputação governativa.",
+                technologies: ["NewsWhip", "Sprout Social"],
                 link: ""
             }
         ];
@@ -382,7 +451,10 @@
             renderTechBadges();
             updateStats();
             updateLastUpdateTime();
+            
+            // Verificar se as bibliotecas de PDF carregaram
         });
+
 
         // Função para renderizar todos os projetos
         function renderAllProjects() {
@@ -445,6 +517,9 @@
                     member.toLowerCase().includes(searchTerm)
                 );
             }
+            
+            // Ordenar membros por ordem alfabética
+            filteredMembers.sort((a, b) => a.localeCompare(b, 'pt-PT'));
             
             // Renderizar os membros e seus projetos
             filteredMembers.forEach(member => {
@@ -552,7 +627,7 @@
                             <small class="text-muted"><i class="bi bi-people-fill me-1"></i> Equipa: ${project.team.join(', ')}</small>
                         </div>
                         <div class="technology-list">
-                            ${project.technologies.map(tech => 
+                            ${project.technologies.sort((a, b) => a.localeCompare(b, 'pt-PT')).map(tech => 
                                 `<span class="badge bg-light text-dark technology-badge">${tech}</span>`
                             ).join('')}
                         </div>
@@ -573,8 +648,11 @@
                 project.technologies.forEach(tech => allTech.add(tech));
             });
             
+            // Converter para array e ordenar alfabeticamente
+            const sortedTech = Array.from(allTech).sort((a, b) => a.localeCompare(b, 'pt-PT'));
+            
             // Criar badges para cada tecnologia
-            allTech.forEach(tech => {
+            sortedTech.forEach(tech => {
                 const badge = document.createElement('span');
                 badge.className = 'badge bg-primary technology-filter';
                 badge.style.cursor = 'pointer';
@@ -911,6 +989,52 @@
             
             const formattedDate = now.toLocaleString('pt-PT', options);
             document.getElementById('last-update').textContent = formattedDate;
+        }
+
+
+        // Função para exportar gráfico para CSV
+        function exportChartToCSV(chartId, filename) {
+            const chart = Chart.getChart(chartId);
+            if (!chart) return;
+            
+            const data = chart.data;
+            let csvContent = '';
+            
+            if (chartId === 'statusChart') {
+                // Gráfico de estados
+                csvContent = 'Estado,Número de Projetos,Percentagem\n';
+                const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
+                data.labels.forEach((label, index) => {
+                    const value = data.datasets[0].data[index];
+                    const percentage = ((value / total) * 100).toFixed(1);
+                    csvContent += `"${label}",${value},${percentage}%\n`;
+                });
+            } else if (chartId === 'techChart') {
+                // Gráfico de tecnologias
+                csvContent = 'Tecnologia,Número de Projetos\n';
+                data.labels.forEach((label, index) => {
+                    const value = data.datasets[0].data[index];
+                    csvContent += `"${label}",${value}\n`;
+                });
+            } else if (chartId === 'memberChart') {
+                // Gráfico de membros
+                csvContent = 'Elemento da Equipa,Número de Projetos\n';
+                data.labels.forEach((label, index) => {
+                    const value = data.datasets[0].data[index];
+                    csvContent += `"${label}",${value}\n`;
+                });
+            }
+            
+            // Download do arquivo CSV
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `${filename}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
         }
     </script>
 </body>
