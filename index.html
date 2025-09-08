@@ -109,6 +109,11 @@
                     <i class="bi bi-bar-chart-fill me-1"></i> Estatísticas
                 </button>
             </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="individual-tab" data-bs-toggle="tab" data-bs-target="#individual" type="button" role="tab" aria-controls="individual" aria-selected="false">
+                    <i class="bi bi-person-badge-fill me-1"></i> Fichas Individuais
+                </button>
+            </li>
         </ul>
 
         <div class="tab-content" id="myTabContent">
@@ -271,6 +276,40 @@
                     </div>
                 </div>
             </div>
+
+            <!-- ABA FICHAS INDIVIDUAIS -->
+            <div class="tab-pane fade" id="individual" role="tabpanel" aria-labelledby="individual-tab">
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="individual-search" class="form-control" placeholder="Pesquisar elemento...">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <select class="form-select" id="individual-filter">
+                            <option value="">Todos os elementos</option>
+                            <option value="Agostinho Teixeira">Agostinho Teixeira</option>
+                            <option value="Ana Isabel">Ana Isabel</option>
+                            <option value="Carolina Goes">Carolina Goes</option>
+                            <option value="Diogo Almeida">Diogo Almeida</option>
+                            <option value="Estela Silva">Estela Silva</option>
+                            <option value="Gonçalo Gomes">Gonçalo Gomes</option>
+                            <option value="Manuela Seita">Manuela Seita</option>
+                            <option value="Margarida Patriarca">Margarida Patriarca</option>
+                            <option value="Marta Cruz">Marta Cruz</option>
+                            <option value="Pedro Campos">Pedro Campos</option>
+                            <option value="Rita Nascimento">Rita Nascimento</option>
+                            <option value="Sílvia Rovisco">Sílvia Rovisco</option>
+                            <option value="Teresa Nogueiro">Teresa Nogueiro</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div id="individual-results" class="row">
+                    <!-- Os resultados serão carregados aqui via JavaScript -->
+                </div>
+            </div>
         </div>
     </div>
 
@@ -284,6 +323,451 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     
     <script>
+        // Dados das fichas individuais (estrutura baseada no template)
+        const individualSheets = [
+            {
+                id: 1,
+                name: "Agostinho Teixeira",
+                academicDegree: "Mestrado em Gestão, Data Science & Business Analytics",
+                studyAreas: "Gestão, Data Science, Business Analytics",
+                additionalTraining: "Formação em Data Science & Business Analytics",
+                previousExperience: "Levantamento de requisitos (necessidades, processos, ferramentas de trabalho) e acompanhamento da implementação de um Sistema de Business Intelligence no POSEUR. Acompanhamento do desenvolvimento do Sistema de Informação Operacional do PO SEUR e acompanhamento do desenvolvimento do novo sistema de informação para o Sustentável2030",
+                rolesPerformed: "Analista funcional, Especialista em Business Intelligence, Acompanhamento do desenvolvimento de sistemas de informação",
+                technicalSkills: [
+                    "Analista funcional",
+                    "Business Intelligence",
+                    "Acompanhamento do desenvolvimento de sistemas de informação",
+                    "Levantamento de requisitos",
+                    "Gestão de projetos de sistemas"
+                ],
+                digitalSkills: [
+                    "Power BI",
+                    "Excel",
+                    "SQL (nível Iniciante)",
+                    "Python (nível iniciante)"
+                ],
+                thematicAreas: "Trabalhar com dados, Business Intelligence, Projetos de Inteligência Artificial",
+                projectTypes: "Projetos de Business Intelligence, Sistemas de informação, Projetos de Inteligência Artificial, Análise de dados",
+                knowledgeReinforcement: "Data Science",
+                toolsToLearn: "Power BI nível avançado, Python nível avançado",
+                additionalInfo: "Especialista em Business Intelligence com experiência em levantamento de requisitos e acompanhamento de implementação de sistemas de informação. Trabalha com dados e tem interesse em projetos de Inteligência Artificial."
+            },
+            {
+                id: 2,
+                name: "Ana Isabel Palma Rapado",
+                academicDegree: "Licenciatura em Relações-Públicas e Publicidade, Pós-graduação em Gestão Empresarial",
+                studyAreas: "Relações-Públicas e Publicidade, Gestão Empresarial",
+                additionalTraining: "Pós-graduação em Gestão Empresarial",
+                previousExperience: "Estruturação, sistematização, implementação e gestão de projetos de monitorização com recurso a processos tecnológicos. Monitorização do Programa do XXIII Governo e Sistema de Acompanhamento da Ação Governativa (SAAG) – XXIV Governo. Participação no projeto 'Building Policy Coherence for Sustainable Development in Portugal'. Membro da Task force do Relatório Voluntário Nacional 2023. Criação de relatórios de situação diária de casos COVID nas escolas públicas. Monitorização de programas de rastreios laboratoriais. Produção de ferramentas de gestão de informação. Coordenação de projetos de cooperação para o desenvolvimento com os PALOP. Preparação da Presidência Portuguesa do Conselho da EU 2021. Gestão administrativa e financeira, tratamento e análise de dados estatísticos.",
+                rolesPerformed: "SGPCM – Equipa de Monitorização de Políticas Públicas, DGESTE – Direção de Serviços de Segurança Escolar, SGMAI | Direção de Serviços de Relações Internacionais, IST - Serviços de Saúde",
+                technicalSkills: [
+                    "Excel avançado (tabelas dinâmicas, macros)",
+                    "Power BI (Business Intelligence)",
+                    "Estatística e análise de dados",
+                    "Gestão de projetos de monitorização",
+                    "Estruturação e sistematização de processos",
+                    "Análise de dados estatísticos",
+                    "Gestão administrativa e financeira",
+                    "Procedimentos de contratação pública",
+                    "Gestão e acompanhamento de contratos"
+                ],
+                digitalSkills: [
+                    "Aplicações Microsoft 365 (Power Platform)",
+                    "Power BI",
+                    "Excel avançado",
+                    "Ferramentas de gestão de informação",
+                    "Plataformas tecnológicas para recolha de informação"
+                ],
+                thematicAreas: "Aprofundar novas áreas de acordo com a atual estrutura no âmbito do planeamento, da estratégia e da gestão do impacto e/ou outras que a direção considere relevantes",
+                projectTypes: "Projetos de monitorização de políticas públicas, Projetos de gestão de impacto, Projetos de planeamento e estratégia, Projetos de cooperação para o desenvolvimento",
+                knowledgeReinforcement: "Estratégia, metodologias de avaliação e gestão do impacto",
+                toolsToLearn: "Ferramentas e metodologias de avaliação e gestão do impacto",
+                additionalInfo: "Experiência diversificada em monitorização de políticas públicas, gestão de projetos tecnológicos e cooperação internacional. Membro de task forces estratégicas e com experiência em preparação de presidências da UE."
+            },
+            {
+                id: 3,
+                name: "Sara Carolina Mendonça Goes",
+                academicDegree: "Mestrado em Ensino da Geografia (Nível 7 QRQ), Licenciatura em Geografia Física (Nível 6 QRQ), Curso Especial de Formação de Oficiais do Exército",
+                studyAreas: "Geografia, Estatística, Ensino, Ordenamento do Território, Planeamento Urbano e Regional, Ambiente, Sistemas de Informação Geográfica, Deteção Remota",
+                additionalTraining: "Várias formações em tecnologias (Python, JavaScript, C++, C#, SQL, Java, Power Platform, Power BI, Microsoft Fabric, GIS, Web Development)",
+                previousExperience: "Análise de Dados e criação de relatórios e painéis de indicadores (Dashboards) para apoio à decisão. Desenvolvimento de aplicações de negócio com ferramentas Microsoft Power Platform. Gestão de Informação Geoespacial e Sistemas de Informação Geográfica. Automação de processos de recolha, organização e preparação de dados (ETL). Conformidade e interoperabilidade de dados geoespaciais, incluindo a implementação da Diretiva INSPIRE.",
+                rolesPerformed: "Analista de Dados e Arquitecta de Soluções de Inteligência Empresarial (SGPCM | 10/2024 – Presente), Power Platform Developer (IMT | 09/2022 – 09/2024), Chefe da Secção de Gestão de Informação (CIGeoE | 04/2019 – 08/2022), Chefe da Secção de Arquivo e Informação (CIGeoE | 11/2016 – 04/2019)",
+                technicalSkills: [
+                    "Power BI",
+                    "Power Apps", 
+                    "Power Automate",
+                    "SharePoint",
+                    "T-SQL",
+                    "Python",
+                    "JavaScript",
+                    "Java",
+                    "HTML",
+                    "GIS (ArcGIS, QGIS)",
+                    "ETL",
+                    "APIs",
+                    "Web Scraping",
+                    "Microsoft Fabric",
+                    "Google Cloud",
+                    "Dataverse",
+                    "Liderança de equipas",
+                    "Gestão de projetos",
+                    "Mentoria técnica"
+                ],
+                digitalSkills: [
+                    "Desenvolvimento de aplicações low-code",
+                    "Gestão de bases de dados",
+                    "Automatização de processos",
+                    "Visualização de dados",
+                    "Gestão de metadados",
+                    "Publicação de conteúdos web",
+                    "Power Platform",
+                    "Microsoft Fabric",
+                    "Google Cloud",
+                    "SharePoint",
+                    "Dataverse"
+                ],
+                thematicAreas: "Ciência de Dados para Políticas Públicas (Policy Data Science), Avaliação de Impacto de Políticas Públicas com Métodos Avançados, Transparência e Prestação de Contas na Ação Governativa, Comunicação Estratégica de Dados Complexos",
+                projectTypes: "Projetos de inovação no setor público com impacto social mensurável, Projetos-piloto de modernização da administração pública, Grupos de trabalho dedicados à avaliação de impacto e transparência de dados",
+                knowledgeReinforcement: "Quadros de referência para a qualidade e governação de dados, como a série de normas ISO 8000",
+                toolsToLearn: "Microsoft Purview, Ferramentas de auditoria e melhoria contínua da qualidade de dados alinhadas com os standards internacionais",
+                additionalInfo: "Capacitação contínua da equipa em tecnologias emergentes ligadas à AI. Especialista em transformar dados estáticos em soluções dinâmicas e acionáveis. Responsável pelo desenvolvimento de dashboards estratégicos para apoio à decisão governamental (projeto Pulsar)."
+            },
+            {
+                id: 4,
+                name: "Diogo Alexandre Rodrigues Almeida",
+                academicDegree: "Summa cum laude na Licenciatura em Gestão, vertente Estratégica e Criação de Empresas, Pós Graduação em Marketing Management, Frequência na LEIC (Licenciatura em Engenharia Informática e de Computadores)",
+                studyAreas: "Gestão Estratégica, Criação de Empresas, Marketing Management, Engenharia Informática e de Computadores",
+                additionalTraining: "Pós Graduação em Marketing Management, Frequência na LEIC (Licenciatura em Engenharia Informática e de Computadores)",
+                previousExperience: "Criação de Ferramentas de gestão na área da Tesouraria e Contabilidade Analítica. Suporte à implementação de ferramentas de gestão na SGPCM (Gestão Documental). Arquitetura de ferramentas (Pulsar)",
+                rolesPerformed: "Especialista em Análise e Diagnóstico, Arquitecto de Ferramentas de Gestão, Programador",
+                technicalSkills: [
+                    "Análise, diagnóstico e criação de estratégias para resolução de problemas",
+                    "Idealização de arquitetura e criação de ferramentas de gestão",
+                    "Programação",
+                    "Criação de Ferramentas de gestão (Tesouraria e Contabilidade Analítica)",
+                    "Arquitetura de ferramentas (Pulsar)",
+                    "Suporte à implementação de ferramentas de gestão"
+                ],
+                digitalSkills: [
+                    "Programação",
+                    "Arquitetura de ferramentas",
+                    "Criação de ferramentas de gestão",
+                    "Implementação de ferramentas de gestão"
+                ],
+                thematicAreas: "Resolução de problemas complexos, Estratégia, Criação de Conceitos de Negócio, Ligação do operacional ao estratégico, Criação de cadeias de objetivos em Balanced Score Card, Utilização de IA",
+                projectTypes: "Projetos de resolução de problemas complexos, Projetos estratégicos, Criação de conceitos de negócio, Projetos de ligação operacional-estratégica, Projetos de utilização de IA",
+                knowledgeReinforcement: "Agentes de IA (perspetiva-se como o futuro das IA's), Blockchain para desburocratizar o funcionamento do estado, IA na Saúde, IA na educação, IA na justiça, Mestrado em Políticas Públicas",
+                toolsToLearn: "Agentes de IA, Blockchain, IA na Saúde, IA na educação, IA na justiça",
+                additionalInfo: "Especialista em resolução de problemas complexos e criação de estratégias. Menor proficiência e perda de foco na execução de trabalhos repetitivos. Interesse em ligar o operacional ao estratégico através de Balanced Score Card."
+            },
+            {
+                id: 5,
+                name: "Estela Maria Rocha da Silva",
+                academicDegree: "Licenciatura em Sociologia, Mestrado em Estatística e Gestão de Informação",
+                studyAreas: "Sociologia, Demografia, Gestão de projetos, Design Thinking, Estatística e Gestão de Informação",
+                additionalTraining: "Mestrado em Estatística e Gestão de Informação",
+                previousExperience: "Sócia-gerente da Creative Glimpse – Consulting and Design, Lda., empresa especializada em gestão de alojamento local e consultoria. Técnica Superior - Gestão de Projetos – SGPCM (2021 a 2022 - 2024). Business Development Manager (2022-2024) – Acompanhamento, gestão de projeto e gestão de equipas em projeto turístico na área de hospitalidade. Técnica Superior - Câmara Municipal do Cartaxo (2004–2021): coordenação das áreas de Desenvolvimento Económico, Empreendedorismo, Educação e Juventude. Consultoria Externa (2003–atual): elaboração de Cartas Educativas e estudos demográficos para diversos municípios. Experiência anterior em marketing e comunicação (setor privado).",
+                rolesPerformed: "Gestão de Projetos e Organização e Coordenação de equipas",
+                technicalSkills: [
+                    "Gestão de projetos e equipas multidisciplinares",
+                    "Inovação, cocriação e metodologias participativas (Design Thinking)",
+                    "Planeamento estratégico, desenvolvimento económico e turístico",
+                    "Elaboração de documentos de planeamento na área social e de educação",
+                    "Organização de eventos e dinamização de parcerias",
+                    "Consultoria em gestão de alojamento local",
+                    "Elaboração de Cartas Educativas e estudos demográficos",
+                    "Marketing e comunicação"
+                ],
+                digitalSkills: [
+                    "Microsoft na ótica do utilizador",
+                    "Ferramentas digitais de gestão de projetos",
+                    "Ferramentas de colaboração"
+                ],
+                thematicAreas: "Projetos de gestão, Planeamento estratégico e inovação, Organização de eventos, Atividades criativas, Contacto direto com pessoas, Aplicação de metodologias de Design Thinking",
+                projectTypes: "Projetos de gestão, Planeamento estratégico, Inovação, Organização de eventos, Atividades criativas, Projetos com metodologias participativas",
+                knowledgeReinforcement: "Aprofundar metodologias de inovação e cocriação (Design Thinking, Design Sprint), Reforço de competências em ferramentas digitais de gestão de projetos e colaboração, Formação em técnicas avançadas de facilitação e mediação de processos participativos",
+                toolsToLearn: "Design Thinking, Design Sprint, Ferramentas digitais de gestão de projetos, Ferramentas de colaboração, Técnicas de facilitação e mediação",
+                additionalInfo: "Experiência diversificada em gestão de projetos, consultoria e desenvolvimento económico. Especialista em metodologias participativas e Design Thinking. Interesse particular em iniciativas que envolvam organização de eventos e contacto direto com pessoas."
+            },
+            {
+                id: 6,
+                name: "Gonçalo Duarte Gomes",
+                academicDegree: "Licenciatura em Arquitectura Paisagista, Mestrando em Arquitectura Paisagista (a frequentar na Universidade do Algarve), Pós-graduação em Direito do Urbanismo e do Turismo, Curso AI Business School (Consórcio INA/FCUL/ISCTE/ISEG/IST+/NOVA IMS/PBS), Programa de Formação em Territórios Inteligentes – módulos 1 e 2",
+                studyAreas: "Arquitectura Paisagista, Direito do Urbanismo e do Turismo, Inteligência Artificial, Territórios Inteligentes",
+                additionalTraining: "Investigador colaborador do Centro de História de Arte e Investigação Artística da Universidade de Évora, Pós-graduação em Direito do Urbanismo e do Turismo, Curso AI Business School, Programa de Formação em Territórios Inteligentes",
+                previousExperience: "Arquitecto Paisagista em regime liberal, Projectista na Culturgaia, Lda., Técnico superior na Câmara Municipal de S. Brás de Alportel, Arquitecto Paisagista/desenhador na Gaprocor, Gestor de projecto na Parque Expo 98, S.A., Gestor de projecto na Polis Litoral Ria Formosa, S.A., Técnico superior na Agência Portuguesa do Ambiente, I.P., Técnico superior na Secretaria-Geral da Presidência do Conselho de Ministros, Assistente convidado na Universidade do Algarve",
+                rolesPerformed: "Arquitecto Paisagista, Projectista, Técnico superior, Gestor de projecto, Assistente convidado",
+                technicalSkills: [
+                    "Concepção e gestão de projecto",
+                    "Arquitectura Paisagista",
+                    "Projectista",
+                    "Gestão de projecto",
+                    "Técnico superior",
+                    "Assistente convidado universitário"
+                ],
+                digitalSkills: [
+                    "Autodesk AutoCAD",
+                    "Arcview / QGIS",
+                    "Microsoft Project",
+                    "Edição e composição gráfica (GIMP / Inkscape / Canvas)"
+                ],
+                thematicAreas: "Implicações estruturais da incorporação e proliferação da Inteligência Artificial na Administração Pública nas relações entre os cidadãos e o Estado, Service blueprint e optimização organizacional e processual, Internet of Things / Territórios Inteligentes, Antecipação Estratégica, Prevenção da divisão digital",
+                projectTypes: "Projectos de análise, processamento e síntese de informação de natureza multidisciplinar, para produção de conhecimento integrado para suporte à tomada de decisão",
+                knowledgeReinforcement: "Formação de base, estruturada, em Power Apps e Power BI, Reciclagem e aprofundamento de conhecimentos em SIG",
+                toolsToLearn: "Power Apps, Power BI, SIG (Sistemas de Informação Geográfica)",
+                additionalInfo: "Secretário da Direcção da Associação Portuguesa dos Arquitectos Paisagistas. Membro da Comissão de Acompanhamento da Política Nacional de Arquitectura e Paisagem. Experiência diversificada em arquitectura paisagista, gestão de projectos e administração pública."
+            },
+            {
+                id: 7,
+                name: "Maria Manuela Moreno Seita",
+                academicDegree: "Mestrado em Sociologia das Organizações e do Trabalho, Pós-graduação em Gestão de Serviços de Saúde, Licenciatura em Administração Pública",
+                studyAreas: "Sociologia das Organizações e do Trabalho, Gestão de Serviços de Saúde, Administração Pública",
+                additionalTraining: "Pós-graduação em Gestão de Serviços de Saúde",
+                previousExperience: "Secretaria-Geral da PCM - Equipa Multidisciplinar InovEM (desenvolvimento e implementação de estratégias de inovação administrativa, monitorização de projetos estratégicos transversais, apoio à conceção de instrumentos de planeamento e avaliação de políticas públicas, colaboração em iniciativas de capacitação e partilha de boas práticas interinstitucionais). Direção-Geral da Saúde (Assessora da Diretora-Geral, monitorização e avaliação de instrumentos de gestão, definição de estratégias e elaboração de planos de atividade, colaboração na revisão de propostas de projetos de Lei, desenvolvimento e gestão de estratégias de comunicação organizacional, Assessoria Executiva da Coordenação Nacional do Programa Nacional de Saúde Escolar, Ponto focal da OMS para as Doenças não Transmissíveis, Coordenação do grupo de resposta ao cidadão no âmbito da Task-force para a Covid-19). Hospitalar de Santa Maria (Coordenação do gabinete de secretariado da Dir. do SUC, Planeamento e gestão de agenda, Gestão da escala anual e diária das equipas de medicina, Relatórios Clínicos, Resposta a reclamações). Cooperação Internacional (European Commission, World Health Organization).",
+                rolesPerformed: "Secretaria-Geral da PCM - Equipa Multidisciplinar InovEM, Direção-Geral da Saúde - Assessora da Diretora-Geral, Hospitalar de Santa Maria - Coordenação do gabinete de secretariado, Cooperação Internacional",
+                technicalSkills: [
+                    "Planeamento estratégico e operacional",
+                    "Avaliação e monitorização de políticas",
+                    "Inovação administrativa",
+                    "Análise de relatórios técnicos",
+                    "Comunicação organizacional e institucional",
+                    "Assessoria executiva e apoio à decisão",
+                    "Gestão da relação com o cidadão e resposta a reclamações",
+                    "Conhecimento em Saúde Pública",
+                    "Desenvolvimento Organizacional",
+                    "Assessoria"
+                ],
+                digitalSkills: [
+                    "Office",
+                    "Power BI e outras ferramentas de análise de dados",
+                    "Metodologias de gestão de projetos (Agile, PM2)"
+                ],
+                thematicAreas: "Desenvolvimento Organizacional, Assessoria, Monitorização e avaliação da ação governativa, Inovação administrativa e modernização da Administração Pública, Planeamento estratégico, Análise de políticas públicas, Capacitação de equipas e cooperação interinstitucional",
+                projectTypes: "Projetos de monitorização e avaliação da ação governativa, Inovação administrativa e modernização da Administração Pública, Planeamento estratégico, Análise de políticas públicas, Capacitação de equipas e cooperação interinstitucional",
+                knowledgeReinforcement: "Monitorização e avaliação de políticas públicas, Desenvolvimento organizacional, Gestão de projetos no setor público, Comunicação estratégica em contexto governativo",
+                toolsToLearn: "Power BI e outras ferramentas de análise de dados, Metodologias de gestão de projetos (Agile, PM2), Técnicas de avaliação de impacto de políticas públicas, Metodologias participativas de capacitação e inovação administrativa",
+                additionalInfo: "Experiência consolidada em contextos de elevada exigência e responsabilidade institucional. Capacidade de articulação interinstitucional e de trabalho em rede, tanto a nível nacional como internacional. Forte orientação para resultados e apoio à decisão estratégica. Adaptabilidade a contextos de mudança e resiliência em cenários de pressão."
+            },
+            {
+                id: 8,
+                name: "P. Margarida Carvalho Santos Duarte Loução Patriarca",
+                academicDegree: "Licenciatura em Arquitetura, Mestrado em Arquitectura, Doutoramento em curso no ICS-ULisboa",
+                studyAreas: "Arquitetura, Desenvolvimento urbano, Ciência política, Políticas públicas, Coesão territorial, Comunicação",
+                additionalTraining: "Pós-graduação em Finanças em Entidades Públicas, Pós-graduação em Políticas de Habitação, Formações várias em inteligência artificial aplicada à Administração Pública",
+                previousExperience: "Administração pública, Contratação pública, Políticas públicas, Planeamento e gestão de projectos, Planeamento e gestão de fundos europeus, Desenvolvimento territorial, Comunicação institucional técnica e política. Assistente sénior de análise política (OSCE/ODIHR), Técnica superior na SGPCM (InovEM), Dirigente intermédia (CMFerreira do Alentejo), Secretariado técnico Alentejo 2020 (CCDR-A), Gestora de projectos e de fundos europeus (CMBeja), Directora executiva (À do Sul)",
+                rolesPerformed: "Assistente sénior de análise política (OSCE/ODIHR), Técnica superior na SGPCM (InovEM), Dirigente intermédia (CMFerreira do Alentejo), Secretariado técnico Alentejo 2020 (CCDR-A), Gestora de projectos e de fundos europeus (CMBeja), Directora executiva (À do Sul)",
+                technicalSkills: [
+                    "Análise e acompanhamento de políticas públicas",
+                    "Gestão e monitorização de fundos europeus",
+                    "Desenvolvimento territorial e coesão",
+                    "Comunicação institucional, política, estratégica",
+                    "Análise politica e dos media",
+                    "Elaboração de relatórios técnicos, diagnósticos e notas estratégicas",
+                    "Análise Preditiva",
+                    "Curadoria de Conteúdos",
+                    "Media Monitoring"
+                ],
+                digitalSkills: [
+                    "Ferramentas de clipping e social listening (Inoreader, NewsWhip)",
+                    "SharePoint",
+                    "Power BI (algum)",
+                    "Inteligência Artificial aplicada à comunicação e análise de dados",
+                    "Google Trends",
+                    "Canva Pro",
+                    "Sprout Social"
+                ],
+                thematicAreas: "Coesão territorial, Governação digital, Inovação no setor público, Confiança democrática, Governação digital, Comunicação política/governativa e estratégica",
+                projectTypes: "Projetos de análise e avaliação de políticas públicas, Monitorização e avaliação, Desenvolvimento estratégico, Comunicação governativa e inovação tecnológica",
+                knowledgeReinforcement: "Avaliação de impacto de políticas públicas, Data Science aplicada ao setor público, Metodologias quantitativas e qualitativas de análise, Ciência de dados aplicada ao setor público",
+                toolsToLearn: "Automatização de fluxos de dados, Dashboards avançados em Power BI, Técnicas de escuta social com IA generativa, Técnicas de foresight e análise preditiva",
+                additionalInfo: "Investigadora doutoranda sobre 'PRR e Portugal 2030: Dinâmicas de coesão territorial, comunicação e confiança democrática'. Registo como perita externa no Portal de Peritos da Comissão Europeia (EX2025D1189787). Experiência de trabalho em redes colaborativas nacionais e internacionais. Especialista em análise preditiva e em tempo real de redes sociais e media digitais."
+            },
+            {
+                id: 9,
+                name: "Marta Susana Pereira Dias Saraiva Cruz",
+                academicDegree: "Licenciada em Economia, Licenciada em Gestão com especialização em Marketing",
+                studyAreas: "Economia, Desenvolvimento económico e cooperação social/internacional, Gestão, Marketing",
+                additionalTraining: "Curso em turismo e desenvolvimento regional, Pós-graduação em desenvolvimento e cooperação internacional, Cursos de fiscalidade para a empresa, Pós-graduação na internacionalização da empresa",
+                previousExperience: "Gestão comercial, Direção financeira, Gestão de produto, Diretora de RH, Relações internacionais e com instituições congéneres, Construção e gestão de equipas",
+                rolesPerformed: "Analista, Gestora",
+                technicalSkills: [
+                    "Fluente em várias línguas estrangeiras",
+                    "Gestão comercial",
+                    "Direção financeira",
+                    "Gestão de produto",
+                    "Diretora de RH",
+                    "Relações internacionais e com instituições congéneres",
+                    "Construção e gestão de equipas",
+                    "Análise de impacto na área económica e social e de desenvolvimento"
+                ],
+                digitalSkills: [
+                    "Microsoft ao nível do utilizador",
+                    "Analyst notebook",
+                    "Soluções integradas de software para a empresa (PHC)"
+                ],
+                thematicAreas: "Análise de impacto na área económica e social e de desenvolvimento",
+                projectTypes: "Projetos de análise de impacto económico e social, Projetos de desenvolvimento, Projetos de cooperação internacional",
+                knowledgeReinforcement: "Software utilizado pela instituição e software utilizados pela equipa, Métodos de análise de impacto",
+                toolsToLearn: "Software utilizado pela instituição e software utilizados pela equipa, Métodos de análise de impacto",
+                additionalInfo: "Disponibilidade total para ajudar a equipa a atingir os objetivos propostos. Experiência diversificada em gestão comercial, financeira e de recursos humanos. Especialista em relações internacionais e construção de equipas."
+            },
+            {
+                id: 10,
+                name: "Pedro Canaveira de Campos",
+                academicDegree: "Mestre em Direito e Estudos Legais Europeus",
+                studyAreas: "Direito e Estudos Legais Europeus",
+                additionalTraining: "Pós Graduação Competitive Intelligence & Information warfare, Oxford Scenario Program",
+                previousExperience: "Informações, Gestão de Informações, Gestão Estratégica do Conhecimento",
+                rolesPerformed: "Chefe de equipa Multidisciplinar",
+                technicalSkills: [
+                    "Coordenação e gestão de equipas",
+                    "Conceptualização e desenvolvimento de produtos",
+                    "Monitorização de dados",
+                    "Gestão Estratégica do Conhecimento",
+                    "Informações",
+                    "Gestão de Informações"
+                ],
+                digitalSkills: [
+                    "Tratamento e visualização de dados e informação",
+                    "Ferramentas Office",
+                    "Ferramentas de pesquisa e recolha de informação"
+                ],
+                thematicAreas: "A definir",
+                projectTypes: "A definir",
+                knowledgeReinforcement: "A definir",
+                toolsToLearn: "A definir",
+                additionalInfo: "Chefe de equipa Multidisciplinar com experiência em gestão estratégica do conhecimento e coordenação de equipas. Especialista em conceptualização e desenvolvimento de produtos e monitorização de dados."
+            },
+            {
+                id: 11,
+                name: "Rita Nascimento",
+                academicDegree: "Licenciatura em Contabilidade e Administração Fiscal",
+                studyAreas: "Contabilidade e Administração Fiscal",
+                additionalTraining: "Ciclo de Gestão do Projeto, Power-Bi (Formação mas muito pouca prática)",
+                previousExperience: "Direção-Geral do Orçamento (5 anos): Delegação de apoio à gestão do orçamento do Ministério da Justiça (4 anos), Comissão de Serviço extraordinária em Timor-Leste, integrada num Programa de Assistência Técnica na Área das Finanças (PICATFIN) (1 ano). Ministério dos Negócios Estrangeiros (4 anos): Chefe de Divisão no GOPA – Gabinete de Organização, Planeamento e Avaliação. Camões, I.P./Cooperação Portuguesa (16 anos): Área da Sociedade Civil - Temáticas da Cooperação para o Desenvolvimento, Educação para o Desenvolvimento e Ajuda Humanitária e de Emergência, Gestão de Linhas de Co-Financiamento para projetos de ONGD, Monitorização dos projetos co-financiados, incluindo missões ao terreno. SGPCM: Equipa Multidisciplinar POP – Performance, Organizacional e Projetos (1,5 anos): Gestão das Oficinas de Simplificação. Equipa Disciplinar InovEM – Inovação, Estratégia e Monitorização (1,5 anos): Comunicação interna e externa, Exploração do OneNote enquanto ferramenta digital.",
+                rolesPerformed: "Direção-Geral do Orçamento, Ministério dos Negócios Estrangeiros - Chefe de Divisão no GOPA, Camões, I.P./Cooperação Portuguesa, SGPCM - Equipa Multidisciplinar POP e Equipa Disciplinar InovEM",
+                technicalSkills: [
+                    "Ciclo de Gestão de Projetos",
+                    "Facilitação de processos participativos para a construção de planos de ação",
+                    "Implementação da melhoria e simplificação de processos de trabalho",
+                    "Gestão de orçamentos",
+                    "Cooperação para o Desenvolvimento",
+                    "Educação para o Desenvolvimento",
+                    "Ajuda Humanitária e de Emergência",
+                    "Gestão de Linhas de Co-Financiamento para projetos de ONGD",
+                    "Monitorização de projetos co-financiados",
+                    "Comunicação interna e externa",
+                    "Gestão do Conhecimento"
+                ],
+                digitalSkills: [
+                    "Microsoft Office 365",
+                    "SharePoint",
+                    "Power-Bi (Formação mas muito pouca prática)",
+                    "OneNote",
+                    "Viva Engage",
+                    "Loop",
+                    "Teams",
+                    "Slido",
+                    "Mentimeter"
+                ],
+                thematicAreas: "Inovação - Melhoria e simplificação dos processos, Metodologias de trabalho ágeis, participativas e inovadoras, Comunicação, Gestão do Conhecimento",
+                projectTypes: "Projetos de inovação e melhoria de processos, Projetos de comunicação, Projetos de gestão do conhecimento, Projetos de cooperação para o desenvolvimento",
+                knowledgeReinforcement: "Design Thinking, Service Blueprint/Construção de fluxogramas, Produção e edição de vídeos, OneNote",
+                toolsToLearn: "Design Thinking, Service Blueprint/Construção de fluxogramas, Produção e edição de vídeos, OneNote",
+                additionalInfo: "Experiência diversificada em gestão de orçamentos, cooperação para o desenvolvimento e inovação administrativa. Especialista em comunicação interna e externa, gestão do conhecimento e facilitação de processos participativos. Experiência internacional em Timor-Leste e gestão de projetos de ONGD nos PALOP."
+            },
+            {
+                id: 12,
+                name: "Sílvia Rovisco",
+                academicDegree: "Licenciatura em Urbanismo",
+                studyAreas: "Urbanismo, Planeamento e Ordenamento do Território",
+                additionalTraining: "Pós Graduação em Sistemas de Informação Geográfica, Curso 'Tipo de Eventos e Organizadores de Evento'",
+                previousExperience: "16 anos na área do Urbanismo, Planeamento e Ordenamento do Território no Município de Alcochete: Acompanhamento de Planos Municipais e Intermunicipais, Carta Educativa e Desportiva, Toponímia, Ocupação da via pública, Coordenação dos Censos 2001 e 2011 (como Delegada Municipal), Criação e coordenação do Gabinete de Sistemas de informação Geográfica (SIG Municipal). 9 anos na área do Turismo e Organização de eventos no Município de Alcochete: Organização da Noite Branca de Alcochete, Semana gastronómica, sunsets, desfiles de moda, semana da mobilidade, Dia mundial do Turismo, FestiSal (salinas do Samouco), Elaboração e concretização da certificação da Marca Nacional 'Fogaça de Alcochete - sabor original', Coordenação, organização e preparação de vários showccoking ligados à marca 'Fogaça de Alcochete' com o embaixador Chef Fábio Bernardino. Desde Maio 2024 na SGPCM na InoVEM, a trabalhar na área da comunicação interna e externa da equipa.",
+                rolesPerformed: "Município de Alcochete - Técnica Superior em Urbanismo e Planeamento (16 anos), Técnica Superior em Turismo e Organização de Eventos (9 anos), SGPCM - InoVEM - Especialista em Comunicação (desde Maio 2024)",
+                technicalSkills: [
+                    "Urbanismo e Planeamento do Território",
+                    "Acompanhamento de Planos Municipais e Intermunicipais",
+                    "Carta Educativa e Desportiva",
+                    "Toponímia",
+                    "Ocupação da via pública",
+                    "Coordenação de Censos (2001 e 2011)",
+                    "Sistemas de Informação Geográfica (SIG)",
+                    "Organização de Eventos",
+                    "Turismo",
+                    "Certificação de Marcas Nacionais",
+                    "Showcooking e eventos gastronómicos",
+                    "Comunicação interna e externa",
+                    "Gestão de projetos",
+                    "Criação de vídeos",
+                    "Integração e uniformização da informação"
+                ],
+                digitalSkills: [
+                    "Microsoft 365",
+                    "SharePoint",
+                    "OneNote",
+                    "Loop",
+                    "Viva Engage",
+                    "Canva",
+                    "CapCut",
+                    "Teams",
+                    "Slido",
+                    "Mentimeter"
+                ],
+                thematicAreas: "Comunicação",
+                projectTypes: "Projetos na área da comunicação e relações públicas da equipa",
+                knowledgeReinforcement: "OneNote, Produção/Edição de vídeos",
+                toolsToLearn: "OneNote, Produção/Edição de vídeos",
+                additionalInfo: "Experiência diversificada de 25 anos em urbanismo, planeamento territorial, turismo e organização de eventos. Especialista em comunicação interna e externa, com forte experiência em criação de conteúdo visual e gestão de projetos. Coordenadora de eventos de grande escala e especialista em marcas nacionais. Ponto focal da comunicação da equipa da Comunicação da SGPCM."
+            },
+            {
+                id: 13,
+                name: "Teresa Paula Ramalho Serra Bugalho Nogueiro",
+                academicDegree: "Doutoramento em Gestão, Mestrado em Gestão (especialização de Recursos Humanos), Licenciatura em Gestão de Empresas, Bacharelato em Engenharia de Produção Animal",
+                studyAreas: "Gestão, Gestão da Qualidade, Sustentabilidade, Recursos Humanos, Gestão pela Qualidade Total, Qualidade no ensino superior, Ensino Superior e Sustentabilidade, Sistemas da Qualidade, Objetivos de Desenvolvimento Sustentável, Satisfação e Motivação, Responsabilidade Social",
+                additionalTraining: "Gestão de Risco (Ordem dos Contabilistas Certificados, 8h), Auditoria em Sistemas Integrados de Gestão: Qualidade, Ambiente, Segurança e Responsabilidade Social (SGS Portugal SA, 44h), Pós-graduação em Sistemas Integrados de Gestão: Qualidade, Ambiente, Segurança e Responsabilidade Social (SGS Portugal SA, 450h), Auditoria e controlo interno (Significado, 50h), Sessão colaborativa de aplicação do Kit Inicial de Inovação Antecipatória (LabX, 7h), Inovação na Gestão Pública: Desenho de Serviços (Academia AMA, 18h), Gestão de Riscos de Cibersegurança nas Organizações (PT SOC, 10h), Gestão de Informação e Conteúdos Digitais – Nível Intermédio (Roteiro INCoDe.2030, 50h), Comunicar e Colaborar através de Tecnologias Digitais – Nível Intermédio (Roteiro INCoDe.2030, 50h), Comunicar e Colaborar através de Tecnologias Digitais – Nível Avançado (Roteiro INCoDe.2030, 25h), Encontro da Criatividade e Inovação (LabX, 6h)",
+                previousExperience: "Gestão de Projetos de mobilidade internacional, de capacitação, do Plano de Recuperação e Resiliência. Avaliação de projetos e de gestão de risco. Gestão e Coordenação de Relações Internacionais. Procedimentos de contratação pública. Representante de Portugal em Comissões de Trabalho da União Europeia. Coordenação a nível nacional do Programa de Mobilidade Nacional Almeida Garrett. Coordenação de programas e gabinetes em estabelecimento do ensino superior. Atividade docente e de investigação no Ensino Superior. Gestão de Projetos de mobilidade internacional e de capacitação em estabelecimento do Ensino Superior. Avaliação de projetos de mobilidade no âmbito do Programa Erasmus. Gestão de Projetos do Plano de Recuperação e Resiliência na educação e na ex-secretaria geral da presidência do conselho de ministros. Gestão e Coordenação de Relações Internacionais em Instituição de Ensino Superior. Procedimentos de contratação pública no Ensino Superior. Representante de Portugal em Comissões de Trabalho da União Europeia. Perita na área do Ensino Superior. Coordenação a nível nacional do Programa de Mobilidade Nacional Almeida Garrett. Coordenação, a nível local na Universidade de Évora, do Gabinete de Apoio aos Alunos da CPLP, do Centro Regional Fulbright e do Centro de Mobilidade EURAXESS. Coordenação dos Programas Ciência sem Fronteiras e o Programa de Licenciaturas Internacionais tutelados pela CAPES (Brasil). Atividade docente e de investigação no Ensino Superior (Universidade de Évora, Instituto Politécnico de Setúbal e Instituto Politécnico de Portalegre). Revisora internacional de artigos científicos em várias revistas nacionais e internacionais. Editora adjunta da revista da RIQUAL – Rede de Investigadores da Qualidade, TMQ - Techniques, Methodologies and Quality.",
+                rolesPerformed: "Gestão de Projetos de mobilidade internacional e de capacitação, Avaliação de projetos de mobilidade no âmbito do Programa Erasmus, Gestão de Projetos do Plano de Recuperação e Resiliência, Gestão e Coordenação de Relações Internacionais, Procedimentos de contratação pública, Representante de Portugal em Comissões de Trabalho da União Europeia, Perita na área do Ensino Superior, Coordenação a nível nacional do Programa de Mobilidade Nacional Almeida Garrett, Coordenação de programas e gabinetes em estabelecimento do ensino superior, Atividade docente e de investigação no Ensino Superior, Revisora internacional de artigos científicos, Editora adjunta da revista da RIQUAL",
+                technicalSkills: [
+                    "Gestão da Qualidade e Sustentabilidade",
+                    "Modelos de gestão, avaliação e melhoria contínua",
+                    "Aplicação dos Objetivos de Desenvolvimento Sustentável (ODS)",
+                    "Investigação Científica e Académica",
+                    "Produção e participação em projetos de investigação",
+                    "Publicações em revistas científicas e capítulos de livros",
+                    "Docência no Ensino Superior",
+                    "Unidades curriculares de gestão, mercados e negociação comercial",
+                    "Modelos de gestão escolar",
+                    "Planeamento Estratégico e Gestão de Recursos",
+                    "Análise organizacional",
+                    "Desenho de modelos de gestão",
+                    "Definição de estratégias de desenvolvimento institucional",
+                    "Gestão de Projetos de mobilidade internacional",
+                    "Avaliação de projetos e de gestão de risco",
+                    "Gestão e Coordenação de Relações Internacionais",
+                    "Procedimentos de contratação pública",
+                    "Representação de Portugal em Comissões de Trabalho da União Europeia"
+                ],
+                digitalSkills: [
+                    "Microsoft Office (Word, Excel, PowerPoint)",
+                    "Plataformas digitais de comunicação académica e institucional",
+                    "Ambientes Virtuais de Aprendizagem (Moodle)",
+                    "Sistemas de e-learning",
+                    "Bases de dados científicas (Google Scholar, Scopus, Web of Science)",
+                    "Software de gestão bibliográfica (Mendeley, EndNote, Zotero)",
+                    "Metodologias digitais na prática pedagógica e investigação",
+                    "Recursos multimédia e ferramentas de apoio à inovação educativa",
+                    "Power BI",
+                    "Teams",
+                    "SharePoint"
+                ],
+                thematicAreas: "Governação e Políticas Públicas, Avaliação e gestão de risco associado às políticas públicas, Definição de indicadores",
+                projectTypes: "Projetos de investigação e exploração em inovação, governação e sustentabilidade, Angariação e compilação de dados",
+                knowledgeReinforcement: "Investigação em Políticas Públicas que conduzam a uma melhor monitorização e análise de políticas implementadas ou prospetivas",
+                toolsToLearn: "Power BI, Inteligência Artificial associada à investigação e monitorização de dados e informação",
+                additionalInfo: "Doutorada em Gestão com especialização em Gestão da Qualidade e Sustentabilidade. Título da tese de doutoramento: 'Gestão pela qualidade total e objetivos de desenvolvimento sustentável nas instituições de ensino superior portuguesas: contributo do programa Erasmus+ no âmbito do International Credit Mobility'. Título da dissertação de mestrado: 'A qualidade e o modelo Common Assessment Framework: O caso dos Serviços Académicos da Universidade de Évora'. Experiência diversificada de mais de 20 anos em gestão de projetos, relações internacionais, ensino superior e investigação científica. Especialista em ODS, gestão da qualidade e sustentabilidade. Representante de Portugal em comissões europeias e perita em ensino superior."
+            }
+        ];
+
         // Dados dos projetos (extraídos das fichas fornecidas)
         const projects = [
             {
@@ -413,11 +897,12 @@
             {
                 id: 13,
                 name: "Sistema de Gestão e Monitorização de Projetos",
-                responsible: "Coordenação DSAAG",
-                team: [],
+                responsible: "Equipa InovEM / Coordenação DSAAG",
+                team: ["Rita Nascimento", "Estela Silva"],
                 status: "suspenso",
-                description: "Sistema centralizado a partir do OneNote para gerir e monitorizar todos os projetos em curso.",
+                description: "Sistema simples e centralizado a partir do OneNote, para gerir e monitorizar todos os projetos em curso, reunindo num único retrato a informação essencial: resumos comparáveis, compilação de documentos, indicadores de progresso e modelos normalizados de comunicação externa.",
                 technologies: ["OneNote", "Teams", "Planner", "Kanban", "SharePoint"],
+                methodologies: ["Gestão de projetos", "Monitorização contínua", "Comunicação externa normalizada"],
                 link: ""
             },
             {
@@ -449,7 +934,29 @@
                 description: "Ferramenta de análise preditiva e em tempo real de redes sociais e media digitais, que permite identificar temas com maior tração pública, avaliar alcance, velocidade de disseminação e antecipar potenciais crises de reputação governativa.",
                 technologies: ["NewsWhip", "Sprout Social"],
                 link: ""
-            }
+            },
+            {
+                id: 17,
+                name: "Modelos e Métodos",
+                responsible: "Manuela Seita",
+                team: ["Manuela Seita", "Estela Silva"],
+                status: "planeamento",
+                description: "Projeto que pretende identificar e analisar problemas organizacionais, propondo soluções sustentadas em diferentes abordagens de gestão. Aproxima teoria e prática, fornecendo referenciais que apoiem decisões mais eficazes, adaptáveis e fundamentadas.",
+                technologies: ["Ferramentas digitais de análise", "Manuais metodológicos", "Plataformas colaborativas"],
+                methodologies: ["Modelos de gestão", "Diagnóstico organizacional", "Formação prática"],
+                link: ""
+            },
+            {
+                id: 18,
+                name: "Plano de Formação da Equipa InovEM",
+                responsible: "Manuela Seita",
+                team: ["Manuela Seita"],
+                status: "planeamento",
+                description: "Plano de formação que visa o desenvolvimento contínuo das competências técnicas e comportamentais da equipa InovEM, alinhado com os objetivos estratégicos da organização e da SGGOV.",
+                technologies: ["Ferramentas digitais de formação", "Plataformas de armazenamento de conteúdos", "Metodologias de análise de dados"],
+                methodologies: ["Formação contínua", "Desenvolvimento de competências", "Análise avançada de dados"],
+                link: ""
+            },
         ];
 
         // Inicialização quando o documento estiver pronto
@@ -459,6 +966,8 @@
             renderTechBadges();
             updateStats();
             updateLastUpdateTime();
+            setupIndividualFilters();
+            renderIndividualSheets();
             
             // Verificar se as bibliotecas de PDF carregaram
         });
@@ -1096,6 +1605,131 @@
             document.body.appendChild(link);
             link.click();
             document.body.removeChild(link);
+        }
+
+        // Função para configurar os filtros das fichas individuais
+        function setupIndividualFilters() {
+            // Filtro por elemento
+            document.getElementById('individual-filter').addEventListener('change', function() {
+                renderIndividualSheets();
+            });
+            
+            // Pesquisa por elemento
+            document.getElementById('individual-search').addEventListener('input', function() {
+                renderIndividualSheets();
+            });
+        }
+
+        // Função para renderizar as fichas individuais
+        function renderIndividualSheets() {
+            const filter = document.getElementById('individual-filter').value;
+            const searchTerm = document.getElementById('individual-search').value.toLowerCase();
+            const resultsContainer = document.getElementById('individual-results');
+            
+            resultsContainer.innerHTML = '';
+            
+            let filteredSheets = individualSheets;
+            
+            if (filter) {
+                filteredSheets = filteredSheets.filter(sheet => sheet.name === filter);
+            }
+            
+            if (searchTerm) {
+                filteredSheets = filteredSheets.filter(sheet => 
+                    sheet.name.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (filteredSheets.length > 0) {
+                filteredSheets.forEach(sheet => {
+                    resultsContainer.appendChild(createIndividualCard(sheet));
+                });
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-person-x display-1 text-muted"></i>
+                        <h4 class="text-muted mt-3">Nenhum elemento encontrado</h4>
+                        <p class="text-muted">Tente ajustar os critérios de pesquisa</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Função para criar um card de ficha individual
+        function createIndividualCard(sheet) {
+            const col = document.createElement('div');
+            col.className = 'col-md-6 col-lg-4 mb-4';
+            
+            col.innerHTML = `
+                <div class="card project-card h-100">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="card-title mb-0">
+                            <i class="bi bi-person-badge me-2"></i>${sheet.name}
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- 1. IDENTIFICAÇÃO -->
+                        <div class="mb-3">
+                            <h6 class="text-primary mb-2">1. Identificação</h6>
+                            <p class="mb-0"><strong>Nome:</strong> ${sheet.name}</p>
+                        </div>
+                        
+                        <!-- 2. FORMAÇÃO ACADÉMICA -->
+                        <div class="mb-3">
+                            <h6 class="text-primary mb-2">2. Formação Académica</h6>
+                            <p class="mb-1"><strong>Grau(s) académico(s):</strong> ${sheet.academicDegree || 'Não especificado'}</p>
+                            <p class="mb-1"><strong>Áreas de estudo:</strong> ${sheet.studyAreas || 'Não especificadas'}</p>
+                            <p class="mb-0"><strong>Outras formações relevantes:</strong> ${sheet.additionalTraining || 'Não especificadas'}</p>
+                        </div>
+                        
+                        <!-- 3. EXPERIÊNCIA PROFISSIONAL -->
+                        <div class="mb-3">
+                            <h6 class="text-primary mb-2">3. Experiência Profissional</h6>
+                            <p class="mb-1"><strong>Áreas de experiência prévia:</strong> ${sheet.previousExperience || 'Não especificadas'}</p>
+                            <p class="mb-0"><strong>Funções desempenhadas:</strong> ${sheet.rolesPerformed || 'Não especificadas'}</p>
+                        </div>
+                        
+                        <!-- 4. COMPETÊNCIAS E ÁREAS DE ESPECIALIZAÇÃO -->
+                        <div class="mb-3">
+                            <h6 class="text-primary mb-2">4. Competências e Áreas de Especialização</h6>
+                            <p class="mb-2"><strong>Competências técnicas:</strong></p>
+                            <div class="technology-list mb-2">
+                                ${sheet.technicalSkills && sheet.technicalSkills.length > 0 ? sheet.technicalSkills.map(skill => 
+                                    `<span class="badge bg-success technology-badge">${skill}</span>`
+                                ).join('') : '<span class="text-muted">Não especificadas</span>'}
+                            </div>
+                            <p class="mb-2"><strong>Competências digitais/tecnológicas:</strong></p>
+                            <div class="technology-list">
+                                ${sheet.digitalSkills && sheet.digitalSkills.length > 0 ? sheet.digitalSkills.map(skill => 
+                                    `<span class="badge bg-info text-white technology-badge">${skill}</span>`
+                                ).join('') : '<span class="text-muted">Não especificadas</span>'}
+                            </div>
+                        </div>
+                        
+                        <!-- 5. PREFERÊNCIAS E INTERESSES -->
+                        <div class="mb-3">
+                            <h6 class="text-primary mb-2">5. Preferências e Interesses</h6>
+                            <p class="mb-1"><strong>Áreas temáticas que gostaria de desenvolver:</strong> ${sheet.thematicAreas || 'Não especificadas'}</p>
+                            <p class="mb-0"><strong>Tipos de projeto em que prefere colaborar:</strong> ${sheet.projectTypes || 'Não especificados'}</p>
+                        </div>
+                        
+                        <!-- 6. NECESSIDADES FORMATIVAS -->
+                        <div class="mb-3">
+                            <h6 class="text-primary mb-2">6. Necessidades Formativas</h6>
+                            <p class="mb-1"><strong>Áreas em que considera necessário reforço:</strong> ${sheet.knowledgeReinforcement || 'Não especificadas'}</p>
+                            <p class="mb-0"><strong>Ferramentas ou metodologias que gostaria de aprender:</strong> ${sheet.toolsToLearn || 'Não especificadas'}</p>
+                        </div>
+                        
+                        <!-- 7. OUTRAS INFORMAÇÕES RELEVANTES -->
+                        <div class="mb-3">
+                            <h6 class="text-primary mb-2">7. Outras Informações Relevantes</h6>
+                            <p class="mb-0">${sheet.additionalInfo || 'Não especificadas'}</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            return col;
         }
     </script>
 </body>
