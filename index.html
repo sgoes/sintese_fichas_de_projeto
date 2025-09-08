@@ -231,8 +231,10 @@
                                     <i class="bi bi-download me-1"></i>CSV
                                 </button>
                             </div>
-                            <div class="card-body">
-                                <canvas id="statusChart" height="250"></canvas>
+                            <div class="card-body" style="padding: 15px;">
+                                <div style="height: 450px; position: relative;">
+                                    <canvas id="statusChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -244,8 +246,10 @@
                                     <i class="bi bi-download me-1"></i>CSV
                                 </button>
                             </div>
-                            <div class="card-body">
-                                <canvas id="techChart" height="250"></canvas>
+                            <div class="card-body" style="padding: 15px;">
+                                <div style="height: 450px; position: relative;">
+                                    <canvas id="techChart"></canvas>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -289,7 +293,8 @@
                 team: ["Carolina Goes"],
                 status: "concluído",
                 description: "Dashboard desenvolvido a partir de listas em PDF referentes ao pessoal da SGPCM, transformando informação estática em informação dinâmica e acionável.",
-                technologies: ["Power BI", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
+                technologies: ["Power BI", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
                 link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiOTQ1OWU1NGEtM2NkMy00MTNhLThjNDctOTZhYWVkOTA1MTRlIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=6c49244b60cd19d78c92"
             },
             {
@@ -309,7 +314,8 @@
                 team: ["Carolina Goes"],
                 status: "execução",
                 description: "Solução interativa que permite acompanhar debates, intervenções parlamentares e diplomas aprovados ao longo da legislatura.",
-                technologies: ["Power BI", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
+                technologies: ["Power BI", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
                 link: ""
             },
             {
@@ -329,7 +335,8 @@
                 team: ["Carolina Goes"],
                 status: "execução",
                 description: "Dashboard interativo desenvolvido para facilitar o acesso a mais de 6.400 indicadores estatísticos do INE.",
-                technologies: ["Power BI", "Web Scraping", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
+                technologies: ["Power BI", "Web Scraping", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
                 link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNWUxZDQ4NjEtZGQ0Ni00N2U2LWExZWUtNDA2NTVmZGM2MWRjIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=2a67b50557973f9c5ee9"
             },
             {
@@ -349,7 +356,8 @@
                 team: ["Pedro Campos", "Carolina Goes"],
                 status: "suspenso",
                 description: "Dashboard para centralizar notícias provenientes de um bucket do Inoreader, permitindo acompanhar artigos publicados pelas principais fontes nacionais.",
-                technologies: ["Microsoft Fabric", "Power BI", "Inoreader API", "ETL", "Cursor AI PRO", "Chat GPT PRO"],
+                technologies: ["Microsoft Fabric", "Power BI", "Inoreader API", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
                 link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNWUxZDQ4NjEtZGQ0Ni00N2U2LWExZWUtNDA2NTVmZGM2MWRjIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=2a67b50557973f9c5ee9"
             },
             {
@@ -366,7 +374,7 @@
                 id: 9,
                 name: "Comunicação",
                 responsible: "Rita Nascimento e Sílvia Rovisco",
-                team: ["Rita Nascimento", "Sílvia Rovisco", "Todos os elementos da equipa"],
+                team: ["Rita Nascimento", "Sílvia Rovisco"],
                 status: "suspenso",
                 description: "Assegurar a comunicação interna e externa, promovendo trabalho colaborativo entre os membros da equipa.",
                 technologies: ["SharePoint", "Canva", "CapCut", "Viva Engage", "Loop", "Teams", "Slido", "Mentimeter"],
@@ -630,6 +638,9 @@
                             ${project.technologies.sort((a, b) => a.localeCompare(b, 'pt-PT')).map(tech => 
                                 `<span class="badge bg-light text-dark technology-badge">${tech}</span>`
                             ).join('')}
+                            ${project.methodologies ? project.methodologies.sort((a, b) => a.localeCompare(b, 'pt-PT')).map(method => 
+                                `<span class="badge bg-info text-white technology-badge">${method}</span>`
+                            ).join('') : ''}
                         </div>
                     </div>
                 </div>
@@ -770,9 +781,47 @@
                                     const label = context.label || '';
                                     const value = context.parsed;
                                     const percentage = statusPercentages[context.dataIndex];
-                                    return `${label}: ${value} projetos (${percentage}%)`;
+                                    const status = context.label.toLowerCase();
+                                    
+                                    // Mapear labels para status
+                                    const statusMap = {
+                                        'concluído': 'concluído',
+                                        'em execução': 'execução',
+                                        'em planeamento': 'planeamento',
+                                        'piloto': 'piloto',
+                                        'suspenso': 'suspenso'
+                                    };
+                                    
+                                    const actualStatus = statusMap[status] || status;
+                                    const projectsInStatus = projects.filter(p => p.status === actualStatus);
+                                    
+                                    let tooltipText = [`${label}: ${value} projetos (${percentage}%)`];
+                                    
+                                    if (projectsInStatus.length > 0) {
+                                        tooltipText.push('');
+                                        tooltipText.push('Projetos:');
+                                        projectsInStatus.forEach(project => {
+                                            tooltipText.push(`• ${project.name}`);
+                                            tooltipText.push(`  Equipa: ${project.team.join(', ')}`);
+                                        });
+                                    }
+                                    
+                                    return tooltipText;
                                 }
-                            }
+                            },
+                            titleFont: {
+                                size: 14,
+                                weight: 'bold'
+                            },
+                            bodyFont: {
+                                size: 12
+                            },
+                            maxWidth: 400,
+                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                            titleColor: '#fff',
+                            bodyColor: '#fff',
+                            borderColor: '#007bff',
+                            borderWidth: 1
                         }
                     }
                 }
@@ -820,7 +869,13 @@
                         y: {
                             ticks: {
                                 maxRotation: 0,
-                                minRotation: 0
+                                minRotation: 0,
+                                autoSkip: false,
+                                maxTicksLimit: 50,
+                                font: {
+                                    size: 12
+                                },
+                                padding: 8
                             }
                         }
                     },
@@ -836,15 +891,18 @@
                                 label: function(context) {
                                     const technology = context.label;
                                     const projectCount = context.parsed.x;
-                                    const projects = getProjectsByTechnology(technology);
+                                    const projectsWithTech = projects.filter(p => 
+                                        p.technologies && p.technologies.includes(technology)
+                                    );
                                     
                                     let tooltipText = [`Nº de Projetos: ${projectCount}`];
                                     
-                                    if (projects.length > 0) {
+                                    if (projectsWithTech.length > 0) {
                                         tooltipText.push('');
                                         tooltipText.push('Projetos:');
-                                        projects.forEach(project => {
-                                            tooltipText.push(`• ${project}`);
+                                        projectsWithTech.forEach(project => {
+                                            tooltipText.push(`• ${project.name}`);
+                                            tooltipText.push(`  Equipa: ${project.team.join(', ')}`);
                                         });
                                     }
                                     
@@ -858,7 +916,7 @@
                             bodyFont: {
                                 size: 12
                             },
-                            maxWidth: 300,
+                            maxWidth: 400,
                             backgroundColor: 'rgba(0, 0, 0, 0.8)',
                             titleColor: '#fff',
                             bodyColor: '#fff',
@@ -926,15 +984,18 @@
                                 label: function(context) {
                                     const memberName = context.label;
                                     const projectCount = context.parsed.y;
-                                    const projects = getProjectsByMember(memberName);
+                                    const projectsWithMember = projects.filter(p => 
+                                        p.team && p.team.includes(memberName)
+                                    );
                                     
                                     let tooltipText = [`Nº de Projetos: ${projectCount}`];
                                     
-                                    if (projects.length > 0) {
+                                    if (projectsWithMember.length > 0) {
                                         tooltipText.push('');
                                         tooltipText.push('Projetos:');
-                                        projects.forEach(project => {
-                                            tooltipText.push(`• ${project}`);
+                                        projectsWithMember.forEach(project => {
+                                            tooltipText.push(`• ${project.name}`);
+                                            tooltipText.push(`  Status: ${project.status}`);
                                         });
                                     }
                                     
@@ -948,7 +1009,7 @@
                             bodyFont: {
                                 size: 12
                             },
-                            maxWidth: 300,
+                            maxWidth: 400,
                             backgroundColor: 'rgba(0, 0, 0, 0.8)',
                             titleColor: '#fff',
                             bodyColor: '#fff',
