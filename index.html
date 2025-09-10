@@ -3,10 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard de Fichas de Projeto</title>
+    <title>Projetos da Equipa</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         .project-card {
             transition: transform 0.3s;
@@ -39,11 +38,6 @@
                 margin-bottom: 20px;
             }
             
-            .chart-container {
-                break-inside: avoid;
-                margin-bottom: 30px;
-            }
-            
             body {
                 font-size: 12px !important;
                 line-height: 1.4 !important;
@@ -53,17 +47,23 @@
                 color: #000 !important;
             }
         }
+        
         .project-card:hover {
             transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.1);
         }
-        .nav-tabs .nav-link.active {
-            font-weight: bold;
-            border-bottom: 3px solid #0d6efd;
-        }
+        
         .stats-card {
             border-left: 4px solid #0d6efd;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 12px;
         }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
         .technology-badge {
             margin-right: 5px;
             margin-bottom: 5px;
@@ -75,7 +75,7 @@
         <div class="container">
             <div class="row align-items-center">
                 <div class="col-md-8">
-                    <h1 class="display-5 fw-bold"><i class="bi bi-folder2-open me-2"></i>Dashboard de Fichas de Projeto</h1>
+                    <h1 class="display-5 fw-bold"><i class="bi bi-kanban-fill me-2"></i>Projetos da Equipa</h1>
                     <p class="lead">Consulta centralizada dos projetos desenvolvidos pela equipa</p>
                 </div>
                 <div class="col-md-4 text-end">
@@ -88,25 +88,26 @@
     </header>
 
     <div class="container mb-5">
+        <!-- Abas de navegação -->
         <ul class="nav nav-tabs mb-4" id="myTab" role="tablist">
             <li class="nav-item" role="presentation">
-                <button class="nav-link active" id="team-tab" data-bs-toggle="tab" data-bs-target="#team" type="button" role="tab" aria-controls="team" aria-selected="true">
-                    <i class="bi bi-people-fill me-1"></i> Por Elemento
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="project-tab" data-bs-toggle="tab" data-bs-target="#project" type="button" role="tab" aria-controls="project" aria-selected="false">
-                    <i class="bi bi-kanban-fill me-1"></i> Por Projeto
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="tech-tab" data-bs-toggle="tab" data-bs-target="#tech" type="button" role="tab" aria-controls="tech" aria-selected="false">
-                    <i class="bi bi-cpu-fill me-1"></i> Por Tecnologia
-                </button>
-            </li>
-            <li class="nav-item" role="presentation">
-                <button class="nav-link" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats" type="button" role="tab" aria-controls="stats" aria-selected="false">
+                <button class="nav-link active" id="stats-tab" data-bs-toggle="tab" data-bs-target="#stats" type="button" role="tab" aria-controls="stats" aria-selected="true">
                     <i class="bi bi-bar-chart-fill me-1"></i> Estatísticas
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="all-tab" data-bs-toggle="tab" data-bs-target="#all" type="button" role="tab" aria-controls="all" aria-selected="false">
+                    <i class="bi bi-kanban-fill me-1"></i> Todos os Projetos
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="external-tab" data-bs-toggle="tab" data-bs-target="#external" type="button" role="tab" aria-controls="external" aria-selected="false">
+                    <i class="bi bi-globe me-1"></i> Projetos Externos
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link" id="internal-tab" data-bs-toggle="tab" data-bs-target="#internal" type="button" role="tab" aria-controls="internal" aria-selected="false">
+                    <i class="bi bi-building me-1"></i> Projetos Internos
                 </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -117,41 +118,56 @@
         </ul>
 
         <div class="tab-content" id="myTabContent">
-            <!-- ABA POR ELEMENTO DA EQUIPA -->
-            <div class="tab-pane fade show active" id="team" role="tabpanel" aria-labelledby="team-tab">
-                <div class="row mb-4">
-                    <div class="col-md-6">
-                        <div class="input-group">
-                            <span class="input-group-text"><i class="bi bi-search"></i></span>
-                            <input type="text" id="team-search" class="form-control" placeholder="Pesquisar elemento da equipa...">
+            <!-- ABA ESTATÍSTICAS -->
+            <div class="tab-pane fade show active" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+                <div class="row">
+                    <div class="col-12 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">
+                                    <i class="bi bi-pie-chart me-2"></i>Distribuição por Estado - Projetos Externos
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="externalStatusChart" width="800" height="400"></canvas>
+                            </div>
                         </div>
-                    </div>
-                    <div class="col-md-6">
-                        <select class="form-select" id="team-filter">
-                            <option value="">Todos os elementos</option>
-                            <option value="Carolina Goes">Carolina Goes</option>
-                            <option value="Diogo Almeida">Diogo Almeida</option>
-                            <option value="Gonçalo Gomes">Gonçalo Gomes</option>
-                            <option value="Inês Narciso">Inês Narciso</option>
-                            <option value="Manuela Seita">Manuela Seita</option>
-                            <option value="Margarida Patriarca">Margarida Patriarca</option>
-                            <option value="Mónica Zacarias">Mónica Zacarias</option>
-                            <option value="Natacha Silva">Natacha Silva</option>
-                            <option value="Pedro Campos">Pedro Campos</option>
-                            <option value="Rita Nascimento">Rita Nascimento</option>
-                            <option value="Sílvia Rovisco">Sílvia Rovisco</option>
-                            <option value="Teresa Nogueiro">Teresa Nogueiro</option>
-                        </select>
                     </div>
                 </div>
                 
-                <div id="team-results" class="row">
-                    <!-- Os resultados serão carregados aqui via JavaScript -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5 class="card-title mb-0">
+                                    <i class="bi bi-list-ul me-2"></i>Lista Detalhada dos Projetos Externos
+                                </h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped table-hover">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Projeto</th>
+                                                <th>Proposta</th>
+                                                <th>Ponto de Situação</th>
+                                                <th>Tecnologias</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="externalProjectsTable">
+                                            <!-- Os dados serão carregados aqui via JavaScript -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
 
-            <!-- ABA POR PROJETO -->
-            <div class="tab-pane fade" id="project" role="tabpanel" aria-labelledby="project-tab">
+            <!-- ABA TODOS OS PROJETOS -->
+            <div class="tab-pane fade" id="all" role="tabpanel" aria-labelledby="all-tab">
+                <!-- Filtros e pesquisa -->
                 <div class="row mb-4">
                     <div class="col-md-8">
                         <div class="input-group">
@@ -171,110 +187,57 @@
                     </div>
                 </div>
                 
+                <!-- Lista de projetos -->
                 <div id="project-results" class="row">
                     <!-- Os resultados serão carregados aqui via JavaScript -->
                 </div>
             </div>
 
-            <!-- ABA POR TECNOLOGIA -->
-            <div class="tab-pane fade" id="tech" role="tabpanel" aria-labelledby="tech-tab">
+            <!-- ABA PROJETOS EXTERNOS -->
+            <div class="tab-pane fade" id="external" role="tabpanel" aria-labelledby="external-tab">
                 <div class="row mb-4">
-                    <div class="col-md-12">
-                        <div class="d-flex flex-wrap gap-2" id="tech-badges">
-                            <!-- Badges de tecnologia serão geradas via JavaScript -->
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="external-search" class="form-control" placeholder="Pesquisar projeto externo...">
                         </div>
+                    </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="external-filter">
+                            <option value="">Todos os estados</option>
+                            <option value="descontinuado">Descontinuado</option>
+                            <option value="manter" selected>Manter</option>
+                            <option value="redesenhar">Redesenhar</option>
+                        </select>
                     </div>
                 </div>
                 
-                <div id="tech-results" class="row">
+                <div id="external-results" class="row">
                     <!-- Os resultados serão carregados aqui via JavaScript -->
                 </div>
             </div>
 
-            <!-- ABA ESTATÍSTICAS -->
-            <div class="tab-pane fade" id="stats" role="tabpanel" aria-labelledby="stats-tab">
+            <!-- ABA PROJETOS INTERNOS -->
+            <div class="tab-pane fade" id="internal" role="tabpanel" aria-labelledby="internal-tab">
                 <div class="row mb-4">
-                    <div class="col-md-3 mb-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Total de Projetos</h5>
-                                <h2 class="card-text text-primary" id="total-projects">0</h2>
-                            </div>
+                    <div class="col-md-8">
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-search"></i></span>
+                            <input type="text" id="internal-search" class="form-control" placeholder="Pesquisar projeto interno...">
                         </div>
                     </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Em Execução</h5>
-                                <h2 class="card-text text-success" id="active-projects">0</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Concluídos</h5>
-                                <h2 class="card-text text-info" id="completed-projects">0</h2>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-3 mb-3">
-                        <div class="card stats-card">
-                            <div class="card-body">
-                                <h5 class="card-title">Elementos na Equipa</h5>
-                                <h2 class="card-text text-warning" id="team-members">0</h2>
-                            </div>
-                        </div>
+                    <div class="col-md-4">
+                        <select class="form-select" id="internal-filter">
+                            <option value="">Todos os estados</option>
+                            <option value="descontinuado">Descontinuado</option>
+                            <option value="manter" selected>Manter</option>
+                            <option value="redesenhar">Redesenhar</option>
+                        </select>
                     </div>
                 </div>
                 
-                <div class="row">
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Projetos por Estado</h5>
-                                <button class="btn btn-sm btn-outline-primary" onclick="exportChartToCSV('statusChart', 'projetos_por_estado')">
-                                    <i class="bi bi-download me-1"></i>CSV
-                                </button>
-                            </div>
-                            <div class="card-body" style="padding: 15px;">
-                                <div style="height: 450px; position: relative;">
-                                    <canvas id="statusChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 mb-4">
-                        <div class="card">
-                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Tecnologias Mais Utilizadas</h5>
-                                <button class="btn btn-sm btn-outline-primary" onclick="exportChartToCSV('techChart', 'tecnologias_utilizadas')">
-                                    <i class="bi bi-download me-1"></i>CSV
-                                </button>
-                            </div>
-                            <div class="card-body" style="padding: 15px;">
-                                <div style="height: 450px; position: relative;">
-                                    <canvas id="techChart"></canvas>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="card">
-                            <div class="card-header bg-white d-flex justify-content-between align-items-center">
-                                <h5 class="card-title mb-0">Elementos da Equipa com Mais Projetos</h5>
-                                <button class="btn btn-sm btn-outline-primary" onclick="exportChartToCSV('memberChart', 'elementos_equipa')">
-                                    <i class="bi bi-download me-1"></i>CSV
-                                </button>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="memberChart" height="300"></canvas>
-                            </div>
-                        </div>
-                    </div>
+                <div id="internal-results" class="row">
+                    <!-- Os resultados serão carregados aqui via JavaScript -->
                 </div>
             </div>
 
@@ -291,19 +254,19 @@
                         <select class="form-select" id="individual-filter">
                             <option value="">Todos os elementos</option>
                             <option value="Agostinho Teixeira">Agostinho Teixeira</option>
-                            <option value="Ana Isabel">Ana Isabel</option>
-                            <option value="Carolina Goes">Carolina Goes</option>
-                            <option value="Diogo Almeida">Diogo Almeida</option>
-                            <option value="Estela Silva">Estela Silva</option>
-                            <option value="Gonçalo Gomes">Gonçalo Gomes</option>
-                            <option value="Manuela Seita">Manuela Seita</option>
-                            <option value="Margarida Patriarca">Margarida Patriarca</option>
+                            <option value="Ana Isabel Palma Rapado">Ana Isabel Palma Rapado</option>
+                            <option value="Sara Carolina Mendonça Goes">Sara Carolina Mendonça Goes</option>
+                            <option value="Diogo Alexandre Rodrigues Almeida">Diogo Alexandre Rodrigues Almeida</option>
+                            <option value="Estela Maria Rocha da Silva">Estela Maria Rocha da Silva</option>
+                            <option value="Gonçalo Duarte Gomes">Gonçalo Duarte Gomes</option>
+                            <option value="Maria Manuela Moreno Seita">Maria Manuela Moreno Seita</option>
+                            <option value="P. Margarida Carvalho Santos Duarte Loução Patriarca">P. Margarida Carvalho Santos Duarte Loução Patriarca</option>
                             <option value="Mónica Zacarias">Mónica Zacarias</option>
-                            <option value="Marta Cruz">Marta Cruz</option>
-                            <option value="Pedro Campos">Pedro Campos</option>
+                            <option value="Marta Susana Pereira Dias Saraiva Cruz">Marta Susana Pereira Dias Saraiva Cruz</option>
+                            <option value="Pedro Canaveira de Campos">Pedro Canaveira de Campos</option>
                             <option value="Rita Nascimento">Rita Nascimento</option>
                             <option value="Sílvia Rovisco">Sílvia Rovisco</option>
-                            <option value="Teresa Nogueiro">Teresa Nogueiro</option>
+                            <option value="Teresa Paula Ramalho Serra Bugalho Nogueiro">Teresa Paula Ramalho Serra Bugalho Nogueiro</option>
                         </select>
                     </div>
                 </div>
@@ -312,19 +275,457 @@
                     <!-- Os resultados serão carregados aqui via JavaScript -->
                 </div>
             </div>
+
+        </div>
+        
+        <!-- Estatísticas rápidas -->
+        <div class="row mb-4">
+            <div class="col-12">
+                <h3 class="text-primary mb-4">
+                    <i class="bi bi-graph-up me-2"></i>Resumo Geral - Projetos Externos
+                </h3>
+            </div>
+            
+            <!-- Estatísticas em Tabela -->
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-md-2 col-sm-4 col-6 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-people-fill text-primary mb-2" style="font-size: 2.5rem;"></i>
+                                    <h4 class="text-primary mb-1">15</h4>
+                                    <small class="text-muted">Elementos da Equipa</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-6 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-kanban-fill text-primary mb-2" style="font-size: 2.5rem;"></i>
+                                    <h4 class="text-primary mb-1" id="total-projects">0</h4>
+                                    <small class="text-muted">Total de Projetos</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-6 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-play-circle-fill text-success mb-2" style="font-size: 2.5rem;"></i>
+                                    <h4 class="text-success mb-1" id="active-projects">0</h4>
+                                    <small class="text-muted">Em Execução</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-6 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-check-circle-fill text-info mb-2" style="font-size: 2.5rem;"></i>
+                                    <h4 class="text-info mb-1" id="completed-projects">0</h4>
+                                    <small class="text-muted">Concluídos</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-6 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-rocket-takeoff text-warning mb-2" style="font-size: 2.5rem;"></i>
+                                    <h4 class="text-warning mb-1" id="pilot-projects">0</h4>
+                                    <small class="text-muted">Pilotos</small>
+                                </div>
+                            </div>
+                            <div class="col-md-2 col-sm-4 col-6 mb-3">
+                                <div class="d-flex flex-column align-items-center">
+                                    <i class="bi bi-calendar-event text-dark mb-2" style="font-size: 2.5rem;"></i>
+                                    <h4 class="text-dark mb-1" id="planning-projects">0</h4>
+                                    <small class="text-muted">Em Planeamento</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Lista de projetos -->
+        <div id="project-results" class="row">
+            <!-- Os resultados serão carregados aqui via JavaScript -->
         </div>
     </div>
 
     <footer class="bg-light py-4 mt-5">
         <div class="container text-center">
-            <p class="mb-0">Dashboard de Fichas de Projeto &copy; 2023</p>
+            <p class="mb-0">Projetos da Equipa &copy; 2023</p>
             <p class="mb-0 text-muted small">Última atualização: <span id="last-update"></span></p>
         </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     
     <script>
+        // Dados dos projetos (extraídos das fichas fornecidas)
+        const projects = [
+            {
+                id: 1,
+                name: "Dashboard Lista Nominativa - SGPCM (Provisória)",
+                status: "concluído",
+                description: "Dashboard desenvolvido a partir de listas em PDF referentes ao pessoal da SGPCM, transformando informação estática em informação dinâmica e acionável.",
+                technologies: ["Power BI", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiOTQ1OWU1NGEtM2NkMy00MTNhLThjNDctOTZhYWVkOTA1MTRlIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=6c49244b60cd19d78c92"
+            },
+            {
+                id: 2,
+                name: "Ficha de Metadados - Template",
+                status: "concluído",
+                description: "Aplicação web para registo normalizado de metadados de cada tabela/dataset produzido internamente, seguindo normas ISO.",
+                technologies: ["HTML5", "Bootstrap", "JavaScript", "GitHub Pages", "Cursor AI PRO", "Chat GPT PRO", "Power BI PRO"],
+                link: "https://sgoes.github.io/metadata_gov/"
+            },
+            {
+                id: 3,
+                name: "Dashboard Assembleia da República - Legislatura XVI",
+                status: "execução",
+                description: "Solução interativa que permite acompanhar debates, intervenções parlamentares e diplomas aprovados ao longo da legislatura.",
+                technologies: ["Power BI", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiZTM5ZDgzYWUtODM2Mi00YjZlLTg4OGUtNmNhYmJlZmUxN2Q3IiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9"
+            },
+            {
+                id: 4,
+                name: "Google Trends",
+                status: "execução",
+                description: "Dashboard para monitorizar, em tempo quase real, os principais tópicos pesquisados no Google.",
+                technologies: ["Microsoft Fabric", "Power BI", "SerpAPI", "Cursor AI PRO", "Chat GPT PRO"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiMWY5YzY0NzUtNzJmMi00MmJlLWI2YzYtODE1NDdhZjA5ZWRlIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9"
+            },
+            {
+                id: 5,
+                name: "Painel de Pesquisa Rápida de Indicadores Estatísticos do INE",
+                status: "execução",
+                description: "Dashboard interativo desenvolvido para facilitar o acesso a mais de 6.400 indicadores estatísticos do INE.",
+                technologies: ["Power BI", "Web Scraping", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNWUxZDQ4NjEtZGQ0Ni00N2U2LWExZWUtNDA2NTVmZGM2MWRjIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=2a67b50557973f9c5ee9"
+            },
+            {
+                id: 6,
+                name: "Dashboard Composição do Governo XXV",
+                status: "execução",
+                description: "Dashboard que apresenta de forma estruturada e interativa a informação oficial sobre os Ministros e Secretários de Estado.",
+                technologies: ["Power BI", "Web Scraping", "Cursor AI PRO", "Chat GPT PRO"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiY2VlM2YzZmUtMWFjZS00ZWU4LTg5M2MtZDk0OWY1ZjBiYzI0IiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9"
+            },
+            {
+                id: 7,
+                name: "Relatório Mediático",
+                status: "piloto",
+                description: "Produção de relatório mediático, a pedido, que integra diversas fontes (imprensa, redes sociais, web), tendências de pesquisa, inteligência preditiva e curadoria estruturada.",
+                technologies: ["NewsWhip", "Inoreader", "Google Trends", "SharePoint", "Canva Pro"],
+                link: "https://www.canva.com/design/DAGgx3aJBoM/L7t27_IKUONMm0j8m1K-mw/view"
+            },
+            /*
+            {
+                id: 8,
+                name: "Comunicação",
+                status: "suspenso",
+                description: "Assegurar a comunicação interna e externa, promovendo trabalho colaborativo entre os membros da equipa.",
+                technologies: ["SharePoint", "Canva", "CapCut", "Viva Engage", "Loop", "Teams", "Slido", "Mentimeter"],
+                link: ""
+            },
+            */
+            {
+                id: 9,
+                name: "Media Clipping - Inoreader",
+                status: "execução",
+                description: "Disponibilização de uma plataforma de curadoria avançada de conteúdos da imprensa nacional e internacional adaptável a temáticas e áreas governativas.",
+                technologies: ["Inoreader"],
+                link: "https://sgpcm.sharepoint.com/sites/MediaClippingXXIVGoverno/SitePages/Coes%C3%A3o.aspx"
+            },
+            /*
+            {
+                id: 10,
+                name: "Mapeamento dos ODS",
+                status: "execução",
+                description: "Projeto para mapear e alinhar os Objetivos de Desenvolvimento Sustentável com instrumentos de gestão da SGPCM.",
+                technologies: [],
+                link: ""
+            },
+            */
+            {
+                id: 11,
+                name: "Pulsar",
+                status: "piloto",
+                description: "Ferramenta de agregação de informação para suporte à tomada de decisão política, observação de tendências e resultados de políticas.",
+                technologies: ["Microsoft Fabric", "Power Automate", "Python", "Power BI", "SharePoint", "Teams"],
+                link: ""
+            },
+            {
+                id: 12,
+                name: "Sistema de Gestão e Monitorização de Projetos",
+                status: "suspenso",
+                description: "Sistema simples e centralizado a partir do OneNote, para gerir e monitorizar todos os projetos em curso, reunindo num único retrato a informação essencial: resumos comparáveis, compilação de documentos, indicadores de progresso e modelos normalizados de comunicação externa.",
+                technologies: ["OneNote", "Teams", "Planner", "Kanban", "SharePoint"],
+                methodologies: ["Gestão de projetos", "Monitorização contínua", "Comunicação externa normalizada"],
+                link: ""
+            },
+            {
+                id: 13,
+                name: "Governação Interministerial Sustentável",
+                status: "planeamento",
+                description: "Projeto para criar um modelo de governação interministerial sustentável garantindo continuidade, colaboração e eficiência entre ministérios.",
+                technologies: [],
+                link: ""
+            },
+            {
+                id: 14,
+                name: "in.formal",
+                status: "planeamento",
+                description: "Realização de encontros informais para apresentação e discussão partilhada de ideias, temas e experiências.",
+                technologies: [],
+                link: ""
+            },
+            {
+                id: 15,
+                name: "Media Clipping – NewsWhip",
+                status: "execução",
+                description: "Ferramenta de análise preditiva e em tempo real de redes sociais e media digitais, que permite identificar temas com maior tração pública, avaliar alcance, velocidade de disseminação e antecipar potenciais crises de reputação governativa.",
+                technologies: ["NewsWhip", "Sprout Social"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNTM3MmM5OWQtMGQ0ZC00M2E1LWJjMTQtYTliY2I1MjNiZjkwIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9"
+            },
+            /*
+            {
+                id: 16,
+                name: "Modelos e Métodos",
+                status: "planeamento",
+                description: "Projeto que pretende identificar e analisar problemas organizacionais, propondo soluções sustentadas em diferentes abordagens de gestão. Aproxima teoria e prática, fornecendo referenciais que apoiem decisões mais eficazes, adaptáveis e fundamentadas.",
+                technologies: ["Ferramentas digitais de análise", "Manuais metodológicos", "Plataformas colaborativas"],
+                methodologies: ["Modelos de gestão", "Diagnóstico organizacional", "Formação prática"],
+                link: ""
+            },
+            */
+            /*
+            {
+                id: 17,
+                name: "Plano de Formação da Equipa InovEM",
+                status: "planeamento",
+                description: "Plano de formação que visa o desenvolvimento contínuo das competências técnicas e comportamentais da equipa InovEM, alinhado com os objetivos estratégicos da organização e da SGGOV.",
+                technologies: ["Ferramentas digitais de formação", "Plataformas de armazenamento de conteúdos", "Metodologias de análise de dados"],
+                methodologies: ["Formação contínua", "Desenvolvimento de competências", "Análise avançada de dados"],
+                link: ""
+            },
+            */
+            {
+                id: 18,
+                name: "Monitorização do Plano Nacional de Combate ao Racismo e à Discriminação",
+                status: "execução",
+                description: "Monitorização do PNCRD 2021-2025 através de uma plataforma digital interoperável disponível a todos os pontos focais das diferentes áreas governativas envolvidas na execução do PNCRD. O processo contempla a execução das medidas organizadas em 10 áreas de intervenção, indicadores, execução orçamental e registo de evidências.",
+                technologies: ["SharePoint Online", "Plataforma digital interoperável", "Sistemas de monitorização"],
+                methodologies: ["Monitorização de políticas públicas", "Gestão de indicadores", "Reporte digital", "Coordenação interministerial"],
+                link: "https://sgpcm.sharepoint.com/sites/PNCRD"
+            },
+            {
+                id: 19,
+                name: "Ecossistema Colaborativo das Organizações da Sociedade Civil",
+                status: "execução",
+                description: "Projeto que visa fortalecer a articulação entre o Estado, a Administração Pública e a sociedade civil, através da criação de redes colaborativas e canais estruturados de diálogo, potenciados pelo uso estratégico da tecnologia. Contempla a criação de um ambiente digital estratégico centralizado na AP onde os intervenientes são incentivados a partilhar/reutilizar dados e recursos para a co-criação de conhecimento sobre o país em tempo real.",
+                technologies: ["Plataforma digital interoperável", "Dashboards inteligentes", "Sistemas de partilha de dados"],
+                methodologies: ["Mapeamento de OSCs", "Matriz de priorização", "Governança colaborativa", "Co-criação de conhecimento"],
+                link: ""
+            }
+        ];
+
+        // Dados dos projetos externos
+        const externalProjects = [
+            // DESCONTINUADOS
+            {
+                id: 1,
+                name: "Dashboard Lista Nominativa - SGPCM (Provisória)",
+                status: "descontinuado",
+                originalStatus: "concluído",
+                description: "Dashboard desenvolvido a partir de listas em PDF referentes ao pessoal da SGPCM, transformando informação estática em informação dinâmica e acionável.",
+                technologies: ["Power BI", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiOTQ1OWU1NGEtM2NkMy00MTNhLThjNDctOTZhYWVkOTA1MTRlIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=6c49244b60cd19d78c92"
+            },
+            // MANTER
+            {
+                id: 3,
+                name: "Dashboard Assembleia da República - Legislatura XVI",
+                status: "manter",
+                originalStatus: "execução",
+                description: "Solução interativa que permite acompanhar debates, intervenções parlamentares e diplomas aprovados ao longo da legislatura.",
+                technologies: ["Power BI", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiZTM5ZDgzYWUtODM2Mi00YjZlLTg4OGUtNmNhYmJlZmUxN2Q3IiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9"
+            },
+            {
+                id: 5,
+                name: "Painel de Pesquisa Rápida de Indicadores Estatísticos do INE",
+                status: "manter",
+                originalStatus: "execução",
+                description: "Dashboard interativo desenvolvido para facilitar o acesso a mais de 6.400 indicadores estatísticos do INE.",
+                technologies: ["Power BI", "Web Scraping", "Cursor AI PRO", "Chat GPT PRO"],
+                methodologies: ["ETL"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNWUxZDQ4NjEtZGQ0Ni00N2U2LWExZWUtNDA2NTVmZGM2MWRjIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=2a67b50557973f9c5ee9"
+            },
+            {
+                id: 6,
+                name: "Dashboard Composição do Governo XXV",
+                status: "manter",
+                originalStatus: "execução",
+                description: "Dashboard que apresenta de forma estruturada e interativa a informação oficial sobre os Ministros e Secretários de Estado.",
+                technologies: ["Power BI", "Web Scraping", "Cursor AI PRO", "Chat GPT PRO"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiY2VlM2YzZmUtMWFjZS00ZWU4LTg5M2MtZDk0OWY1ZjBiYzI0IiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9"
+            },
+            {
+                id: 4,
+                name: "Google Trends",
+                status: "manter",
+                originalStatus: "execução",
+                description: "Dashboard para monitorizar, em tempo quase real, os principais tópicos pesquisados no Google.",
+                technologies: ["Microsoft Fabric", "Power BI", "SerpAPI", "Cursor AI PRO", "Chat GPT PRO"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiMWY5YzY0NzUtNzJmMi00MmJlLWI2YzYtODE1NDdhZjA5ZWRlIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9"
+            },
+            {
+                id: 9,
+                name: "Media Clipping - Inoreader",
+                status: "manter",
+                originalStatus: "execução",
+                description: "Disponibilização de uma plataforma de curadoria avançada de conteúdos da imprensa nacional e internacional adaptável a temáticas e áreas governativas.",
+                technologies: ["Inoreader"],
+                link: "https://sgpcm.sharepoint.com/sites/MediaClippingXXIVGoverno/SitePages/Coes%C3%A3o.aspx"
+            },
+            {
+                id: 15,
+                name: "Media Clipping – NewsWhip",
+                status: "manter",
+                originalStatus: "execução",
+                description: "Ferramenta de análise preditiva e em tempo real de redes sociais e media digitais, que permite identificar temas com maior tração pública, avaliar alcance, velocidade de disseminação e antecipar potenciais crises de reputação governativa.",
+                technologies: ["NewsWhip", "Sprout Social"],
+                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNTM3MmM5OWQtMGQ0ZC00M2E1LWJjMTQtYTliY2I1MjNiZjkwIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9"
+            },
+            {
+                id: 7,
+                name: "Relatório Mediático",
+                status: "manter",
+                originalStatus: "piloto",
+                description: "Produção de relatório mediático, a pedido, que integra diversas fontes (imprensa, redes sociais, web), tendências de pesquisa, inteligência preditiva e curadoria estruturada.",
+                technologies: ["NewsWhip", "Inoreader", "Google Trends", "SharePoint", "Canva Pro"],
+                link: "https://www.canva.com/design/DAGgx3aJBoM/L7t27_IKUONMm0j8m1K-mw/view"
+            },
+            {
+                id: 14,
+                name: "in.formal",
+                status: "manter",
+                originalStatus: "planeamento",
+                description: "Realização de encontros informais para apresentação e discussão partilhada de ideias, temas e experiências.",
+                technologies: [],
+                link: ""
+            },
+            {
+                id: 18,
+                name: "Monitorização do Plano Nacional de Combate ao Racismo e à Discriminação",
+                status: "manter",
+                originalStatus: "execução",
+                description: "Monitorização do PNCRD 2021-2025 através de uma plataforma digital interoperável disponível a todos os pontos focais das diferentes áreas governativas envolvidas na execução do PNCRD. O processo contempla a execução das medidas organizadas em 10 áreas de intervenção, indicadores, execução orçamental e registo de evidências.",
+                technologies: ["SharePoint Online", "Plataforma digital interoperável", "Sistemas de monitorização"],
+                methodologies: ["Monitorização de políticas públicas", "Gestão de indicadores", "Reporte digital", "Coordenação interministerial"],
+                link: "https://sgpcm.sharepoint.com/sites/PNCRD"
+            },
+            {
+                id: 19,
+                name: "Ecossistema Colaborativo das Organizações da Sociedade Civil",
+                status: "redesenhar",
+                originalStatus: "planeamento",
+                description: "Projeto que visa fortalecer a articulação entre o Estado, a Administração Pública e a sociedade civil, através da criação de redes colaborativas e canais estruturados de diálogo, potenciados pelo uso estratégico da tecnologia.",
+                technologies: ["Plataforma digital interoperável", "Dashboards inteligentes", "Sistemas de partilha de dados"],
+                methodologies: ["Mapeamento de OSCs", "Matriz de priorização", "Governança colaborativa", "Co-criação de conhecimento"],
+                link: ""
+            },
+            // REDESENHAR
+            {
+                id: 13,
+                name: "Governação Interministerial Sustentável",
+                status: "redesenhar",
+                originalStatus: "planeamento",
+                description: "Projeto para criar um modelo de governação interministerial sustentável garantindo continuidade, colaboração e eficiência entre ministérios.",
+                technologies: [],
+                link: ""
+            },
+            {
+                id: 11,
+                name: "Pulsar",
+                status: "redesenhar",
+                originalStatus: "planeamento",
+                description: "Ferramenta de agregação de informação para suporte à tomada de decisão política, observação de tendências e resultados de políticas.",
+                technologies: ["Microsoft Fabric", "Power Automate", "Python", "Power BI", "SharePoint", "Teams"],
+                link: ""
+            }
+        ];
+
+        // Dados dos projetos internos
+        const internalProjects = [
+            // DESCONTINUADOS
+            // (nenhum projeto interno descontinuado)
+            
+            // MANTER
+            {
+                id: 2,
+                name: "Ficha de Metadados - Template",
+                status: "manter",
+                originalStatus: "concluído",
+                description: "Aplicação web para registo normalizado de metadados de cada tabela/dataset produzido internamente, seguindo normas ISO.",
+                technologies: ["HTML5", "Bootstrap", "JavaScript", "GitHub Pages", "Cursor AI PRO", "Chat GPT PRO", "Power BI PRO"],
+                link: "https://sgoes.github.io/metadata_gov/"
+            },
+            // REDESENHAR
+            {
+                id: 12,
+                name: "Sistema de Gestão e Monitorização de Projetos",
+                status: "redesenhar",
+                originalStatus: "suspenso",
+                description: "Sistema simples e centralizado a partir do OneNote, para gerir e monitorizar todos os projetos em curso, reunindo num único retrato a informação essencial: resumos comparáveis, compilação de documentos, indicadores de progresso e modelos normalizados de comunicação externa.",
+                technologies: ["OneNote", "Teams", "Planner", "Kanban", "SharePoint"],
+                methodologies: ["Gestão de projetos", "Monitorização contínua", "Comunicação externa normalizada"],
+                link: ""
+            },
+            // OCULTAR - Projetos comentados para não serem visíveis
+            /*
+            {
+                id: 8,
+                name: "Comunicação",
+                status: "ocultar",
+                originalStatus: "suspenso",
+                description: "Assegurar a comunicação interna e externa, promovendo trabalho colaborativo entre os membros da equipa.",
+                technologies: ["SharePoint", "Canva", "CapCut", "Viva Engage", "Loop", "Teams", "Slido", "Mentimeter"],
+                link: ""
+            },
+            {
+                id: 10,
+                name: "Mapeamento dos ODS",
+                status: "ocultar",
+                originalStatus: "execução",
+                description: "Projeto para mapear e alinhar os Objetivos de Desenvolvimento Sustentável com instrumentos de gestão da SGPCM.",
+                technologies: [],
+                link: ""
+            },
+            {
+                id: 16,
+                name: "Modelos e Métodos",
+                status: "ocultar",
+                originalStatus: "planeamento",
+                description: "Projeto que pretende identificar e analisar problemas organizacionais, propondo soluções sustentadas em diferentes abordagens de gestão. Aproxima teoria e prática, fornecendo referenciais que apoiem decisões mais eficazes, adaptáveis e fundamentadas.",
+                technologies: ["Ferramentas digitais de análise", "Manuais metodológicos", "Plataformas colaborativas"],
+                methodologies: ["Modelos de gestão", "Diagnóstico organizacional", "Formação prática"],
+                link: ""
+            },
+            {
+                id: 17,
+                name: "Plano de Formação da Equipa InovEM",
+                status: "ocultar",
+                originalStatus: "planeamento",
+                description: "Plano de formação que visa o desenvolvimento contínuo das competências técnicas e comportamentais da equipa InovEM, alinhado com os objetivos estratégicos da organização e da SGGOV.",
+                technologies: ["Ferramentas digitais de formação", "Plataformas de armazenamento de conteúdos", "Metodologias de análise de dados"],
+                methodologies: ["Formação contínua", "Desenvolvimento de competências", "Análise avançada de dados"],
+                link: ""
+            }
+            */
+        ];
+
         // Dados das fichas individuais (estrutura baseada no template)
         const individualSheets = [
             {
@@ -804,229 +1205,24 @@
             }
         ];
 
-        // Dados dos projetos (extraídos das fichas fornecidas)
-        const projects = [
-            {
-                id: 1,
-                name: "Dashboard Lista Nominativa - SGPCM (Provisória)",
-                responsible: "Carolina Goes",
-                team: ["Carolina Goes"],
-                status: "concluído",
-                description: "Dashboard desenvolvido a partir de listas em PDF referentes ao pessoal da SGPCM, transformando informação estática em informação dinâmica e acionável.",
-                technologies: ["Power BI", "Cursor AI PRO", "Chat GPT PRO"],
-                methodologies: ["ETL"],
-                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiOTQ1OWU1NGEtM2NkMy00MTNhLThjNDctOTZhYWVkOTA1MTRlIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=6c49244b60cd19d78c92"
-            },
-            {
-                id: 2,
-                name: "Ficha de Metadados - Template",
-                responsible: "Carolina Goes",
-                team: ["Carolina Goes"],
-                status: "concluído",
-                description: "Aplicação web para registo normalizado de metadados de cada tabela/dataset produzido internamente, seguindo normas ISO.",
-                technologies: ["HTML5", "Bootstrap", "JavaScript", "GitHub Pages", "Cursor AI PRO", "Chat GPT PRO", "Power BI PRO"],
-                link: "https://sgoes.github.io/metadata_gov/"
-            },
-            {
-                id: 3,
-                name: "Dashboard Assembleia da República - Legislatura XVI",
-                responsible: "Carolina Goes",
-                team: ["Carolina Goes"],
-                status: "execução",
-                description: "Solução interativa que permite acompanhar debates, intervenções parlamentares e diplomas aprovados ao longo da legislatura.",
-                technologies: ["Power BI", "Cursor AI PRO", "Chat GPT PRO"],
-                methodologies: ["ETL"],
-                link: ""
-            },
-            {
-                id: 4,
-                name: "Google Trends",
-                responsible: "Carolina Goes",
-                team: ["Carolina Goes"],
-                status: "execução",
-                description: "Dashboard para monitorizar, em tempo quase real, os principais tópicos pesquisados no Google através da API do SerpAPI.",
-                technologies: ["Microsoft Fabric", "Power BI", "SerpAPI", "Cursor AI PRO", "Chat GPT PRO"],
-                link: ""
-            },
-            {
-                id: 5,
-                name: "Painel de Pesquisa Rápida de Indicadores Estatísticos do INE",
-                responsible: "Carolina Goes",
-                team: ["Carolina Goes"],
-                status: "execução",
-                description: "Dashboard interativo desenvolvido para facilitar o acesso a mais de 6.400 indicadores estatísticos do INE.",
-                technologies: ["Power BI", "Web Scraping", "Cursor AI PRO", "Chat GPT PRO"],
-                methodologies: ["ETL"],
-                link: "https://app.fabric.microsoft.com/view?r=eyJrIjoiNWUxZDQ4NjEtZGQ0Ni00N2U2LWExZWUtNDA2NTVmZGM2MWRjIiwidCI6ImE3Y2IzMmY4LTQwOTgtNDJjMy1iMGMxLThiYWNiY2ZkZjdmNSIsImMiOjh9&pageName=2a67b50557973f9c5ee9"
-            },
-            {
-                id: 6,
-                name: "Dashboard Composição do Governo XXV",
-                responsible: "Carolina Goes",
-                team: ["Carolina Goes"],
-                status: "execução",
-                description: "Dashboard que apresenta de forma estruturada e interativa a informação oficial sobre os Ministros e Secretários de Estado.",
-                technologies: ["Power BI", "Web Scraping", "Cursor AI PRO", "Chat GPT PRO"],
-                link: ""
-            },
-            {
-                id: 7,
-                name: "Barómetro Mediático",
-                responsible: "Margarida Patriarca",
-                team: ["Margarida Patriarca", "Inês Narciso"],
-                status: "piloto",
-                description: "Produção de barómetro mediático que integra tendências de pesquisa, inteligência preditiva e curadoria estruturada.",
-                technologies: ["NewsWhip", "Inoreader", "Google Trends", "SharePoint", "Canva Pro"],
-                link: "https://www.canva.com/design/DAGgx3aJBoM/L7t27_IKUONMm0j8m1K-mw/view"
-            },
-            {
-                id: 8,
-                name: "Comunicação",
-                responsible: "Rita Nascimento e Sílvia Rovisco",
-                team: ["Rita Nascimento", "Sílvia Rovisco"],
-                status: "suspenso",
-                description: "Assegurar a comunicação interna e externa, promovendo trabalho colaborativo entre os membros da equipa.",
-                technologies: ["SharePoint", "Canva", "CapCut", "Viva Engage", "Loop", "Teams", "Slido", "Mentimeter"],
-                link: ""
-            },
-            {
-                id: 9,
-                name: "Media Clipping - Inoreader",
-                responsible: "Margarida Patriarca",
-                team: ["Margarida Patriarca", "Carolina Goes"],
-                status: "execução",
-                description: "Implementação de uma plataforma de curadoria avançada de conteúdos que agrega fluxos RSS, newsletters e alertas temáticos.",
-                technologies: ["Inoreader"],
-                link: ""
-            },
-            {
-                id: 10,
-                name: "Mapeamento dos ODS",
-                responsible: "Teresa Nogueiro, Natacha Silva",
-                team: ["Teresa Nogueiro", "Natacha Silva"],
-                status: "execução",
-                description: "Projeto para mapear e alinhar os Objetivos de Desenvolvimento Sustentável com instrumentos de gestão da SGPCM.",
-                technologies: [],
-                link: ""
-            },
-            {
-                id: 11,
-                name: "Pulsar",
-                responsible: "Diogo Almeida",
-                team: ["Diogo Almeida", "Carolina Goes", "Margarida Patriarca"],
-                status: "piloto",
-                description: "Ferramenta de agregação de informação para suporte à tomada de decisão política, observação de tendências e resultados de políticas.",
-                technologies: ["Microsoft Fabric", "Power Automate", "Python", "Power BI", "SharePoint", "Teams"],
-                link: ""
-            },
-            {
-                id: 12,
-                name: "Sistema de Gestão e Monitorização de Projetos",
-                responsible: "Equipa InovEM / Coordenação DSAAG",
-                team: ["Rita Nascimento", "Estela Silva"],
-                status: "suspenso",
-                description: "Sistema simples e centralizado a partir do OneNote, para gerir e monitorizar todos os projetos em curso, reunindo num único retrato a informação essencial: resumos comparáveis, compilação de documentos, indicadores de progresso e modelos normalizados de comunicação externa.",
-                technologies: ["OneNote", "Teams", "Planner", "Kanban", "SharePoint"],
-                methodologies: ["Gestão de projetos", "Monitorização contínua", "Comunicação externa normalizada"],
-                link: ""
-            },
-            {
-                id: 13,
-                name: "Governação Interministerial Sustentável",
-                responsible: "Gonçalo Gomes, Manuela Seita, Teresa Nogueiro",
-                team: ["Gonçalo Gomes", "Manuela Seita", "Teresa Nogueiro"],
-                status: "planeamento",
-                description: "Projeto para criar um modelo de governação interministerial sustentável garantindo continuidade, colaboração e eficiência entre ministérios.",
-                technologies: [],
-                link: ""
-            },
-            {
-                id: 14,
-                name: "in.formal",
-                responsible: "Gonçalo Gomes",
-                team: ["Gonçalo Gomes", "Sílvia Rovisco"],
-                status: "planeamento",
-                description: "Realização de encontros informais para apresentação e discussão partilhada de ideias, temas e experiências.",
-                technologies: [],
-                link: ""
-            },
-            {
-                id: 15,
-                name: "Media Clipping – NewsWhip",
-                responsible: "Margarida Patriarca",
-                team: ["Margarida Patriarca"],
-                status: "execução",
-                description: "Ferramenta de análise preditiva e em tempo real de redes sociais e media digitais, que permite identificar temas com maior tração pública, avaliar alcance, velocidade de disseminação e antecipar potenciais crises de reputação governativa.",
-                technologies: ["NewsWhip", "Sprout Social"],
-                link: ""
-            },
-            {
-                id: 16,
-                name: "Modelos e Métodos",
-                responsible: "Manuela Seita",
-                team: ["Manuela Seita", "Estela Silva"],
-                status: "planeamento",
-                description: "Projeto que pretende identificar e analisar problemas organizacionais, propondo soluções sustentadas em diferentes abordagens de gestão. Aproxima teoria e prática, fornecendo referenciais que apoiem decisões mais eficazes, adaptáveis e fundamentadas.",
-                technologies: ["Ferramentas digitais de análise", "Manuais metodológicos", "Plataformas colaborativas"],
-                methodologies: ["Modelos de gestão", "Diagnóstico organizacional", "Formação prática"],
-                link: ""
-            },
-            {
-                id: 17,
-                name: "Plano de Formação da Equipa InovEM",
-                responsible: "Manuela Seita",
-                team: ["Manuela Seita"],
-                status: "planeamento",
-                description: "Plano de formação que visa o desenvolvimento contínuo das competências técnicas e comportamentais da equipa InovEM, alinhado com os objetivos estratégicos da organização e da SGGOV.",
-                technologies: ["Ferramentas digitais de formação", "Plataformas de armazenamento de conteúdos", "Metodologias de análise de dados"],
-                methodologies: ["Formação contínua", "Desenvolvimento de competências", "Análise avançada de dados"],
-                link: ""
-            },
-            {
-                id: 18,
-                name: "Monitorização do Plano Nacional de Combate ao Racismo e à Discriminação",
-                responsible: "Mónica Zacarias",
-                team: ["Mónica Zacarias", "Pedro Campos"],
-                status: "execução",
-                description: "Monitorização do PNCRD 2021-2025 através de uma plataforma digital interoperável disponível a todos os pontos focais das diferentes áreas governativas envolvidas na execução do PNCRD. O processo contempla a execução das medidas organizadas em 10 áreas de intervenção, indicadores, execução orçamental e registo de evidências.",
-                technologies: ["SharePoint Online", "Plataforma digital interoperável", "Sistemas de monitorização"],
-                methodologies: ["Monitorização de políticas públicas", "Gestão de indicadores", "Reporte digital", "Coordenação interministerial"],
-                link: ""
-            }
-        ];
-
         // Inicialização quando o documento estiver pronto
         document.addEventListener('DOMContentLoaded', function() {
-            renderAllProjects();
+            renderProjectList();
             setupFilters();
-            renderTechBadges();
             updateStats();
             updateLastUpdateTime();
+            // Renderizar projetos externos e internos com filtro "manter" por padrão
+            renderExternalProjects();
+            renderInternalProjects();
+            // Configurar filtros e renderizar fichas individuais
             setupIndividualFilters();
             renderIndividualSheets();
-            
-            // Verificar se as bibliotecas de PDF carregaram
+            // Renderizar estatísticas
+            renderStatistics();
         });
-
-
-        // Função para renderizar todos os projetos
-        function renderAllProjects() {
-            renderTeamProjects();
-            renderProjectList();
-        }
 
         // Função para configurar os filtros
         function setupFilters() {
-            // Filtro por elemento da equipa
-            document.getElementById('team-filter').addEventListener('change', function() {
-                renderTeamProjects();
-            });
-            
-            // Pesquisa por elemento da equipa
-            document.getElementById('team-search').addEventListener('input', function() {
-                renderTeamProjects();
-            });
-            
             // Filtro por estado do projeto
             document.getElementById('status-filter').addEventListener('change', function() {
                 renderProjectList();
@@ -1036,73 +1232,24 @@
             document.getElementById('project-search').addEventListener('input', function() {
                 renderProjectList();
             });
-        }
-
-        // Função para renderizar os projetos na aba de equipa
-        function renderTeamProjects() {
-            const teamFilter = document.getElementById('team-filter').value;
-            const searchTerm = document.getElementById('team-search').value.toLowerCase();
-            const resultsContainer = document.getElementById('team-results');
             
-            resultsContainer.innerHTML = '';
-            
-            // Agrupar projetos por elemento da equipa
-            const teamMembers = {};
-            
-            projects.forEach(project => {
-                project.team.forEach(member => {
-                    if (!teamMembers[member]) {
-                        teamMembers[member] = [];
-                    }
-                    teamMembers[member].push(project);
-                });
+            // Filtros para projetos externos
+            document.getElementById('external-filter').addEventListener('change', function() {
+                renderExternalProjects();
             });
             
-            // Filtrar membros conforme seleção e pesquisa
-            let filteredMembers = Object.keys(teamMembers);
-            
-            if (teamFilter) {
-                filteredMembers = filteredMembers.filter(member => member === teamFilter);
-            }
-            
-            if (searchTerm) {
-                filteredMembers = filteredMembers.filter(member => 
-                    member.toLowerCase().includes(searchTerm)
-                );
-            }
-            
-            // Ordenar membros por ordem alfabética
-            filteredMembers.sort((a, b) => a.localeCompare(b, 'pt-PT'));
-            
-            // Renderizar os membros e seus projetos
-            filteredMembers.forEach(member => {
-                const memberSection = document.createElement('div');
-                memberSection.className = 'col-12 mb-4';
-                
-                memberSection.innerHTML = `
-                    <h3 class="border-bottom pb-2">${member}</h3>
-                    <div class="row" id="projects-${member.replace(/\s+/g, '-')}">
-                    </div>
-                `;
-                
-                resultsContainer.appendChild(memberSection);
-                
-                const projectsContainer = document.getElementById(`projects-${member.replace(/\s+/g, '-')}`);
-                
-                teamMembers[member].forEach(project => {
-                    projectsContainer.appendChild(createProjectCard(project));
-                });
+            document.getElementById('external-search').addEventListener('input', function() {
+                renderExternalProjects();
             });
             
-            if (filteredMembers.length === 0) {
-                resultsContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="bi bi-search display-1 text-muted"></i>
-                        <h4 class="text-muted mt-3">Nenhum elemento encontrado</h4>
-                        <p class="text-muted">Tente ajustar os critérios de pesquisa</p>
-                    </div>
-                `;
-            }
+            // Filtros para projetos internos
+            document.getElementById('internal-filter').addEventListener('change', function() {
+                renderInternalProjects();
+            });
+            
+            document.getElementById('internal-search').addEventListener('input', function() {
+                renderInternalProjects();
+            });
         }
 
         // Função para renderizar a lista de projetos
@@ -1143,6 +1290,82 @@
             }
         }
 
+        // Função para renderizar os projetos externos
+        function renderExternalProjects() {
+            const statusFilter = document.getElementById('external-filter').value;
+            const searchTerm = document.getElementById('external-search').value.toLowerCase();
+            const resultsContainer = document.getElementById('external-results');
+            
+            resultsContainer.innerHTML = '';
+            
+            let filteredProjects = externalProjects;
+            
+            if (statusFilter) {
+                filteredProjects = filteredProjects.filter(project => 
+                    project.status === statusFilter
+                );
+            }
+            
+            if (searchTerm) {
+                filteredProjects = filteredProjects.filter(project => 
+                    project.name.toLowerCase().includes(searchTerm) || 
+                    project.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (filteredProjects.length > 0) {
+                filteredProjects.forEach(project => {
+                    resultsContainer.appendChild(createProjectCard(project));
+                });
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-globe display-1 text-muted"></i>
+                        <h4 class="text-muted mt-3">Nenhum projeto externo encontrado</h4>
+                        <p class="text-muted">Tente ajustar os critérios de pesquisa</p>
+                    </div>
+                `;
+            }
+        }
+
+        // Função para renderizar os projetos internos
+        function renderInternalProjects() {
+            const statusFilter = document.getElementById('internal-filter').value;
+            const searchTerm = document.getElementById('internal-search').value.toLowerCase();
+            const resultsContainer = document.getElementById('internal-results');
+            
+            resultsContainer.innerHTML = '';
+            
+            let filteredProjects = internalProjects;
+            
+            if (statusFilter) {
+                filteredProjects = filteredProjects.filter(project => 
+                    project.status === statusFilter
+                );
+            }
+            
+            if (searchTerm) {
+                filteredProjects = filteredProjects.filter(project => 
+                    project.name.toLowerCase().includes(searchTerm) || 
+                    project.description.toLowerCase().includes(searchTerm)
+                );
+            }
+            
+            if (filteredProjects.length > 0) {
+                filteredProjects.forEach(project => {
+                    resultsContainer.appendChild(createProjectCard(project));
+                });
+            } else {
+                resultsContainer.innerHTML = `
+                    <div class="col-12 text-center py-5">
+                        <i class="bi bi-building display-1 text-muted"></i>
+                        <h4 class="text-muted mt-3">Nenhum projeto interno encontrado</h4>
+                        <p class="text-muted">Tente ajustar os critérios de pesquisa</p>
+                    </div>
+                `;
+            }
+        }
+
         // Função para criar um card de projeto
         function createProjectCard(project) {
             const statusColors = {
@@ -1150,7 +1373,11 @@
                 'execução': 'primary',
                 'piloto': 'info',
                 'planeamento': 'warning',
-                'suspenso': 'secondary'
+                'suspenso': 'secondary',
+                'descontinuado': 'danger',
+                'manter': 'success',
+                'redesenhar': 'warning',
+                'ocultar': 'dark'
             };
             
             const statusTexts = {
@@ -1158,31 +1385,35 @@
                 'execução': 'Em Execução',
                 'piloto': 'Piloto',
                 'planeamento': 'Em Planeamento',
-                'suspenso': 'Execução Suspensa'
+                'suspenso': 'Execução Suspensa',
+                'descontinuado': 'Descontinuado',
+                'manter': 'Manter',
+                'redesenhar': 'Redesenhar',
+                'ocultar': 'Ocultar'
             };
             
             const col = document.createElement('div');
             col.className = 'col-md-6 col-lg-4 mb-4';
             
+            // Determinar se deve mostrar o status original
+            const showOriginalStatus = project.originalStatus && (project.status === 'descontinuado' || project.status === 'manter' || project.status === 'redesenhar' || project.status === 'ocultar');
+            
             col.innerHTML = `
                 <div class="card project-card h-100">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-start mb-2">
-                            <span class="badge bg-${statusColors[project.status]}">${statusTexts[project.status]}</span>
+                            <div class="d-flex flex-wrap gap-1">
+                                <span class="badge bg-${statusColors[project.status]}">${statusTexts[project.status]}</span>
+                                ${showOriginalStatus ? `<span class="badge bg-outline-secondary border text-dark">${statusTexts[project.originalStatus]}</span>` : ''}
+                            </div>
                             ${project.link ? `<a href="${project.link}" target="_blank" class="btn btn-sm btn-outline-primary"><i class="bi bi-box-arrow-up-right"></i></a>` : ''}
                         </div>
                         <h5 class="card-title">${project.name}</h5>
                         <p class="card-text">${project.description}</p>
-                        <div class="mb-2">
-                            <small class="text-muted"><i class="bi bi-person-circle me-1"></i> Responsável: ${project.responsible}</small>
-                        </div>
-                        <div class="mb-3">
-                            <small class="text-muted"><i class="bi bi-people-fill me-1"></i> Equipa: ${project.team.join(', ')}</small>
-                        </div>
                         <div class="technology-list">
-                            ${project.technologies.sort((a, b) => a.localeCompare(b, 'pt-PT')).map(tech => 
+                            ${project.technologies && project.technologies.length > 0 ? project.technologies.sort((a, b) => a.localeCompare(b, 'pt-PT')).map(tech => 
                                 `<span class="badge bg-light text-dark technology-badge">${tech}</span>`
-                            ).join('')}
+                            ).join('') : ''}
                             ${project.methodologies ? project.methodologies.sort((a, b) => a.localeCompare(b, 'pt-PT')).map(method => 
                                 `<span class="badge bg-info text-white technology-badge">${method}</span>`
                             ).join('') : ''}
@@ -1194,390 +1425,26 @@
             return col;
         }
 
-        // Função para renderizar os badges de tecnologia
-        function renderTechBadges() {
-            const techContainer = document.getElementById('tech-badges');
-            
-            // Coletar todas as tecnologias únicas
-            const allTech = new Set();
-            projects.forEach(project => {
-                project.technologies.forEach(tech => allTech.add(tech));
-            });
-            
-            // Converter para array e ordenar alfabeticamente
-            const sortedTech = Array.from(allTech).sort((a, b) => a.localeCompare(b, 'pt-PT'));
-            
-            // Criar badges para cada tecnologia
-            sortedTech.forEach(tech => {
-                const badge = document.createElement('span');
-                badge.className = 'badge bg-primary technology-filter';
-                badge.style.cursor = 'pointer';
-                badge.textContent = tech;
-                badge.addEventListener('click', () => filterByTechnology(tech));
-                
-                techContainer.appendChild(badge);
-            });
-        }
-
-        // Função para filtrar por tecnologia
-        function filterByTechnology(tech) {
-            const resultsContainer = document.getElementById('tech-results');
-            resultsContainer.innerHTML = '';
-            
-            const filteredProjects = projects.filter(project => 
-                project.technologies.includes(tech)
-            );
-            
-            if (filteredProjects.length > 0) {
-                resultsContainer.innerHTML = `<h4 class="mb-4">Projetos que utilizam <span class="badge bg-primary">${tech}</span></h4>`;
-                
-                const row = document.createElement('div');
-                row.className = 'row';
-                
-                filteredProjects.forEach(project => {
-                    row.appendChild(createProjectCard(project));
-                });
-                
-                resultsContainer.appendChild(row);
-            } else {
-                resultsContainer.innerHTML = `
-                    <div class="col-12 text-center py-5">
-                        <i class="bi bi-cpu display-1 text-muted"></i>
-                        <h4 class="text-muted mt-3">Nenhum projeto utiliza esta tecnologia</h4>
-                    </div>
-                `;
-            }
-        }
-
-        // Função para atualizar as estatísticas
+        // Função para atualizar as estatísticas (apenas projetos externos)
         function updateStats() {
-            // Contar projetos totais
-            document.getElementById('total-projects').textContent = projects.length;
+            // Contar projetos externos totais
+            document.getElementById('total-projects').textContent = externalProjects.length;
             
-            // Contar projetos ativos (em execução)
-            const activeProjects = projects.filter(p => p.status === 'execução').length;
+            // Contar projetos externos ativos (em execução)
+            const activeProjects = externalProjects.filter(p => p.originalStatus === 'execução').length;
             document.getElementById('active-projects').textContent = activeProjects;
             
-            // Contar projetos concluídos
-            const completedProjects = projects.filter(p => p.status === 'concluído').length;
+            // Contar projetos externos concluídos
+            const completedProjects = externalProjects.filter(p => p.originalStatus === 'concluído').length;
             document.getElementById('completed-projects').textContent = completedProjects;
             
-            // Contar membros únicos da equipa
-            const allMembers = new Set();
-            projects.forEach(project => {
-                project.team.forEach(member => allMembers.add(member));
-            });
-            document.getElementById('team-members').textContent = allMembers.size;
+            // Contar projetos externos piloto
+            const pilotProjects = externalProjects.filter(p => p.originalStatus === 'piloto').length;
+            document.getElementById('pilot-projects').textContent = pilotProjects;
             
-            // Gráfico de estados dos projetos
-            const statusCount = {
-                'concluído': projects.filter(p => p.status === 'concluído').length,
-                'execução': projects.filter(p => p.status === 'execução').length,
-                'piloto': projects.filter(p => p.status === 'piloto').length,
-                'planeamento': projects.filter(p => p.status === 'planeamento').length,
-                'suspenso': projects.filter(p => p.status === 'suspenso').length
-            };
-            
-            const statusCtx = document.getElementById('statusChart').getContext('2d');
-            const totalProjects = projects.length;
-            const statusPercentages = Object.values(statusCount).map(count => 
-                ((count / totalProjects) * 100).toFixed(1)
-            );
-            
-            new Chart(statusCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['Concluído', 'Em Execução', 'Piloto', 'Em Planeamento', 'Suspenso'],
-                    datasets: [{
-                        data: Object.values(statusCount),
-                        backgroundColor: ['#28a745', '#007bff', '#17a2b8', '#ffc107', '#6c757d']
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    plugins: {
-                        legend: {
-                            position: 'bottom',
-                            labels: {
-                                generateLabels: function(chart) {
-                                    const data = chart.data;
-                                    if (data.labels.length && data.datasets.length) {
-                                        return data.labels.map((label, i) => {
-                                            const value = data.datasets[0].data[i];
-                                            const percentage = statusPercentages[i];
-                                            return {
-                                                text: `${label}: ${value} (${percentage}%)`,
-                                                fillStyle: data.datasets[0].backgroundColor[i],
-                                                strokeStyle: data.datasets[0].backgroundColor[i],
-                                                lineWidth: 0,
-                                                hidden: false,
-                                                index: i
-                                            };
-                                        });
-                                    }
-                                    return [];
-                                }
-                            }
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    const label = context.label || '';
-                                    const value = context.parsed;
-                                    const percentage = statusPercentages[context.dataIndex];
-                                    const status = context.label.toLowerCase();
-                                    
-                                    // Mapear labels para status
-                                    const statusMap = {
-                                        'concluído': 'concluído',
-                                        'em execução': 'execução',
-                                        'em planeamento': 'planeamento',
-                                        'piloto': 'piloto',
-                                        'suspenso': 'suspenso'
-                                    };
-                                    
-                                    const actualStatus = statusMap[status] || status;
-                                    const projectsInStatus = projects.filter(p => p.status === actualStatus);
-                                    
-                                    let tooltipText = [`${label}: ${value} projetos (${percentage}%)`];
-                                    
-                                    if (projectsInStatus.length > 0) {
-                                        tooltipText.push('');
-                                        tooltipText.push('Projetos:');
-                                        projectsInStatus.forEach(project => {
-                                            tooltipText.push(`• ${project.name}`);
-                                            tooltipText.push(`  Equipa: ${project.team.join(', ')}`);
-                                        });
-                                    }
-                                    
-                                    return tooltipText;
-                                }
-                            },
-                            titleFont: {
-                                size: 14,
-                                weight: 'bold'
-                            },
-                            bodyFont: {
-                                size: 12
-                            },
-                            maxWidth: 400,
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: '#007bff',
-                            borderWidth: 1
-                        }
-                    }
-                }
-            });
-            
-            // Gráfico de tecnologias mais utilizadas
-            const techCount = {};
-            projects.forEach(project => {
-                if (project.technologies && project.technologies.length > 0) {
-                    project.technologies.forEach(tech => {
-                        if (tech && tech.trim() !== '') { // Verificar se a tecnologia não está vazia
-                            techCount[tech] = (techCount[tech] || 0) + 1;
-                        }
-                    });
-                }
-            });
-            
-            // Ordenar tecnologias por frequência e mostrar todas
-            const topTech = Object.entries(techCount)
-                .sort((a, b) => b[1] - a[1])
-                .filter(tech => tech[1] > 0); // Filtrar apenas tecnologias com pelo menos 1 uso
-            
-            const techCtx = document.getElementById('techChart').getContext('2d');
-            new Chart(techCtx, {
-                type: 'bar',
-                data: {
-                    labels: topTech.map(t => t[0]),
-                    datasets: [{
-                        label: 'Nº de Projetos',
-                        data: topTech.map(t => t[1]),
-                        backgroundColor: '#007bff'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    indexAxis: 'y',
-                    scales: {
-                        x: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        },
-                        y: {
-                            ticks: {
-                                maxRotation: 0,
-                                minRotation: 0,
-                                autoSkip: false,
-                                maxTicksLimit: 50,
-                                font: {
-                                    size: 12
-                                },
-                                padding: 8
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
-                                label: function(context) {
-                                    const technology = context.label;
-                                    const projectCount = context.parsed.x;
-                                    const projectsWithTech = projects.filter(p => 
-                                        p.technologies && p.technologies.includes(technology)
-                                    );
-                                    
-                                    let tooltipText = [`Nº de Projetos: ${projectCount}`];
-                                    
-                                    if (projectsWithTech.length > 0) {
-                                        tooltipText.push('');
-                                        tooltipText.push('Projetos:');
-                                        projectsWithTech.forEach(project => {
-                                            tooltipText.push(`• ${project.name}`);
-                                            tooltipText.push(`  Equipa: ${project.team.join(', ')}`);
-                                        });
-                                    }
-                                    
-                                    return tooltipText;
-                                }
-                            },
-                            titleFont: {
-                                size: 14,
-                                weight: 'bold'
-                            },
-                            bodyFont: {
-                                size: 12
-                            },
-                            maxWidth: 400,
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: '#007bff',
-                            borderWidth: 1
-                        }
-                    }
-                }
-            });
-            
-            // Gráfico de elementos com mais projetos
-            const memberProjectCount = {};
-            projects.forEach(project => {
-                if (project.team && project.team.length > 0) {
-                    project.team.forEach(member => {
-                        if (member && member.trim() !== '') { // Verificar se o membro não está vazio
-                            memberProjectCount[member] = (memberProjectCount[member] || 0) + 1;
-                        }
-                    });
-                }
-            });
-            
-            // Ordenar membros por número de projetos e mostrar todos
-            const topMembers = Object.entries(memberProjectCount)
-                .sort((a, b) => b[1] - a[1])
-                .filter(member => member[1] > 0); // Filtrar apenas membros com pelo menos 1 projeto
-            
-            const memberCtx = document.getElementById('memberChart').getContext('2d');
-            new Chart(memberCtx, {
-                type: 'bar',
-                data: {
-                    labels: topMembers.map(m => m[0]),
-                    datasets: [{
-                        label: 'Nº de Projetos',
-                        data: topMembers.map(m => m[1]),
-                        backgroundColor: '#fd7e14'
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1
-                            }
-                        },
-                        x: {
-                            ticks: {
-                                maxRotation: 45,
-                                minRotation: 0
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                title: function(context) {
-                                    return context[0].label;
-                                },
-                                label: function(context) {
-                                    const memberName = context.label;
-                                    const projectCount = context.parsed.y;
-                                    const projectsWithMember = projects.filter(p => 
-                                        p.team && p.team.includes(memberName)
-                                    );
-                                    
-                                    let tooltipText = [`Nº de Projetos: ${projectCount}`];
-                                    
-                                    if (projectsWithMember.length > 0) {
-                                        tooltipText.push('');
-                                        tooltipText.push('Projetos:');
-                                        projectsWithMember.forEach(project => {
-                                            tooltipText.push(`• ${project.name}`);
-                                            tooltipText.push(`  Status: ${project.status}`);
-                                        });
-                                    }
-                                    
-                                    return tooltipText;
-                                }
-                            },
-                            titleFont: {
-                                size: 14,
-                                weight: 'bold'
-                            },
-                            bodyFont: {
-                                size: 12
-                            },
-                            maxWidth: 400,
-                            backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                            titleColor: '#fff',
-                            bodyColor: '#fff',
-                            borderColor: '#fd7e14',
-                            borderWidth: 1
-                        }
-                    }
-                }
-            });
-        }
-
-        // Função para obter projetos de um membro específico
-        function getProjectsByMember(memberName) {
-            return projects.filter(project => 
-                project.team && project.team.includes(memberName)
-            ).map(project => project.name);
-        }
-
-        // Função para obter projetos que usam uma tecnologia específica
-        function getProjectsByTechnology(technology) {
-            return projects.filter(project => 
-                project.technologies && project.technologies.includes(technology)
-            ).map(project => project.name);
+            // Contar projetos externos em planeamento
+            const planningProjects = externalProjects.filter(p => p.originalStatus === 'planeamento').length;
+            document.getElementById('planning-projects').textContent = planningProjects;
         }
 
         // Função para atualizar a data e hora de última atualização
@@ -1595,52 +1462,6 @@
             
             const formattedDate = now.toLocaleString('pt-PT', options);
             document.getElementById('last-update').textContent = formattedDate;
-        }
-
-
-        // Função para exportar gráfico para CSV
-        function exportChartToCSV(chartId, filename) {
-            const chart = Chart.getChart(chartId);
-            if (!chart) return;
-            
-            const data = chart.data;
-            let csvContent = '';
-            
-            if (chartId === 'statusChart') {
-                // Gráfico de estados
-                csvContent = 'Estado,Número de Projetos,Percentagem\n';
-                const total = data.datasets[0].data.reduce((a, b) => a + b, 0);
-                data.labels.forEach((label, index) => {
-                    const value = data.datasets[0].data[index];
-                    const percentage = ((value / total) * 100).toFixed(1);
-                    csvContent += `"${label}",${value},${percentage}%\n`;
-                });
-            } else if (chartId === 'techChart') {
-                // Gráfico de tecnologias
-                csvContent = 'Tecnologia,Número de Projetos\n';
-                data.labels.forEach((label, index) => {
-                    const value = data.datasets[0].data[index];
-                    csvContent += `"${label}",${value}\n`;
-                });
-            } else if (chartId === 'memberChart') {
-                // Gráfico de membros
-                csvContent = 'Elemento da Equipa,Número de Projetos\n';
-                data.labels.forEach((label, index) => {
-                    const value = data.datasets[0].data[index];
-                    csvContent += `"${label}",${value}\n`;
-                });
-            }
-            
-            // Download do arquivo CSV
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement('a');
-            const url = URL.createObjectURL(blob);
-            link.setAttribute('href', url);
-            link.setAttribute('download', `${filename}.csv`);
-            link.style.visibility = 'hidden';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
         }
 
         // Função para configurar os filtros das fichas individuais
@@ -1766,6 +1587,152 @@
             `;
             
             return col;
+        }
+
+        // Função para renderizar as estatísticas
+        function renderStatistics() {
+            renderExternalStatusChart();
+            renderExternalProjectsTable();
+        }
+
+        // Função para criar o gráfico de pizza dos projetos externos
+        function renderExternalStatusChart() {
+            const ctx = document.getElementById('externalStatusChart').getContext('2d');
+            
+            // Preparar dados com nomes dos projetos
+            const projectNames = externalProjects.map(project => project.name);
+            const projectStatuses = externalProjects.map(project => project.status);
+            const total = externalProjects.length;
+
+            // Calcular percentagens
+            const percentages = projectNames.map(() => ((1 / total) * 100).toFixed(1));
+
+            // Cores baseadas no status
+            const getStatusColor = (status) => {
+                const colors = {
+                    'descontinuado': '#dc3545',
+                    'manter': '#28a745',
+                    'redesenhar': '#ffc107'
+                };
+                return colors[status] || '#6c757d';
+            };
+
+            const backgroundColors = projectStatuses.map(status => getStatusColor(status));
+
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: projectNames.map((name, index) => `${name} - ${projectStatuses[index]}`),
+                    datasets: [{
+                        data: projectNames.map(() => 1), // Cada projeto tem valor 1
+                        backgroundColor: backgroundColors,
+                        borderWidth: 2,
+                        borderColor: '#fff'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 10,
+                                usePointStyle: true,
+                                font: {
+                                    size: 10
+                                },
+                                generateLabels: function(chart) {
+                                    const data = chart.data;
+                                    if (data.labels.length && data.datasets.length) {
+                                        return data.labels.map((label, i) => {
+                                            const meta = chart.getDatasetMeta(0);
+                                            const style = meta.controller.getStyle(i);
+                                            return {
+                                                text: label,
+                                                fillStyle: style.backgroundColor,
+                                                strokeStyle: style.borderColor,
+                                                lineWidth: style.borderWidth,
+                                                pointStyle: style.pointStyle,
+                                                hidden: isNaN(data.datasets[0].data[i]) || meta.data[i].hidden,
+                                                index: i
+                                            };
+                                        });
+                                    }
+                                    return [];
+                                }
+                            }
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    const projectIndex = context.dataIndex;
+                                    const projectName = projectNames[projectIndex];
+                                    const status = projectStatuses[projectIndex];
+                                    return `${projectName} - Estado: ${status}`;
+                                }
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+
+        // Função para criar a tabela detalhada dos projetos externos
+        function renderExternalProjectsTable() {
+            const tbody = document.getElementById('externalProjectsTable');
+            tbody.innerHTML = '';
+
+            externalProjects.forEach(project => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <strong>${project.name}</strong>
+                        ${project.link ? `<br><a href="${project.link}" target="_blank" class="btn btn-sm btn-outline-primary mt-1"><i class="bi bi-box-arrow-up-right"></i> Ver Projeto</a>` : ''}
+                    </td>
+                    <td>
+                        <span class="badge bg-${getStatusColor(project.status)}">${getStatusText(project.status)}</span>
+                    </td>
+                    <td>
+                        <span class="badge bg-outline-secondary border text-dark">${getStatusText(project.originalStatus)}</span>
+                    </td>
+                    <td>
+                        ${project.technologies && project.technologies.length > 0 ? 
+                            project.technologies.map(tech => `<span class="badge bg-light text-dark me-1 mb-1">${tech}</span>`).join('') : 
+                            '<span class="text-muted">Nenhuma</span>'
+                        }
+                    </td>
+                `;
+                tbody.appendChild(row);
+            });
+        }
+
+        // Função auxiliar para obter a cor do status
+        function getStatusColor(status) {
+            const colors = {
+                'descontinuado': 'danger',
+                'manter': 'success',
+                'redesenhar': 'warning',
+                'ocultar': 'dark'
+            };
+            return colors[status] || 'secondary';
+        }
+
+        // Função auxiliar para obter o texto do status
+        function getStatusText(status) {
+            const texts = {
+                'descontinuado': 'Descontinuado',
+                'manter': 'Manter',
+                'redesenhar': 'Redesenhar',
+                'ocultar': 'Ocultar',
+                'concluído': 'Concluído',
+                'execução': 'Em Execução',
+                'piloto': 'Piloto',
+                'planeamento': 'Em Planeamento',
+                'suspenso': 'Execução Suspensa'
+            };
+            return texts[status] || status;
         }
     </script>
 </body>
